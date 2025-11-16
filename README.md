@@ -1,4 +1,4 @@
-#Đồ án BattleShip Online của nhóm 13 - Trường Đại học Công nghệ thông tin - VNUHCM
+#Đồ án BattleShip Online của nhóm 13 - Lập trình mạng căn bản (NT106.Q13) - Trường Đại học Công nghệ thông tin - VNUHCM
 
 ##Giới thiệu
 - Đây là đồ án BattleShip online được phát triển bởi nhóm 13, nhằm phục vụ bộ môn Lập trình mạng căn bản của trường Đại học Công nghệ thông tin, ĐHQG thành phố Hồ Chí Minh.
@@ -12,8 +12,16 @@
 * **Xử lý Lượt Chơi:** Đảm bảo luật chơi chuẩn xác, lần lượt đặt và bắn
 * **Trạng thái Tàu:** Hiển thị rõ ràng các trạng thái Tàu (còn nguyên, bị bắn trúng, bị tiêu diệt)
 
-##Các công nghệ sử dụng:
+##Các công nghệ sử dụng: (tất cả công nghệ sẽ được update sau khi hoàn thiện project)
 * Ngôn ngữ: C#
 * Framework: .NET framework
 * Môi trường phát triển: Visual Studio 2022
-* Công nghệ mạng: Socket Programming
+* Công nghệ mạng: Socket Programming 
+
+##Hướng dẫn chạy (sẽ viết sau khi hoàn thành hết)
+
+
+##Thành viên nhóm 13 - Lập trình mạng căn bản (NT106.Q13) - Trường đại học Công nghệ thông tin - ĐHQG tp.HCM
+* Phạm Thanh Thiên - 24521664
+* Trương Đức Thịnh - 24521708
+* Phan Như Thuần - 24521744
