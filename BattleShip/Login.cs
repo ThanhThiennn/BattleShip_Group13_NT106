@@ -36,8 +36,8 @@ namespace BattleShip
 
                 MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                //FormGame gameForm = new FormGame(); nao code form game thi bo comment
-                //gameForm.Show();
+                FormUI gameForm = new FormUI(); 
+                gameForm.Show();
                 this.Hide();
             }
             catch (FirebaseAuthException ex)
