@@ -17,8 +17,8 @@ namespace BattleShip
         {
             InitializeComponent();
         }
-
-        private async void btnSend_Click(object sender, EventArgs e)
+              
+        private async void btnSend_Click_1(object sender, EventArgs e)
         {
             string email = tbUsername.Text.Trim();
 

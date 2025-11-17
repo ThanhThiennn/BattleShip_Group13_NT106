@@ -18,8 +18,8 @@ namespace BattleShip
         {
             InitializeComponent();
         }
-
-        private async void btnRegister_Click(object sender, EventArgs e)
+              
+        private async void btnRegister_Click_1(object sender, EventArgs e)
         {
             string email = tbUsername.Text.Trim();
             string password = tbPassword.Text;
@@ -65,7 +65,7 @@ namespace BattleShip
             }
         }
 
-        private  void btnGoToLogin_Click(object sender, EventArgs e)
+        private void llbGoToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             new Login().Show();
             this.Close();

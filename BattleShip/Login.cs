@@ -16,9 +16,14 @@ namespace BattleShip
         public Login()
         {
             InitializeComponent();
+        }     
+     
+        private void llbForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new FormForgetPassword().Show();
         }
 
-        private async void btnLogin_Click(object sender, EventArgs e)
+        private async void btnLogin_Click_1(object sender, EventArgs e)
         {
             string email = tbUsername.Text.Trim();
             string password = tbPassword.Text;
@@ -36,7 +41,7 @@ namespace BattleShip
 
                 MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                FormUI gameForm = new FormUI(); 
+                FormUI gameForm = new FormUI();
                 gameForm.Show();
                 this.Hide();
             }
@@ -50,17 +55,12 @@ namespace BattleShip
 
                 MessageBox.Show(errorMessage, "Lỗi Đăng nhập", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
+        }       
 
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             new FormRegister().Show();
             this.Hide();
-        }
-
-        private void llbForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            new FormForgetPassword().Show();
         }
     }
 }
