@@ -30,7 +30,9 @@ namespace BattleShip
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-
+            UISettingMatch nextForm = new UISettingMatch();
+            nextForm.Show();
+            this.Close();
         }
 
         private void btnPlayBot_Click(object sender, EventArgs e)
