@@ -34,7 +34,7 @@ namespace BattleShip
                 await FirebaseService.authProvider
                     .SendPasswordResetEmailAsync(email);
 
-                MessageBox.Show($"Liên kết đặt lại mật khẩu đã được gửi đến {email}. Vui lòng kiểm tra hộp thư!", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show($"Liên kết đặt lại mật khẩu đã được gửi đến {email}. Vui lòng kiểm tra hộp thư (hoặc hòm thư rác nếu không thấy)", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Đóng Form và quay lại Đăng nhập
                 new Login().Show();

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Firebase.Auth;
+using BattleShip;
 
 namespace BattleShip
 {
@@ -38,12 +39,23 @@ namespace BattleShip
             {
                 FirebaseAuthLink authLink = await FirebaseService.authProvider
                     .SignInWithEmailAndPasswordAsync(email, password);
+                string userId = authLink.User.LocalId;
 
-                MessageBox.Show("Đăng nhập thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                string idToken = authLink.FirebaseToken;
 
-                FormUI gameForm = new FormUI();
-                gameForm.Show();
-                this.Hide();
+                SessionManager.SetSession(userId, idToken);
+                Properties.Settings.Default.FirebaseRefreshToken = authLink.RefreshToken; 
+                Properties.Settings.Default.Save();
+                this.Invoke((MethodInvoker)delegate
+                {
+                    
+                    FormUI gameForm = new FormUI();
+                    gameForm.Show();
+                    this.Hide(); 
+                });
+                //FormUI gameForm = new FormUI();
+                //gameForm.Show();
+                //this.Hide();
             }
             catch (FirebaseAuthException ex)
             {
