@@ -70,5 +70,20 @@ namespace BattleShip
                 }
             }
         }
+
+        private void btnSetting_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                
+                FormSetting settingForm = new FormSetting();
+
+                settingForm.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể mở Form Cài đặt: " + ex.Message, "Lỗi Hệ Thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }

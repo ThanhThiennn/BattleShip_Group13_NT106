@@ -201,6 +201,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FirebaseService.cs" />
+    <Compile Include="FormSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormSetting.Designer.cs">
+      <DependentUpon>FormSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormForgetPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -227,8 +233,28 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="SessionManager.cs" />
+    <Compile Include="UIMyAccount.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIMyAccount.Designer.cs">
+      <DependentUpon>UIMyAccount.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UIAbout.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UIAbout.Designer.cs">
+      <DependentUpon>UIAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="UserProfile.cs" />
+    <EmbeddedResource Include="FormSetting.resx">
+      <DependentUpon>FormSetting.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormForgetPassword.resx">
       <DependentUpon>FormForgetPassword.cs</DependentUpon>
     </EmbeddedResource>
@@ -243,14 +269,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
+    <EmbeddedResource Include="UIAbout.resx">
+      <DependentUpon>UIAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UIMyAccount.resx">
+      <DependentUpon>UIMyAccount.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -273,6 +300,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LOGO GAME-Photoroom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\discord_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\user_face_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\gmail_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\link_chain_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\flag_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
