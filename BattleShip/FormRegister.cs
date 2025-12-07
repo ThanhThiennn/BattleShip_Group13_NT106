@@ -19,7 +19,15 @@ namespace BattleShip
             InitializeComponent();
         }
               
-        private async void btnRegister_Click_1(object sender, EventArgs e)
+        
+
+        private void llbGoToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            new Login().Show();
+            this.Close();
+        }
+
+        private async void btnRegister_Click(object sender, EventArgs e)
         {
             string email = tbUsername.Text.Trim();
             string password = tbPassword.Text;
@@ -38,20 +46,32 @@ namespace BattleShip
 
             try
             {
-                //Tạo tài khoản trên firebase auth
+                // 1. Tạo tài khoản trên Firebase Auth
                 FirebaseAuthLink authLink = await FirebaseService.authProvider
                     .CreateUserWithEmailAndPasswordAsync(email, password);
 
-                //Lưu thông tin cơ bản vào rt databse
+                // 2. Lưu thông tin người dùng vào Realtime Database
                 string userId = authLink.User.LocalId;
-                var userProfile = new UserProfile { Email = email, TotalWins = 0 };
+
+                // --- ĐÂY LÀ PHẦN CODE MỚI ---
+                var userProfile = new UserProfile
+                {
+                    Email = email,
+                    TotalWins = 0,
+                    TotalLosses = 0,
+                    AvatarId = 0,                     
+                    DisplayName = email.Split('@')[0] 
+                };
+                // -----------------------------
 
                 await FirebaseService.firebaseClient
-                    .Child("Users") // Node gốc cho tất cả người dùng
-                    .Child(userId)  // Key là UID của người dùng
+                    .Child("Users")
+                    .Child(userId)
                     .PutAsync(userProfile);
 
                 MessageBox.Show("Đăng ký thành công! Vui lòng Đăng nhập.", "Thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                // Chuyển sang màn hình đăng nhập
                 new Login().Show();
                 this.Close();
             }
@@ -63,12 +83,6 @@ namespace BattleShip
 
                 MessageBox.Show(errorMessage, "Lỗi Đăng ký", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void llbGoToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            new Login().Show();
-            this.Close();
         }
     }
 }

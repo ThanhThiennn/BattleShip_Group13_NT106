@@ -82,6 +82,7 @@
             this.btnCustomize.TabIndex = 10;
             this.btnCustomize.Text = "Customize";
             this.btnCustomize.UseTransparentBackground = true;
+            this.btnCustomize.Click += new System.EventHandler(this.btnCustomize_Click);
             // 
             // label3
             // 

@@ -6,9 +6,14 @@ using System.Threading.Tasks;
 
 namespace BattleShip
 {
-    internal class UserProfile
+    public class UserProfile
     {
         public string Email { get; set; }
+
+        public string DisplayName { get; set; }
+
+        public int AvatarId { get; set; }
+
         public int TotalWins { get; set; }
         public int TotalLosses { get; set; }
     }

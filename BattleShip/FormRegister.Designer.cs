@@ -44,26 +44,29 @@
             // tbUsername
             // 
             this.tbUsername.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.tbUsername.Location = new System.Drawing.Point(270, 245);
+            this.tbUsername.Location = new System.Drawing.Point(304, 306);
+            this.tbUsername.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbUsername.Name = "tbUsername";
-            this.tbUsername.Size = new System.Drawing.Size(537, 34);
+            this.tbUsername.Size = new System.Drawing.Size(604, 39);
             this.tbUsername.TabIndex = 1;
             // 
             // tbPassword
             // 
             this.tbPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.tbPassword.Location = new System.Drawing.Point(270, 297);
+            this.tbPassword.Location = new System.Drawing.Point(304, 371);
+            this.tbPassword.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbPassword.Name = "tbPassword";
-            this.tbPassword.Size = new System.Drawing.Size(537, 34);
+            this.tbPassword.Size = new System.Drawing.Size(604, 39);
             this.tbPassword.TabIndex = 1;
             this.tbPassword.UseSystemPasswordChar = true;
             // 
             // tbConfirmPassword
             // 
             this.tbConfirmPassword.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.tbConfirmPassword.Location = new System.Drawing.Point(270, 348);
+            this.tbConfirmPassword.Location = new System.Drawing.Point(304, 435);
+            this.tbConfirmPassword.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tbConfirmPassword.Name = "tbConfirmPassword";
-            this.tbConfirmPassword.Size = new System.Drawing.Size(537, 34);
+            this.tbConfirmPassword.Size = new System.Drawing.Size(604, 39);
             this.tbConfirmPassword.TabIndex = 1;
             this.tbConfirmPassword.UseSystemPasswordChar = true;
             // 
@@ -72,10 +75,11 @@
             this.guna2CirclePictureBox1.Cursor = System.Windows.Forms.Cursors.Default;
             this.guna2CirclePictureBox1.Image = global::BattleShip.Properties.Resources.LOGO_GAME_Photoroom;
             this.guna2CirclePictureBox1.ImageRotate = 0F;
-            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(256, -51);
+            this.guna2CirclePictureBox1.Location = new System.Drawing.Point(288, -64);
+            this.guna2CirclePictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2CirclePictureBox1.Name = "guna2CirclePictureBox1";
             this.guna2CirclePictureBox1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.guna2CirclePictureBox1.Size = new System.Drawing.Size(330, 290);
+            this.guna2CirclePictureBox1.Size = new System.Drawing.Size(371, 362);
             this.guna2CirclePictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.guna2CirclePictureBox1.TabIndex = 13;
             this.guna2CirclePictureBox1.TabStop = false;
@@ -86,9 +90,10 @@
             this.guna2HtmlLabel2.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel2.Font = new System.Drawing.Font("Cooper Black", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel2.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.guna2HtmlLabel2.Location = new System.Drawing.Point(22, 246);
+            this.guna2HtmlLabel2.Location = new System.Drawing.Point(25, 308);
+            this.guna2HtmlLabel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2HtmlLabel2.Name = "guna2HtmlLabel2";
-            this.guna2HtmlLabel2.Size = new System.Drawing.Size(170, 33);
+            this.guna2HtmlLabel2.Size = new System.Drawing.Size(191, 41);
             this.guna2HtmlLabel2.TabIndex = 15;
             this.guna2HtmlLabel2.Text = "Username:";
             // 
@@ -98,9 +103,10 @@
             this.guna2HtmlLabel3.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel3.Font = new System.Drawing.Font("Cooper Black", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel3.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.guna2HtmlLabel3.Location = new System.Drawing.Point(22, 298);
+            this.guna2HtmlLabel3.Location = new System.Drawing.Point(25, 372);
+            this.guna2HtmlLabel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2HtmlLabel3.Name = "guna2HtmlLabel3";
-            this.guna2HtmlLabel3.Size = new System.Drawing.Size(170, 33);
+            this.guna2HtmlLabel3.Size = new System.Drawing.Size(191, 41);
             this.guna2HtmlLabel3.TabIndex = 16;
             this.guna2HtmlLabel3.Text = "Password:";
             // 
@@ -110,9 +116,10 @@
             this.guna2HtmlLabel4.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel4.Font = new System.Drawing.Font("Cooper Black", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel4.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.guna2HtmlLabel4.Location = new System.Drawing.Point(22, 348);
+            this.guna2HtmlLabel4.Location = new System.Drawing.Point(25, 435);
+            this.guna2HtmlLabel4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2HtmlLabel4.Name = "guna2HtmlLabel4";
-            this.guna2HtmlLabel4.Size = new System.Drawing.Size(233, 34);
+            this.guna2HtmlLabel4.Size = new System.Drawing.Size(262, 42);
             this.guna2HtmlLabel4.TabIndex = 17;
             this.guna2HtmlLabel4.Text = "Confirm password:";
             // 
@@ -126,20 +133,21 @@
             this.btnRegister.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
             this.btnRegister.Font = new System.Drawing.Font("Showcard Gothic", 16.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnRegister.ForeColor = System.Drawing.Color.White;
-            this.btnRegister.Location = new System.Drawing.Point(329, 420);
+            this.btnRegister.Location = new System.Drawing.Point(370, 525);
+            this.btnRegister.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.btnRegister.Name = "btnRegister";
-            this.btnRegister.Size = new System.Drawing.Size(180, 45);
+            this.btnRegister.Size = new System.Drawing.Size(202, 56);
             this.btnRegister.TabIndex = 18;
             this.btnRegister.Text = "REGISTER";
-            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click_1);
+            this.btnRegister.Click += new System.EventHandler(this.btnRegister_Click);
             // 
             // llbGoToLogin
             // 
             this.llbGoToLogin.AutoSize = true;
             this.llbGoToLogin.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.llbGoToLogin.Location = new System.Drawing.Point(351, 515);
+            this.llbGoToLogin.Location = new System.Drawing.Point(395, 644);
             this.llbGoToLogin.Name = "llbGoToLogin";
-            this.llbGoToLogin.Size = new System.Drawing.Size(122, 28);
+            this.llbGoToLogin.Size = new System.Drawing.Size(146, 32);
             this.llbGoToLogin.TabIndex = 19;
             this.llbGoToLogin.TabStop = true;
             this.llbGoToLogin.Text = "Go to Login!";
@@ -151,18 +159,19 @@
             this.guna2HtmlLabel1.BackColor = System.Drawing.Color.Transparent;
             this.guna2HtmlLabel1.Font = new System.Drawing.Font("Cooper Black", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.guna2HtmlLabel1.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.guna2HtmlLabel1.Location = new System.Drawing.Point(289, 155);
+            this.guna2HtmlLabel1.Location = new System.Drawing.Point(325, 194);
+            this.guna2HtmlLabel1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.guna2HtmlLabel1.Name = "guna2HtmlLabel1";
-            this.guna2HtmlLabel1.Size = new System.Drawing.Size(353, 85);
+            this.guna2HtmlLabel1.Size = new System.Drawing.Size(397, 106);
             this.guna2HtmlLabel1.TabIndex = 14;
             this.guna2HtmlLabel1.Text = "Register";
             // 
             // FormRegister
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(255)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(819, 552);
+            this.ClientSize = new System.Drawing.Size(921, 690);
             this.Controls.Add(this.llbGoToLogin);
             this.Controls.Add(this.btnRegister);
             this.Controls.Add(this.guna2HtmlLabel4);
@@ -173,6 +182,7 @@
             this.Controls.Add(this.tbConfirmPassword);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbUsername);
+            this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FormRegister";
             this.Text = "FormRegister";
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();
