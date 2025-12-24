@@ -30,7 +30,8 @@ namespace BattleShip
 
         private void guna2Button1_Click(object sender, EventArgs e)
         {
-
+            gameplayMap1 map1 = new gameplayMap1();
+            map1.Show();
         }
 
         private void btnPlayBot_Click(object sender, EventArgs e)

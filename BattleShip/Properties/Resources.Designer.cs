@@ -63,6 +63,16 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hit_icon {
+            get {
+                object obj = ResourceManager.GetObject("hit_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap LOGO_GAME {
             get {
                 object obj = ResourceManager.GetObject("LOGO GAME", resourceCulture);
@@ -76,6 +86,26 @@ namespace BattleShip.Properties {
         internal static System.Drawing.Bitmap LOGO_GAME_Photoroom {
             get {
                 object obj = ResourceManager.GetObject("LOGO GAME-Photoroom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap LOGO_GAME1 {
+            get {
+                object obj = ResourceManager.GetObject("LOGO GAME1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap miss_icon {
+            get {
+                object obj = ResourceManager.GetObject("miss_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

@@ -219,6 +219,12 @@
     <Compile Include="FormUI.Designer.cs">
       <DependentUpon>FormUI.cs</DependentUpon>
     </Compile>
+    <Compile Include="gameplayMap1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="gameplayMap1.Designer.cs">
+      <DependentUpon>gameplayMap1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Login.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,6 +243,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FormUI.resx">
       <DependentUpon>FormUI.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="gameplayMap1.resx">
+      <DependentUpon>gameplayMap1.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Login.resx">
       <DependentUpon>Login.cs</DependentUpon>
@@ -273,6 +282,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\LOGO GAME-Photoroom.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\LOGO GAME1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hit_icon.png.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\miss_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\hit_icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
