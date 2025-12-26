@@ -33,7 +33,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
-            this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGameGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.pbPlayerDestroyer = new System.Windows.Forms.PictureBox();
@@ -48,6 +47,7 @@
             this.pbBotBattleship = new System.Windows.Forms.PictureBox();
             this.pbBotCarrier = new System.Windows.Forms.PictureBox();
             this.pnlDeployment = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.btnRandom = new Guna.UI2.WinForms.Guna2Button();
             this.btnReady = new Guna.UI2.WinForms.Guna2Button();
             this.label1 = new System.Windows.Forms.Label();
@@ -58,14 +58,14 @@
             this.picCruiser1 = new System.Windows.Forms.PictureBox();
             this.picBattleShip = new System.Windows.Forms.PictureBox();
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.lstPlayers = new System.Windows.Forms.ListBox();
+            this.lblRoomCode = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
-            this.lstPlayers = new System.Windows.Forms.ListBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.lblRoomCode = new System.Windows.Forms.Label();
             this.PanelRight.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerDestroyer)).BeginInit();
@@ -128,7 +128,6 @@
             // PanelRight
             // 
             this.PanelRight.BorderRadius = 15;
-            this.PanelRight.Controls.Add(this.pnlBotGrid);
             this.PanelRight.Controls.Add(this.pnlGameGrid);
             this.PanelRight.Controls.Add(this.label3);
             this.PanelRight.Controls.Add(this.label2);
@@ -143,16 +142,6 @@
             this.PanelRight.ShadowDecoration.Shadow = new System.Windows.Forms.Padding(50);
             this.PanelRight.Size = new System.Drawing.Size(964, 673);
             this.PanelRight.TabIndex = 5;
-            // 
-            // pnlBotGrid
-            // 
-            this.pnlBotGrid.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlBotGrid.BackgroundImage")));
-            this.pnlBotGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pnlBotGrid.Location = new System.Drawing.Point(499, 71);
-            this.pnlBotGrid.Name = "pnlBotGrid";
-            this.pnlBotGrid.Size = new System.Drawing.Size(440, 440);
-            this.pnlBotGrid.TabIndex = 5;
-            this.pnlBotGrid.Visible = false;
             // 
             // pnlGameGrid
             // 
@@ -310,6 +299,7 @@
             this.pnlDeployment.BackColor = System.Drawing.SystemColors.GrayText;
             this.pnlDeployment.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlDeployment.BackgroundImage")));
             this.pnlDeployment.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.pnlDeployment.Controls.Add(this.pnlBotGrid);
             this.pnlDeployment.Controls.Add(this.btnRandom);
             this.pnlDeployment.Controls.Add(this.btnReady);
             this.pnlDeployment.Controls.Add(this.label1);
@@ -319,6 +309,16 @@
             this.pnlDeployment.Name = "pnlDeployment";
             this.pnlDeployment.Size = new System.Drawing.Size(440, 440);
             this.pnlDeployment.TabIndex = 2;
+            // 
+            // pnlBotGrid
+            // 
+            this.pnlBotGrid.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlBotGrid.BackgroundImage")));
+            this.pnlBotGrid.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pnlBotGrid.Location = new System.Drawing.Point(0, 0);
+            this.pnlBotGrid.Name = "pnlBotGrid";
+            this.pnlBotGrid.Size = new System.Drawing.Size(440, 440);
+            this.pnlBotGrid.TabIndex = 5;
+            this.pnlBotGrid.Visible = false;
             // 
             // btnRandom
             // 
@@ -361,6 +361,7 @@
             this.btnReady.Size = new System.Drawing.Size(332, 51);
             this.btnReady.TabIndex = 2;
             this.btnReady.Text = "I\'m Ready";
+            this.btnReady.Click += new System.EventHandler(this.btnReady_Click_1);
             // 
             // label1
             // 
@@ -449,9 +450,9 @@
             // 
             // PanelLeft
             // 
+            this.PanelLeft.Controls.Add(this.lstPlayers);
             this.PanelLeft.Controls.Add(this.lblRoomCode);
             this.PanelLeft.Controls.Add(this.label4);
-            this.PanelLeft.Controls.Add(this.lstPlayers);
             this.PanelLeft.Controls.Add(this.pictureBox1);
             this.PanelLeft.Controls.Add(this.btnFriend);
             this.PanelLeft.Controls.Add(this.btnNews);
@@ -463,6 +464,41 @@
             this.PanelLeft.Name = "PanelLeft";
             this.PanelLeft.Size = new System.Drawing.Size(352, 673);
             this.PanelLeft.TabIndex = 4;
+            // 
+            // lstPlayers
+            // 
+            this.lstPlayers.BackColor = System.Drawing.SystemColors.HighlightText;
+            this.lstPlayers.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lstPlayers.FormattingEnabled = true;
+            this.lstPlayers.ItemHeight = 25;
+            this.lstPlayers.Location = new System.Drawing.Point(41, 274);
+            this.lstPlayers.Name = "lstPlayers";
+            this.lstPlayers.Size = new System.Drawing.Size(276, 129);
+            this.lstPlayers.TabIndex = 2;
+            // 
+            // lblRoomCode
+            // 
+            this.lblRoomCode.AutoSize = true;
+            this.lblRoomCode.BackColor = System.Drawing.Color.Transparent;
+            this.lblRoomCode.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblRoomCode.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblRoomCode.Location = new System.Drawing.Point(36, 585);
+            this.lblRoomCode.Name = "lblRoomCode";
+            this.lblRoomCode.Size = new System.Drawing.Size(77, 25);
+            this.lblRoomCode.TabIndex = 3;
+            this.lblRoomCode.Text = "Phòng: ";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.BackColor = System.Drawing.Color.Transparent;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.label4.ForeColor = System.Drawing.SystemColors.Control;
+            this.label4.Location = new System.Drawing.Point(48, 246);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(263, 25);
+            this.label4.TabIndex = 3;
+            this.label4.Text = "NGƯỜI CHƠI TRONG PHÒNG";
             // 
             // pictureBox1
             // 
@@ -543,41 +579,6 @@
             this.btnSpeaker.Size = new System.Drawing.Size(120, 45);
             this.btnSpeaker.TabIndex = 0;
             // 
-            // lstPlayers
-            // 
-            this.lstPlayers.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.lstPlayers.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lstPlayers.FormattingEnabled = true;
-            this.lstPlayers.ItemHeight = 25;
-            this.lstPlayers.Location = new System.Drawing.Point(41, 274);
-            this.lstPlayers.Name = "lstPlayers";
-            this.lstPlayers.Size = new System.Drawing.Size(276, 129);
-            this.lstPlayers.TabIndex = 2;
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.BackColor = System.Drawing.Color.Transparent;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label4.ForeColor = System.Drawing.SystemColors.Control;
-            this.label4.Location = new System.Drawing.Point(48, 246);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(263, 25);
-            this.label4.TabIndex = 3;
-            this.label4.Text = "NGƯỜI CHƠI TRONG PHÒNG";
-            // 
-            // lblRoomCode
-            // 
-            this.lblRoomCode.AutoSize = true;
-            this.lblRoomCode.BackColor = System.Drawing.Color.Transparent;
-            this.lblRoomCode.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblRoomCode.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblRoomCode.Location = new System.Drawing.Point(36, 585);
-            this.lblRoomCode.Name = "lblRoomCode";
-            this.lblRoomCode.Size = new System.Drawing.Size(77, 25);
-            this.lblRoomCode.TabIndex = 3;
-            this.lblRoomCode.Text = "Phòng: ";
-            // 
             // Multiplayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -585,8 +586,9 @@
             this.ClientSize = new System.Drawing.Size(1316, 673);
             this.Controls.Add(this.PanelRight);
             this.Controls.Add(this.PanelLeft);
+            this.ForeColor = System.Drawing.SystemColors.Highlight;
             this.Name = "Multiplayer";
-            this.Text = "gameplayMultiplayer1";
+            this.Text = "Trận đấu Battleship";
             this.Load += new System.EventHandler(this.Multiplayer_Load);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
@@ -654,7 +656,7 @@
         private Guna.UI2.WinForms.Guna2Button btnSpeaker;
         private Guna.UI2.WinForms.Guna2Panel PanelLeft;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ListBox lstPlayers;
         private System.Windows.Forms.Label lblRoomCode;
+        public System.Windows.Forms.ListBox lstPlayers;
     }
 }

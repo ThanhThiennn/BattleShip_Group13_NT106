@@ -32,7 +32,7 @@ namespace BattleShip
 
             if (formType == StartupFormType.MainUI)
             {
-                startForm = new FormUI();
+                startForm = new Lobby();
             }
             else
             {

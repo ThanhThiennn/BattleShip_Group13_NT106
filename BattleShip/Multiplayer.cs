@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Firebase.Database;
+using Firebase.Database.Query;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,8 +11,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Firebase.Database;
-using Firebase.Database.Query;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
+
 
 namespace BattleShip
 {
@@ -31,15 +36,25 @@ namespace BattleShip
         private List<Control> placedShips = new List<Control>();
         private Dictionary<Control, Point> initialShipLocations = new Dictionary<Control, Point>();
         private Dictionary<Control, bool> isVertical = new Dictionary<Control, bool>();
+        private Dictionary<string, List<Point>> shipCoordinates = new Dictionary<string, List<Point>>();
 
         private bool isSetupComplete = false;
         private bool isReady = false;
+        
 
-        // Firebase Client
-        FirebaseClient firebase = new FirebaseClient("https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/");
-        string roomID;
-        string myRole; // "p1" hoặc "p2"
+        IFirebaseConfig config = new FirebaseConfig
+        {
+            AuthSecret = "l9115evyBBSX8xG7xxohZSYPQjA6mEg3QlK2JL3R",
+            BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
+        };
+        IFirebaseClient client;
+
+        string roomID = "Room_001"; // Sau này sẽ nhận từ Lobby
+        string myRole = "Player1";  // Hoặc "Player2" tùy theo lúc vào phòng
         bool isMyTurn = false;
+        bool isBattleStarted = false;
+
+
 
         public Multiplayer(string id, string role)
         {
@@ -50,22 +65,16 @@ namespace BattleShip
             this.UpdateStyles();
             pnlGameGrid.Paint += pnlGameGrid_Paint;
             pnlBotGrid.Paint += pnlGameGrid_Paint;
-            lblRoomCode.Text = "Phòng: " + id;
 
-            // Khởi tạo trạng thái ban đầu
-            EnablePlacement(false);
-            StartListening();
+            InitShipData();
         }
 
-        private void Multiplayer_Load(object sender, EventArgs e)
+        private void InitShipData()
         {
-            this.KeyPreview = true;
-            this.KeyUp += Multiplayer_KeyUp;
-
-            // Khởi tạo danh sách tàu và sự kiện kéo thả
             List<Control> shipControls = new List<Control> { picCarrier, picBattleShip, picCruiser1, picCruiser2, picDestroyer };
             foreach (var ship in shipControls)
             {
+                if (ship == null) continue;
                 if (!initialShipLocations.ContainsKey(ship))
                     initialShipLocations.Add(ship, ship.Location);
                 if (!isVertical.ContainsKey(ship))
@@ -76,144 +85,234 @@ namespace BattleShip
                 ship.MouseUp += ship_MouseUp;
             }
         }
-
-        // --- HÀM LẮNG NGHE FIREBASE (ĐÃ TỐI ƯU) ---
-        private void StartListening()
+        private void Multiplayer_Load(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(roomID)) return;
+            try
+            {
+                client = new FireSharp.FirebaseClient(config);
+                if (client != null)
+                {
+                    lblStatus.Text = "Đã kết nối Firebase. Hãy đặt tàu!";
+                    ListenToRoom(); // Bắt đầu lắng nghe thay đổi từ đối thủ
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Kết nối thất bại, vui lòng kiểm tra mạng hoặc Secret Key!");
+            }
+            MessageBox.Show("Room: " + roomID + " | Role: " + myRole);
+        }
+        private async void ListenToRoom()
+        {
+            if (client == null) return;
 
-            // 1. Lắng nghe hành động bắn
-            firebase.Child("Matches").Child(roomID).Child("Actions").Child("LastShot")
-                .AsObservable<ShotData>()
-                .Subscribe(shot => {
-                    if (shot.Object == null) return;
-                    var data = shot.Object;
+            // --- PHẦN 1: LẤY DỮ LIỆU LẦN ĐẦU ---
+            var response = await client.GetAsync($"Rooms/{roomID}");
+            if (response.Body != "null")
+            {
+                var currentRoom = response.ResultAs<Room>();
+                UpdatePlayerListUI(currentRoom);
+            }
 
-                    if (data.By != "" && data.By != myRole && data.Type == "Pending")
+            // --- PHẦN 2: LẮNG NGHE THAY ĐỔI PHÒNG (Sửa lại hoàn chỉnh) ---
+            client.OnAsync($"Rooms/{roomID}", (sender, args, context) => {
+                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+                string rawData = args.Data.Trim();
+                if (!rawData.StartsWith("{")) return;
+
+                try
+                {
+                    var roomData = JsonConvert.DeserializeObject<Room>(rawData);
+
+                    // CƠ CHẾ SELF-HEAL: Nếu mất dữ liệu Player, chủ động Get lại toàn bộ phòng
+                    if (roomData?.Player1 == null || roomData?.Player2 == null)
                     {
-                        this.Invoke((MethodInvoker)delegate { ProcessOpponentShot(data.X, data.Y); });
+                        var reload = client.Get($"Rooms/{roomID}");
+                        roomData = reload.ResultAs<Room>();
                     }
-                    else if (data.By == myRole && (data.Type == "Hit" || data.Type == "Miss"))
-                    {
-                        this.Invoke((MethodInvoker)delegate { ApplyShotResultFromServer(data.X, data.Y, data.Type); });
-                    }
-                });
 
-            // 2. Lắng nghe trạng thái phòng và người chơi
-            firebase.Child("Matches").Child(roomID)
-                .AsObservable<RoomData>()
-                .Subscribe(room => {
-                    if (room.Object == null) return;
-                    var data = room.Object;
+                    if (roomData == null) return;
 
-                    this.Invoke((MethodInvoker)delegate {
-                        UpdatePlayerListUI(data);
+                    this.Invoke(new Action(() => {
+                        UpdatePlayerListUI(roomData);
 
-                        // Kiểm tra nếu đủ 2 người thì cho phép dàn trận
-                        if (data.P1 != null && data.P2 != null)
+                        // KIỂM TRA ĐIỀU KIỆN VÀO TRẬN
+                        if (roomData.Player1 != null && roomData.Player2 != null)
                         {
-                            if (!isSetupComplete)
+                            bool p1 = roomData.Player1.IsReady;
+                            bool p2 = roomData.Player2.IsReady;
+
+                            System.Diagnostics.Debug.WriteLine($"DEBUG: P1={p1}, P2={p2}");
+
+                            if (p1 && p2 && !isBattleStarted)
                             {
-                                lblStatus.Text = "Đối thủ đã vào! Hãy sắp xếp tàu.";
-                                lblStatus.ForeColor = Color.Yellow;
-                                EnablePlacement(true);
+                                // Đổi trạng thái sang playing (chỉ Player1 gửi để tránh xung đột)
+                                if (myRole == "Player1")
+                                {
+                                    client.SetAsync($"Rooms/{roomID}/Status", "playing");
+                                }
+
+                                StartBattle(roomData.Turn ?? "Player1");
                             }
                         }
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine("Lỗi OnAsync: " + ex.Message);
+                }
+            });
 
-                        // Kiểm tra bắt đầu game
-                        if (data.P1?.IsReady == true && data.P2?.IsReady == true)
+            // --- PHẦN 3: LẮNG NGHE LƯỢT CHƠI (Turn) ---
+            client.OnAsync($"Rooms/{roomID}/Turn", (sender, args, context) => {
+                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+
+                string currentTurn = args.Data.Replace("\"", "").Trim();
+
+                this.Invoke(new Action(() => {
+                    isMyTurn = (currentTurn == myRole);
+                    if (isBattleStarted) // Chỉ hiện thông báo lượt khi đã vào trận
+                    {
+                        if (isMyTurn)
                         {
-                            if (isSetupComplete && !isReady) StartOnlineGame();
+                            lblStatus.Text = "Đến lượt bạn bắn!";
+                            lblStatus.ForeColor = Color.Lime;
                         }
-                    });
-                });
+                        else
+                        {
+                            lblStatus.Text = "Đối thủ đang suy nghĩ...";
+                            lblStatus.ForeColor = Color.White;
+                        }
+                    }
+                }));
+            });
+
+            // --- PHẦN 4: LẮNG NGHE CÚ BẮN TỪ ĐỐI THỦ (LastShot) ---
+            client.OnAsync($"Rooms/{roomID}/LastShot", (sender, args, context) => {
+                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+
+                var shot = JsonConvert.DeserializeObject<dynamic>(args.Data);
+                if (shot.Attacker == myRole) return; // Bỏ qua nếu mình là người bắn
+
+                int x = (int)shot.X;
+                int y = (int)shot.Y;
+
+                // Kiểm tra trúng/trượt trên lưới của mình
+                string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
+                if (result == "Hit") playerGrid[x, y] = 2; // Đánh dấu ô tàu đã bị bắn trúng
+
+                SendResponse(x, y, result); // Gửi phản hồi kết quả cho đối thủ
+
+                this.Invoke(new Action(() => {
+                    ShowHitMarker(pnlGameGrid, x, y, result); // Hiện dấu X/O lên lưới trái
+                    if (result == "Hit") CheckIfMyShipSunk(x, y); // Kiểm tra tàu chìm
+                }));
+            });
+
+            // --- PHẦN 5: LẮNG NGHE PHẢN HỒI KẾT QUẢ CÚ BẮN CỦA MÌNH (LastResponse) ---
+            client.OnAsync($"Rooms/{roomID}/LastResponse", (sender, args, context) => {
+                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+
+                var res = JsonConvert.DeserializeObject<dynamic>(args.Data);
+                if (res.Responder == myRole) return;
+
+                this.Invoke(new Action(() => {
+                    ShowHitMarker(pnlBotGrid, (int)res.X, (int)res.Y, (string)res.Result);
+                    // Lưu kết quả vào mảng để không bắn lại ô cũ
+                    botGrid[(int)res.X, (int)res.Y] = (res.Result == "Hit") ? 2 : 3;
+                }));
+            });
         }
 
-        // --- LOGIC XỬ LÝ BẮN (MULTI PLAYER) ---
+        private void UpdatePlayerListUI(Room room)
+        {
+            if (room == null) return;
+
+            // Sử dụng Invoke để đảm bảo cập nhật UI từ luồng khác không gây crash
+            if (this.lstPlayers.InvokeRequired)
+            {
+                this.lstPlayers.Invoke(new Action(() => UpdatePlayerListUI(room)));
+                return;
+            }
+
+            lstPlayers.Items.Clear();
+
+            // Hiển thị Player 1
+            if (room.Player1 != null)
+            {
+                // Nếu tên trống thì hiện "Đang chờ..." thay vì để trắng
+                string p1Name = string.IsNullOrEmpty(room.Player1.Name) ? "Người chơi 1" : room.Player1.Name;
+                string p1Ready = room.Player1.IsReady ? " [Sẵn sàng]" : "";
+                lstPlayers.Items.Add(p1Name + p1Ready);
+            }
+
+            // Hiển thị Player 2
+            if (room.Player2 != null)
+            {
+                string p2Name = string.IsNullOrEmpty(room.Player2.Name) ? "Người chơi 2" : room.Player2.Name;
+                string p2Ready = room.Player2.IsReady ? " [Sẵn sàng]" : "";
+                lstPlayers.Items.Add(p2Name + p2Ready);
+            }
+        }
+        private async void SendResponse(int x, int y, string result)
+        {
+            var responseData = new
+            {
+                Responder = myRole, 
+                X = x,
+                Y = y,
+                Result = result, 
+                Time = DateTime.Now.Ticks.ToString()
+            };
+
+            await client.SetAsync($"Rooms/{roomID}/LastResponse", responseData);
+        }
+
         private async void pnlBotGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            if (!isReady || !isMyTurn) return;
+            if (!isBattleStarted || !isMyTurn) return;
 
             int x = e.X / CELL_SIZE;
             int y = e.Y / CELL_SIZE;
 
             if (x >= GRID_SIZE || y >= GRID_SIZE || botGrid[x, y] != 0) return;
 
-            // Gửi cú bắn lên Firebase
-            var shot = new ShotData { By = myRole, X = x, Y = y, Type = "Pending" };
-            await firebase.Child("Matches").Child(roomID).Child("Actions").Child("LastShot").PutAsync(shot);
-
+            // 1. Tạm thời khóa lượt bắn
             isMyTurn = false;
-            lblStatus.Text = "Đang đợi đối thủ phản hồi...";
-            lblStatus.ForeColor = Color.White;
+            lblStatus.Text = "Đang bắn...";
+
+            // 2. Gửi cú bắn
+            var shotData = new { Attacker = myRole, X = x, Y = y, Time = DateTime.Now.Ticks.ToString() };
+            await client.SetAsync($"Rooms/{roomID}/LastShot", shotData);
+
+            // 3. CHUYỂN LƯỢT SANG ĐỐI THỦ (Quan trọng)
+            string nextTurn = (myRole == "Player1") ? "Player2" : "Player1";
+            await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
         }
 
-        private async void ProcessOpponentShot(int x, int y)
+
+        private void StartBattle(string Turn)
         {
-            string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
-            playerGrid[x, y] = (result == "Hit") ? 2 : -1;
+            isBattleStarted = true; // Đánh dấu game đã bắt đầu
 
-            ShowHitMarker(pnlGameGrid, x, y, result);
+            // 1. Chuyển đổi giao diện
+            pnlDeployment.Visible = false;  // Ẩn bảng xám đặt tàu
+            pnlBotGrid.Visible = true;      // Hiện bảng xanh để bắn đối thủ
 
-            // Gửi kết quả ngược lại cho đối thủ
-            await firebase.Child("Matches").Child(roomID).Child("Actions").Child("LastShot").Child("Type").PutAsync(result);
+            // 2. Xác định ai bắn trước
+            isMyTurn = (Turn == myRole);
 
-            isMyTurn = true;
-            lblStatus.Text = "Đến lượt của bạn!";
-            lblStatus.ForeColor = Color.SpringGreen;
-        }
-
-        private void ApplyShotResultFromServer(int x, int y, string type)
-        {
-            if (botGrid[x, y] != 0) return; // Tránh xử lý lặp
-
-            botGrid[x, y] = (type == "Hit") ? 2 : -1;
-            ShowHitMarker(pnlBotGrid, x, y, type);
-
-            if (type == "Hit")
+            // 3. Cập nhật thông báo
+            if (isMyTurn)
             {
-                botHits++;
-                lblStatus.Text = "TRÚNG RỒI! Bắn tiếp!";
-                isMyTurn = true;
+                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đến lượt bạn bắn.";
+                lblStatus.ForeColor = Color.Lime;
             }
             else
             {
-                lblStatus.Text = "TRƯỢT RỒI! Đợi đối thủ.";
-                isMyTurn = false;
+                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đối thủ bắn trước.";
+                lblStatus.ForeColor = Color.White;
             }
-
-            if (botHits >= TOTAL_SHIP_CELLS) EndGame("BẠN CHIẾN THẮNG!");
-        }
-
-        private void StartOnlineGame()
-        {
-            isReady = true;
-            pnlBotGrid.Visible = true;
-            pnlBotGrid.BringToFront();
-            isMyTurn = (myRole == "p1");
-            lblStatus.Text = isMyTurn ? "TRẬN ĐẤU BẮT ĐẦU! LƯỢT CỦA BẠN." : "TRẬN ĐẤU BẮT ĐẦU! ĐỢI ĐỐI THỦ.";
-            lblStatus.ForeColor = Color.SpringGreen;
-        }
-
-        // --- CÁC HÀM HỖ TRỢ GIAO DIỆN ---
-        private async void btnReady_Click(object sender, EventArgs e)
-        {
-            if (placedShips.Count < 5)
-            {
-                MessageBox.Show("Hãy đặt đủ 5 tàu!");
-                return;
-            }
-
-            isSetupComplete = true;
-            DisableSetupControls();
-            btnReady.Enabled = false;
-            btnReady.Text = "Đang đợi đối thủ...";
-
-            // Nếu là P1, reset hành động cũ để ván mới sạch sẽ
-            if (myRole == "p1")
-                await firebase.Child("Matches").Child(roomID).Child("Actions").DeleteAsync();
-
-            await firebase.Child("Matches").Child(roomID).Child(myRole).Child("IsReady").PutAsync(true);
         }
 
         private void Multiplayer_KeyUp(object sender, KeyEventArgs e)
@@ -233,18 +332,18 @@ namespace BattleShip
 
         private void EnablePlacement(bool enable)
         {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new Action(() => EnablePlacement(enable)));
+                return;
+            }
             if (pnlDeployment != null) pnlDeployment.Enabled = enable;
-            foreach (var ship in initialShipLocations.Keys) ship.Enabled = enable;
+            foreach (var ship in initialShipLocations.Keys)
+            {
+                if (ship != null) ship.Enabled = enable;
+            }
         }
 
-        private void UpdatePlayerListUI(RoomData room)
-        {
-            lstPlayers.Items.Clear();
-            if (room.P1 != null) lstPlayers.Items.Add($"P1: {room.P1.Name} {(room.P1.IsReady ? "[Sẵn sàng]" : "[Đang chuẩn bị]")}");
-            if (room.P2 != null) lstPlayers.Items.Add($"P2: {room.P2.Name} {(room.P2.IsReady ? "[Sẵn sàng]" : "[Đang chuẩn bị]")}");
-        }
-
-        // --- LOGIC VẼ VÀ MARKER (GIỮ NGUYÊN) ---
         private void ShowHitMarker(Control parent, int x, int y, string type)
         {
             PictureBox marker = new PictureBox
@@ -260,6 +359,72 @@ namespace BattleShip
             marker.BringToFront();
         }
 
+        private async void CheckIfMyShipSunk(int x, int y)
+        {
+            foreach (var ship in shipCoordinates)
+            {
+                // Kiểm tra xem tọa độ vừa bị bắn có thuộc con tàu này không
+                if (ship.Value.Contains(new Point(x, y)))
+                {
+                    // Kiểm tra xem tất cả các ô của tàu này đã bị đối thủ bắn trúng chưa
+                    // (Dựa trên playerGrid: nếu trúng rồi bạn có thể đánh dấu playerGrid[x,y] = 2)
+                    bool allHit = ship.Value.All(p => playerGrid[p.X, p.Y] == 2);
+
+                    if (allHit)
+                    {
+                        // Gửi lệnh báo tàu này đã chìm lên Firebase
+                        await client.SetAsync($"Rooms/{roomID}/{myRole}/Sunk/{ship.Key}", true);
+
+                        // Tự làm xám tàu mình ở hàng dưới
+                        SyncShipSunkUI(myRole, ship.Key);
+                    }
+                    break;
+                }
+            }
+        }
+
+        private void SyncShipSunkUI(string role, string shipName)
+        {
+            // Quy tắc đặt tên của bạn: pbPlayerCarrier hoặc pbBotCarrier
+            string pbName = (role == myRole) ? "pbPlayer" + shipName : "pbBot" + shipName;
+
+            // Tìm PictureBox trong danh sách Control của Form
+            Control[] controls = this.Controls.Find(pbName, true);
+            if (controls.Length > 0 && controls[0] is PictureBox pb)
+            {
+                this.Invoke(new Action(() => {
+                    MakeGrayscaleAndSink(pb);
+                }));
+            }
+        }
+
+        private void MakeGrayscaleAndSink(PictureBox pb)
+        {
+            if (pb.Image == null) return;
+            Bitmap bmp = new Bitmap(pb.Image);
+            bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+            Bitmap grayImage = new Bitmap(bmp.Width, bmp.Height);
+            using (Graphics g = Graphics.FromImage(grayImage))
+            {
+                System.Drawing.Imaging.ColorMatrix colorMatrix = new System.Drawing.Imaging.ColorMatrix(
+                    new float[][] {
+         new float[] {.3f, .3f, .3f, 0, 0},
+         new float[] {.59f, .59f, .59f, 0, 0},
+         new float[] {.11f, .11f, .11f, 0, 0},
+         new float[] {0, 0, 0, 1, 0},
+         new float[] {0, 0, 0, 0, 1}
+                    });
+                using (var attributes = new System.Drawing.Imaging.ImageAttributes())
+                {
+                    attributes.SetColorMatrix(colorMatrix);
+                    g.DrawImage(bmp, new Rectangle(0, 0, bmp.Width, bmp.Height),
+                        0, 0, bmp.Width, bmp.Height, GraphicsUnit.Pixel, attributes);
+                }
+            }
+            pb.Image = grayImage;
+            pb.Enabled = false;
+        }
+
         private void EndGame(string message)
         {
             isReady = false;
@@ -269,21 +434,18 @@ namespace BattleShip
 
         private void ship_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Left)
+            if (e.Button != MouseButtons.Left) return;
 
-            {
-                draggedShip = (Control)sender;
-                mouseOffset = new Point(e.X, e.Y);
-                isDragging = true;
-                Point oldScreenLocation = draggedShip.Parent.PointToScreen(draggedShip.Location);
-                Point newFormLocation = this.PointToClient(oldScreenLocation);
-                // 2. Chuyển Control cha sang Form chính (Reparenting)
-                draggedShip.Parent = this;
-                // 3. Đặt lại vị trí đã chuyển đổi
-                draggedShip.Location = newFormLocation;
-                // 4. Đưa tàu lên trên cùng
-                draggedShip.BringToFront();
-            }
+            draggedShip = (Control)sender;
+            mouseOffset = e.Location;
+            isDragging = true;
+
+            Point screenPos = draggedShip.Parent.PointToScreen(draggedShip.Location);
+            Point formPos = this.PointToClient(screenPos);
+
+            draggedShip.Parent = this;
+            draggedShip.Location = formPos;
+            draggedShip.BringToFront();
         }
 
 
@@ -298,52 +460,66 @@ namespace BattleShip
             }
         }
         private void ship_MouseUp(object sender, MouseEventArgs e)
-
         {
-            if (draggedShip != null)
+            if (draggedShip == null) return;
+
+            // 1. Tính toán vị trí Snap vào Grid
+            Point gridScreen = pnlGameGrid.PointToScreen(Point.Empty);
+            Point shipScreen = draggedShip.PointToScreen(Point.Empty);
+
+            int relativeX = shipScreen.X - gridScreen.X;
+            int relativeY = shipScreen.Y - gridScreen.Y;
+
+            int snapX = (relativeX + CELL_SIZE / 2) / CELL_SIZE * CELL_SIZE;
+            int snapY = (relativeY + CELL_SIZE / 2) / CELL_SIZE * CELL_SIZE;
+
+            // 2. Kiểm tra giới hạn (Bounds Check)
+            if (snapX < 0 || snapY < 0 ||
+                snapX + draggedShip.Width > pnlGameGrid.Width ||
+                snapY + draggedShip.Height > pnlGameGrid.Height)
             {
-                Point gridOrigin = pnlGameGrid.Location;
-                Point snappedLocation = SnapShipToGrid(draggedShip, gridOrigin);
-
-                if (CheckPlacementRules(draggedShip, snappedLocation))
-                {
-                    draggedShip.Parent = pnlGameGrid;
-                    draggedShip.Location = new Point(
-                        snappedLocation.X - pnlGameGrid.Location.X,
-                        snappedLocation.Y - pnlGameGrid.Location.Y
-                    );
-
-                    int gridX = (draggedShip.Left) / CELL_SIZE;
-
-                    int gridY = (draggedShip.Top) / CELL_SIZE;
-
-                    int length = int.Parse(draggedShip.Tag.ToString());
-
-                    bool isVert = isVertical[draggedShip];
-
-                    PlaceShipOnMatrix(playerGrid, gridX, gridY, length, isVert);
-
-                    string shipName = draggedShip.Name.Replace("pic", "");
-                    Ship newPlayerShip = new Ship(shipName);
-                    for (int i = 0; i < length; i++)
-                    {
-                        int currX = isVert ? gridX : gridX + i;
-                        int currY = isVert ? gridY + i : gridY;
-                        newPlayerShip.Coordinates.Add(new Point(currX, currY));
-                    }
-                    playerShips.Add(newPlayerShip);
-                    if (!placedShips.Contains(draggedShip))
-                    {
-                        placedShips.Add(draggedShip);
-                    }
-                    lblStatus.Text = $"Đã đặt {placedShips.Count}/5 tàu.";
-                }
-                else
-                {
-                    draggedShip.Parent = pnlShipList;
-                    draggedShip.Location = initialShipLocations[draggedShip];
-                }
+                MessageBox.Show("Tàu phải nằm hoàn toàn trong lưới!", "Lỗi");
+                draggedShip.Parent = pnlDeployment;
+                draggedShip.Location = initialShipLocations[draggedShip];
+                ResetDrag();
+                return;
             }
+
+            // 3. Cập nhật vị trí UI
+            draggedShip.Parent = pnlGameGrid;
+            draggedShip.Location = new Point(snapX, snapY);
+
+            // 4. Lưu logic vào mảng và Dictionary tọa độ
+            int gridX = snapX / CELL_SIZE;
+            int gridY = snapY / CELL_SIZE;
+            int length = int.Parse(draggedShip.Tag.ToString());
+            bool isVert = isVertical[draggedShip];
+            string shipType = draggedShip.Name.Replace("pic", ""); // Lấy tên như "Carrier", "BattleShip"
+
+            // Xóa dữ liệu cũ của tàu này nếu nó đã được đặt trước đó
+            if (shipCoordinates.ContainsKey(shipType))
+            {
+                foreach (Point p in shipCoordinates[shipType]) playerGrid[p.X, p.Y] = 0;
+            }
+
+            List<Point> coords = new List<Point>();
+            for (int i = 0; i < length; i++)
+            {
+                int currX = isVert ? gridX : gridX + i;
+                int currY = isVert ? gridY + i : gridY;
+
+                playerGrid[currX, currY] = 1; // 1: Có tàu
+                coords.Add(new Point(currX, currY));
+            }
+
+            shipCoordinates[shipType] = coords; // Lưu danh sách ô để check Sunk
+
+            if (!placedShips.Contains(draggedShip)) placedShips.Add(draggedShip);
+            lblStatus.Text = $"Đã đặt {placedShips.Count}/5 tàu.";
+            ResetDrag();
+        }
+        private void ResetDrag()
+        {
             isDragging = false;
             draggedShip = null;
         }
@@ -364,15 +540,16 @@ namespace BattleShip
 
         private bool CheckPlacementRules(Control ship, Point newLocation)
         {
-            int shipRelativeX = newLocation.X - pnlGameGrid.Location.X;
-            int shipRelativeY = newLocation.Y - pnlGameGrid.Location.Y;
-            Rectangle gridBounds = new Rectangle(0, 0, pnlGameGrid.Width, pnlGameGrid.Height);
-            Rectangle shipBounds = new Rectangle(shipRelativeX, shipRelativeY, ship.Width, ship.Height);
+            Rectangle gridBounds = new Rectangle(pnlGameGrid.Location.X, pnlGameGrid.Location.Y,
+                                                 pnlGameGrid.Width, pnlGameGrid.Height);
+            Rectangle shipBounds = new Rectangle(newLocation.X, newLocation.Y,
+                                                 ship.Width, ship.Height);
             if (!gridBounds.Contains(shipBounds))
             {
                 MessageBox.Show("Tàu phải nằm hoàn toàn trong khu vực lưới.", "Lỗi đặt tàu");
                 return false;
             }
+
             return true;
         }
 
@@ -395,13 +572,6 @@ namespace BattleShip
             pnlDeployment.Enabled = false;
         }
 
-        protected override async void OnFormClosing(FormClosingEventArgs e)
-        {
-            base.OnFormClosing(e);
-            if (!string.IsNullOrEmpty(roomID))
-                await firebase.Child("Matches").Child(roomID).Child(myRole).DeleteAsync();
-        }
-
         private void pnlGameGrid_Paint(object sender, PaintEventArgs e)
         {
             Graphics g = e.Graphics;
@@ -411,6 +581,40 @@ namespace BattleShip
                 int coord = i * CELL_SIZE;
                 g.DrawLine(gridPen, coord, 0, coord, ((Control)sender).Height);
                 g.DrawLine(gridPen, 0, coord, ((Control)sender).Width, coord);
+            }
+        }
+
+        private async void btnReady_Click_1(object sender, EventArgs e)
+        {
+            if (placedShips.Count < 5)
+            {
+                MessageBox.Show($"Bạn mới đặt {placedShips.Count}/5 tàu. Vui lòng đặt đủ!");
+                return;
+            }
+
+            if (string.IsNullOrEmpty(roomID) || string.IsNullOrEmpty(myRole))
+            {
+                MessageBox.Show("Lỗi: Không tìm thấy thông tin phòng!");
+                return;
+            }
+
+            try
+            {
+                // Gửi trạng thái IsReady trực tiếp vào node của Player đó
+                string path = $"Rooms/{roomID}/{myRole}/IsReady";
+                var response = await client.SetAsync(path, true);
+
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    btnReady.Enabled = false;
+                    btnRandom.Enabled = false; // Khóa nút Random tàu luôn
+                    lblStatus.Text = "Đã sẵn sàng! Đang đợi đối thủ...";
+                    lblStatus.ForeColor = Color.Yellow;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi kết nối Firebase: " + ex.Message);
             }
         }
     }
