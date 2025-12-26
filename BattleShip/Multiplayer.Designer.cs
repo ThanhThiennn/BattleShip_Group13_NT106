@@ -65,6 +65,7 @@
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.lstPlayers = new System.Windows.Forms.ListBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.lblRoomCode = new System.Windows.Forms.Label();
             this.PanelRight.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerDestroyer)).BeginInit();
@@ -117,7 +118,7 @@
             this.lblStatus.BackColor = System.Drawing.Color.Transparent;
             this.lblStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.lblStatus.ForeColor = System.Drawing.Color.Black;
-            this.lblStatus.Location = new System.Drawing.Point(291, 26);
+            this.lblStatus.Location = new System.Drawing.Point(325, 27);
             this.lblStatus.Name = "lblStatus";
             this.lblStatus.Size = new System.Drawing.Size(387, 31);
             this.lblStatus.TabIndex = 4;
@@ -448,6 +449,7 @@
             // 
             // PanelLeft
             // 
+            this.PanelLeft.Controls.Add(this.lblRoomCode);
             this.PanelLeft.Controls.Add(this.label4);
             this.PanelLeft.Controls.Add(this.lstPlayers);
             this.PanelLeft.Controls.Add(this.pictureBox1);
@@ -564,6 +566,18 @@
             this.label4.TabIndex = 3;
             this.label4.Text = "NGƯỜI CHƠI TRONG PHÒNG";
             // 
+            // lblRoomCode
+            // 
+            this.lblRoomCode.AutoSize = true;
+            this.lblRoomCode.BackColor = System.Drawing.Color.Transparent;
+            this.lblRoomCode.Font = new System.Drawing.Font("Segoe UI", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblRoomCode.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblRoomCode.Location = new System.Drawing.Point(36, 585);
+            this.lblRoomCode.Name = "lblRoomCode";
+            this.lblRoomCode.Size = new System.Drawing.Size(77, 25);
+            this.lblRoomCode.TabIndex = 3;
+            this.lblRoomCode.Text = "Phòng: ";
+            // 
             // Multiplayer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -573,6 +587,7 @@
             this.Controls.Add(this.PanelLeft);
             this.Name = "Multiplayer";
             this.Text = "gameplayMultiplayer1";
+            this.Load += new System.EventHandler(this.Multiplayer_Load);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
             this.guna2Panel1.ResumeLayout(false);
@@ -640,5 +655,6 @@
         private Guna.UI2.WinForms.Guna2Panel PanelLeft;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.ListBox lstPlayers;
+        private System.Windows.Forms.Label lblRoomCode;
     }
 }
