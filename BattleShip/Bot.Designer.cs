@@ -30,17 +30,17 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bot));
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblStatus = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
-            this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGameGrid = new Guna.UI2.WinForms.Guna2Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.lblStatus = new System.Windows.Forms.Label();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.pbPlayerDestroyer = new System.Windows.Forms.PictureBox();
             this.pbPlayerCruiser1 = new System.Windows.Forms.PictureBox();
@@ -64,8 +64,8 @@
             this.picCruiser1 = new System.Windows.Forms.PictureBox();
             this.picBattleShip = new System.Windows.Forms.PictureBox();
             this.PanelLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PanelRight.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerDestroyer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerCruiser1)).BeginInit();
@@ -100,6 +100,60 @@
             this.PanelLeft.Name = "PanelLeft";
             this.PanelLeft.Size = new System.Drawing.Size(352, 673);
             this.PanelLeft.TabIndex = 2;
+            // 
+            // PanelRight
+            // 
+            this.PanelRight.BorderRadius = 15;
+            this.PanelRight.Controls.Add(this.pnlBotGrid);
+            this.PanelRight.Controls.Add(this.pnlGameGrid);
+            this.PanelRight.Controls.Add(this.label3);
+            this.PanelRight.Controls.Add(this.label2);
+            this.PanelRight.Controls.Add(this.lblStatus);
+            this.PanelRight.Controls.Add(this.guna2Panel1);
+            this.PanelRight.Controls.Add(this.guna2Panel2);
+            this.PanelRight.Controls.Add(this.pnlDeployment);
+            this.PanelRight.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PanelRight.FillColor = System.Drawing.Color.LavenderBlush;
+            this.PanelRight.Location = new System.Drawing.Point(0, 0);
+            this.PanelRight.Name = "PanelRight";
+            this.PanelRight.ShadowDecoration.Shadow = new System.Windows.Forms.Padding(50);
+            this.PanelRight.Size = new System.Drawing.Size(1316, 673);
+            this.PanelRight.TabIndex = 3;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.label3.Location = new System.Drawing.Point(514, 538);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(148, 15);
+            this.label3.TabIndex = 13;
+            this.label3.Text = "SỐ TÀU CÒN LẠI ĐỘI TÍM";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.label2.Location = new System.Drawing.Point(954, 538);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(160, 15);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "SỐ TÀU CÒN LẠI ĐỘI XANH";
+            // 
+            // lblStatus
+            // 
+            this.lblStatus.AutoSize = true;
+            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
+            this.lblStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
+            this.lblStatus.ForeColor = System.Drawing.Color.Black;
+            this.lblStatus.Location = new System.Drawing.Point(637, 26);
+            this.lblStatus.Name = "lblStatus";
+            this.lblStatus.Size = new System.Drawing.Size(323, 25);
+            this.lblStatus.TabIndex = 4;
+            this.lblStatus.Text = "HÃY ĐẶT TÀU CỦA BẠN VÀO VỊ TRÍ!";
+            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // pictureBox1
             // 
@@ -181,25 +235,6 @@
             this.btnSpeaker.Size = new System.Drawing.Size(120, 45);
             this.btnSpeaker.TabIndex = 0;
             // 
-            // PanelRight
-            // 
-            this.PanelRight.BorderRadius = 15;
-            this.PanelRight.Controls.Add(this.pnlBotGrid);
-            this.PanelRight.Controls.Add(this.pnlGameGrid);
-            this.PanelRight.Controls.Add(this.label3);
-            this.PanelRight.Controls.Add(this.label2);
-            this.PanelRight.Controls.Add(this.lblStatus);
-            this.PanelRight.Controls.Add(this.guna2Panel1);
-            this.PanelRight.Controls.Add(this.guna2Panel2);
-            this.PanelRight.Controls.Add(this.pnlDeployment);
-            this.PanelRight.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PanelRight.FillColor = System.Drawing.Color.LavenderBlush;
-            this.PanelRight.Location = new System.Drawing.Point(0, 0);
-            this.PanelRight.Name = "PanelRight";
-            this.PanelRight.ShadowDecoration.Shadow = new System.Windows.Forms.Padding(50);
-            this.PanelRight.Size = new System.Drawing.Size(1316, 673);
-            this.PanelRight.TabIndex = 3;
-            // 
             // pnlBotGrid
             // 
             this.pnlBotGrid.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("pnlBotGrid.BackgroundImage")));
@@ -219,41 +254,6 @@
             this.pnlGameGrid.Name = "pnlGameGrid";
             this.pnlGameGrid.Size = new System.Drawing.Size(440, 440);
             this.pnlGameGrid.TabIndex = 3;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label3.Location = new System.Drawing.Point(514, 538);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(189, 20);
-            this.label3.TabIndex = 13;
-            this.label3.Text = "SỐ TÀU CÒN LẠI ĐỘI TÍM";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.label2.Location = new System.Drawing.Point(954, 538);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 20);
-            this.label2.TabIndex = 13;
-            this.label2.Text = "SỐ TÀU CÒN LẠI ĐỘI XANH";
-            // 
-            // lblStatus
-            // 
-            this.lblStatus.AutoSize = true;
-            this.lblStatus.BackColor = System.Drawing.Color.Transparent;
-            this.lblStatus.Font = new System.Drawing.Font("Segoe UI Semibold", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
-            this.lblStatus.ForeColor = System.Drawing.Color.Black;
-            this.lblStatus.Location = new System.Drawing.Point(637, 26);
-            this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(387, 31);
-            this.lblStatus.TabIndex = 4;
-            this.lblStatus.Text = "HÃY ĐẶT TÀU CỦA BẠN VÀO VỊ TRÍ!";
-            this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // guna2Panel1
             // 
@@ -465,7 +465,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Location = new System.Drawing.Point(114, 86);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(202, 31);
+            this.label1.Size = new System.Drawing.Size(167, 25);
             this.label1.TabIndex = 1;
             this.label1.Text = "Deploy your fleet!";
             // 
@@ -542,7 +542,7 @@
             this.picBattleShip.TabStop = false;
             this.picBattleShip.Tag = "2";
             // 
-            // gameplayMap1
+            // Bot
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.Control;
@@ -550,13 +550,13 @@
             this.Controls.Add(this.PanelLeft);
             this.Controls.Add(this.PanelRight);
             this.KeyPreview = true;
-            this.Name = "gameplayMap1";
+            this.Name = "Bot";
             this.Text = "gameplayMap1";
             this.Load += new System.EventHandler(this.gameplayMap1_Load);
             this.PanelLeft.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerDestroyer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerCruiser1)).EndInit();

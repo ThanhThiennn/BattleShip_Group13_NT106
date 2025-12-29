@@ -1,5 +1,8 @@
 ﻿using Firebase.Database;
 using Firebase.Database.Query;
+using FireSharp.Config;
+using FireSharp.Interfaces;
+using FireSharp.Response;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,12 +11,10 @@ using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FireSharp.Config;
-using FireSharp.Interfaces;
-using FireSharp.Response;
 
 
 namespace BattleShip
@@ -37,9 +38,12 @@ namespace BattleShip
         private Dictionary<Control, Point> initialShipLocations = new Dictionary<Control, Point>();
         private Dictionary<Control, bool> isVertical = new Dictionary<Control, bool>();
         private Dictionary<string, List<Point>> shipCoordinates = new Dictionary<string, List<Point>>();
+        private HashSet<string> handledResponses = new HashSet<string>();
+        private HashSet<string> handledShots = new HashSet<string>();
 
         private bool isSetupComplete = false;
         private bool isReady = false;
+
         
 
         IFirebaseConfig config = new FirebaseConfig
@@ -65,6 +69,9 @@ namespace BattleShip
             this.UpdateStyles();
             pnlGameGrid.Paint += pnlGameGrid_Paint;
             pnlBotGrid.Paint += pnlGameGrid_Paint;
+            pnlBotGrid.MouseClick += pnlBotGrid_MouseClick;
+            this.KeyPreview = true;
+            this.KeyUp += Multiplayer_KeyUp;
 
             InitShipData();
         }
@@ -85,82 +92,58 @@ namespace BattleShip
                 ship.MouseUp += ship_MouseUp;
             }
         }
-        private void Multiplayer_Load(object sender, EventArgs e)
+        private async void Multiplayer_Load(object sender, EventArgs e)
         {
+            // 1. Lấy Key từ biến môi trường
+            string testKey = Environment.GetEnvironmentVariable("FIREBASE_SECRET_KEY", EnvironmentVariableTarget.User);
+
+            if (string.IsNullOrEmpty(testKey))
+            {
+                MessageBox.Show("CẢNH BÁO: Máy chưa nhận biến môi trường FIREBASE_SECRET_KEY!");
+            }
+            else
+            {
+                // QUAN TRỌNG: Gán Key vừa lấy được vào cấu hình
+                config.AuthSecret = testKey;
+                Console.WriteLine("Secret Key đã nạp thành công: " + testKey.Substring(0, 5) + "...");
+            }
+
             try
             {
+                // 2. Khởi tạo client với cấu hình đã có Key mới
                 client = new FireSharp.FirebaseClient(config);
+
                 if (client != null)
                 {
-                    lblStatus.Text = "Đã kết nối Firebase. Hãy đặt tàu!";
-                    ListenToRoom(); // Bắt đầu lắng nghe thay đổi từ đối thủ
+                    lblStatus.Text = "Đã kết nối. Đang đồng bộ...";
+
+                    // 3. Đăng ký tai nghe trước
+                    ListenToRoom();
+
+                    // 4. Lấy dữ liệu lần đầu để hiện tên đối thủ ngay lập tức
+                    var response = await client.GetAsync($"Rooms/{roomID}");
+                    if (response != null && response.Body != "null")
+                    {
+                        var currentRoom = response.ResultAs<Room>();
+                        UpdatePlayerListUI(currentRoom);
+                    }
+
+                    lblStatus.Text = "Kết nối thành công. Hãy đặt tàu!";
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                MessageBox.Show("Kết nối thất bại, vui lòng kiểm tra mạng hoặc Secret Key!");
+                MessageBox.Show("Kết nối thất bại: " + ex.Message);
             }
-            MessageBox.Show("Room: " + roomID + " | Role: " + myRole);
         }
-        private async void ListenToRoom()
+        private void ListenToRoom()
         {
             if (client == null) return;
 
-            // --- PHẦN 1: LẤY DỮ LIỆU LẦN ĐẦU ---
-            var response = await client.GetAsync($"Rooms/{roomID}");
-            if (response.Body != "null")
+            // Lắng nghe sự thay đổi của cả phòng
+            client.OnAsync($"Rooms/{roomID}", (sender, args, context) =>
             {
-                var currentRoom = response.ResultAs<Room>();
-                UpdatePlayerListUI(currentRoom);
-            }
-
-            // --- PHẦN 2: LẮNG NGHE THAY ĐỔI PHÒNG (Sửa lại hoàn chỉnh) ---
-            client.OnAsync($"Rooms/{roomID}", (sender, args, context) => {
-                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
-                string rawData = args.Data.Trim();
-                if (!rawData.StartsWith("{")) return;
-
-                try
-                {
-                    var roomData = JsonConvert.DeserializeObject<Room>(rawData);
-
-                    // CƠ CHẾ SELF-HEAL: Nếu mất dữ liệu Player, chủ động Get lại toàn bộ phòng
-                    if (roomData?.Player1 == null || roomData?.Player2 == null)
-                    {
-                        var reload = client.Get($"Rooms/{roomID}");
-                        roomData = reload.ResultAs<Room>();
-                    }
-
-                    if (roomData == null) return;
-
-                    this.Invoke(new Action(() => {
-                        UpdatePlayerListUI(roomData);
-
-                        // KIỂM TRA ĐIỀU KIỆN VÀO TRẬN
-                        if (roomData.Player1 != null && roomData.Player2 != null)
-                        {
-                            bool p1 = roomData.Player1.IsReady;
-                            bool p2 = roomData.Player2.IsReady;
-
-                            System.Diagnostics.Debug.WriteLine($"DEBUG: P1={p1}, P2={p2}");
-
-                            if (p1 && p2 && !isBattleStarted)
-                            {
-                                // Đổi trạng thái sang playing (chỉ Player1 gửi để tránh xung đột)
-                                if (myRole == "Player1")
-                                {
-                                    client.SetAsync($"Rooms/{roomID}/Status", "playing");
-                                }
-
-                                StartBattle(roomData.Turn ?? "Player1");
-                            }
-                        }
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    System.Diagnostics.Debug.WriteLine("Lỗi OnAsync: " + ex.Message);
-                }
+                _ = RefreshDataFromServer();
             });
 
             // --- PHẦN 3: LẮNG NGHE LƯỢT CHƠI (Turn) ---
@@ -187,86 +170,161 @@ namespace BattleShip
                 }));
             });
 
-            // --- PHẦN 4: LẮNG NGHE CÚ BẮN TỪ ĐỐI THỦ (LastShot) ---
-            client.OnAsync($"Rooms/{roomID}/LastShot", (sender, args, context) => {
-                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+            client.OnAsync($"Rooms/{roomID}/Shots", (sender, args, context) =>
+            {
+                if (string.IsNullOrWhiteSpace(args.Data)) return;
+                if (!args.Data.Trim().StartsWith("{")) return;
 
-                var shot = JsonConvert.DeserializeObject<dynamic>(args.Data);
-                if (shot.Attacker == myRole) return; // Bỏ qua nếu mình là người bắn
+                var shots = JsonConvert.DeserializeObject<Dictionary<string, Shot>>(args.Data);
+                if (shots == null) return;
 
-                int x = (int)shot.X;
-                int y = (int)shot.Y;
+                foreach (var kv in shots)
+                {
+                    string shotId = kv.Key;
+                    Shot shot = kv.Value;
 
-                // Kiểm tra trúng/trượt trên lưới của mình
-                string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
-                if (result == "Hit") playerGrid[x, y] = 2; // Đánh dấu ô tàu đã bị bắn trúng
+                    if (handledShots.Contains(shotId)) continue;
+                    handledShots.Add(shotId);
 
-                SendResponse(x, y, result); // Gửi phản hồi kết quả cho đối thủ
+                    if (shot.Attacker == myRole) continue;
 
-                this.Invoke(new Action(() => {
-                    ShowHitMarker(pnlGameGrid, x, y, result); // Hiện dấu X/O lên lưới trái
-                    if (result == "Hit") CheckIfMyShipSunk(x, y); // Kiểm tra tàu chìm
-                }));
+                    int x = shot.X;
+                    int y = shot.Y;
+
+                    string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
+                    if (result == "Hit")
+                    {
+                        playerGrid[x, y] = 2;
+                        CheckIfMyShipSunk(x, y);
+                    }
+
+                    SendResponse(shotId, x, y, result);
+
+                    this.Invoke(new Action(() =>
+                    {
+                        ShowHitMarker(pnlGameGrid, x, y, result);
+                    }));
+                }
             });
 
             // --- PHẦN 5: LẮNG NGHE PHẢN HỒI KẾT QUẢ CÚ BẮN CỦA MÌNH (LastResponse) ---
-            client.OnAsync($"Rooms/{roomID}/LastResponse", (sender, args, context) => {
-                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+            client.OnAsync($"Rooms/{roomID}/Responses", (sender, args, context) =>
+            {
+                if (string.IsNullOrWhiteSpace(args.Data)) return;
+                if (!args.Data.Trim().StartsWith("{")) return;
 
-                var res = JsonConvert.DeserializeObject<dynamic>(args.Data);
-                if (res.Responder == myRole) return;
+                var responses = JsonConvert.DeserializeObject<Dictionary<string, ShotResponse>>(args.Data);
+                if (responses == null) return;
 
-                this.Invoke(new Action(() => {
-                    ShowHitMarker(pnlBotGrid, (int)res.X, (int)res.Y, (string)res.Result);
-                    // Lưu kết quả vào mảng để không bắn lại ô cũ
-                    botGrid[(int)res.X, (int)res.Y] = (res.Result == "Hit") ? 2 : 3;
-                }));
+                foreach (var kv in responses)
+                {
+                    string responseId = kv.Key;
+                    ShotResponse res = kv.Value;
+
+                    if (handledResponses.Contains(responseId)) continue;
+                    handledResponses.Add(responseId);
+
+                    if (res.Responder == myRole) continue;
+
+                    this.Invoke(new Action(() =>
+                    {
+                        ShowHitMarker(pnlBotGrid, res.X, res.Y, res.Result);
+                        botGrid[res.X, res.Y] = (res.Result == "Hit") ? 2 : 3;
+
+                        lblStatus.Text = "Đối thủ đang suy nghĩ...";
+                        lblStatus.ForeColor = Color.White;
+                    }));
+                }
             });
+        }
+
+        private async void SendResponse(string shotId, int x, int y, string result)
+        {
+            var responseData = new
+            {
+                Responder = myRole,
+                X = x,
+                Y = y,
+                Result = result
+            };
+
+            await client.SetAsync($"Rooms/{roomID}/Responses/{shotId}", responseData);
+
+            string nextTurn = (myRole == "Player1") ? "Player2" : "Player1";
+            await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
+        }
+        
+
+        private async Task RefreshDataFromServer()
+        {
+            try
+            {
+                var response = await client.GetAsync($"Rooms/{roomID}");
+                if (response != null && response.Body != "null")
+                {
+                    var roomData = response.ResultAs<Room>();
+                    if (roomData != null)
+                    {
+                        this.Invoke(new Action(() => ProcessRoomUpdate(roomData)));
+                    }
+                }
+            }
+            catch { /* Tránh loop vô tận */ }
+        }
+
+        private void ProcessRoomUpdate(Room roomData)
+        {
+            // 1. Cập nhật giao diện ListBox trước
+            UpdatePlayerListUI(roomData);
+
+            // 2. Kiểm tra điều kiện bắt đầu trận
+            if (roomData.Player1 != null && roomData.Player2 != null)
+            {
+                bool p1Ready = roomData.Player1.IsReady;
+                bool p2Ready = roomData.Player2.IsReady;
+
+                // In ra cửa sổ Output để bạn kiểm tra thực tế
+                System.Diagnostics.Debug.WriteLine($"[DEBUG] P1 Ready: {p1Ready} | P2 Ready: {p2Ready}");
+
+                if (p1Ready && p2Ready && !isBattleStarted)
+                {
+                    isBattleStarted = true;
+
+                    if (myRole == "Player1")
+                    {
+                        // Sử dụng Task.Run để tránh block UI thread
+                        Task.Run(() => client.SetAsync($"Rooms/{roomID}/Status", "playing"));
+                    }
+
+                    // Gọi StartBattle trên luồng UI
+                    StartBattle(roomData.Turn ?? "Player1");
+                }
+            }
         }
 
         private void UpdatePlayerListUI(Room room)
         {
             if (room == null) return;
-
-            // Sử dụng Invoke để đảm bảo cập nhật UI từ luồng khác không gây crash
-            if (this.lstPlayers.InvokeRequired)
+            if (this.lstPlayer.InvokeRequired)
             {
-                this.lstPlayers.Invoke(new Action(() => UpdatePlayerListUI(room)));
+                this.lstPlayer.Invoke(new Action(() => UpdatePlayerListUI(room)));
                 return;
             }
 
-            lstPlayers.Items.Clear();
+            lstPlayer.Items.Clear(); // Xóa cũ hiện mới
 
-            // Hiển thị Player 1
             if (room.Player1 != null)
             {
-                // Nếu tên trống thì hiện "Đang chờ..." thay vì để trắng
-                string p1Name = string.IsNullOrEmpty(room.Player1.Name) ? "Người chơi 1" : room.Player1.Name;
-                string p1Ready = room.Player1.IsReady ? " [Sẵn sàng]" : "";
-                lstPlayers.Items.Add(p1Name + p1Ready);
+                string status = room.Player1.IsReady ? " [Ready]" : "";
+                lstPlayer.Items.Add(room.Player1.Name + status);
             }
-
-            // Hiển thị Player 2
             if (room.Player2 != null)
             {
-                string p2Name = string.IsNullOrEmpty(room.Player2.Name) ? "Người chơi 2" : room.Player2.Name;
-                string p2Ready = room.Player2.IsReady ? " [Sẵn sàng]" : "";
-                lstPlayers.Items.Add(p2Name + p2Ready);
+                string status = room.Player2.IsReady ? " [Ready]" : "";
+                lstPlayer.Items.Add(room.Player2.Name + status);
             }
         }
-        private async void SendResponse(int x, int y, string result)
-        {
-            var responseData = new
-            {
-                Responder = myRole, 
-                X = x,
-                Y = y,
-                Result = result, 
-                Time = DateTime.Now.Ticks.ToString()
-            };
-
-            await client.SetAsync($"Rooms/{roomID}/LastResponse", responseData);
-        }
+        
 
         private async void pnlBotGrid_MouseClick(object sender, MouseEventArgs e)
         {
@@ -277,17 +335,20 @@ namespace BattleShip
 
             if (x >= GRID_SIZE || y >= GRID_SIZE || botGrid[x, y] != 0) return;
 
-            // 1. Tạm thời khóa lượt bắn
             isMyTurn = false;
             lblStatus.Text = "Đang bắn...";
 
-            // 2. Gửi cú bắn
-            var shotData = new { Attacker = myRole, X = x, Y = y, Time = DateTime.Now.Ticks.ToString() };
-            await client.SetAsync($"Rooms/{roomID}/LastShot", shotData);
+            string shotId = Guid.NewGuid().ToString();
 
-            // 3. CHUYỂN LƯỢT SANG ĐỐI THỦ (Quan trọng)
-            string nextTurn = (myRole == "Player1") ? "Player2" : "Player1";
-            await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
+            var shotData = new
+            {
+                Attacker = myRole,
+                X = x,
+                Y = y,
+                Time = shotId
+            };
+
+            await client.SetAsync($"Rooms/{roomID}/Shots/{shotId}", shotData);
         }
 
 
@@ -295,14 +356,20 @@ namespace BattleShip
         {
             isBattleStarted = true; // Đánh dấu game đã bắt đầu
 
-            // 1. Chuyển đổi giao diện
-            pnlDeployment.Visible = false;  // Ẩn bảng xám đặt tàu
-            pnlBotGrid.Visible = true;      // Hiện bảng xanh để bắn đối thủ
+            Array.Clear(botGrid, 0, botGrid.Length);
 
-            // 2. Xác định ai bắn trước
+            pnlDeployment.Visible = false;
+            pnlDeployment.Enabled = false;
+
+            pnlBotGrid.Visible = true;
+            pnlBotGrid.Enabled = true;
+            pnlBotGrid.BringToFront();
+
+
+            pnlBotGrid.Focus();
+
             isMyTurn = (Turn == myRole);
 
-            // 3. Cập nhật thông báo
             if (isMyTurn)
             {
                 lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đến lượt bạn bắn.";
@@ -584,7 +651,8 @@ namespace BattleShip
             }
         }
 
-        private async void btnReady_Click_1(object sender, EventArgs e)
+
+        private async void btnReady_Click(object sender, EventArgs e)
         {
             if (placedShips.Count < 5)
             {
@@ -592,29 +660,27 @@ namespace BattleShip
                 return;
             }
 
-            if (string.IsNullOrEmpty(roomID) || string.IsNullOrEmpty(myRole))
-            {
-                MessageBox.Show("Lỗi: Không tìm thấy thông tin phòng!");
-                return;
-            }
+            btnReady.Enabled = false; // Khóa nút ngay lập tức để tránh bấm nhiều lần
 
             try
             {
-                // Gửi trạng thái IsReady trực tiếp vào node của Player đó
-                string path = $"Rooms/{roomID}/{myRole}/IsReady";
-                var response = await client.SetAsync(path, true);
+                // Sử dụng UpdateAsync để Firebase hiểu là chỉ thay đổi 1 trường bên trong
+                // Lưu ý: path chỉ đến đúng node Player1 hoặc Player2
+                var data = new { IsReady = true };
+                var response = await client.UpdateAsync($"Rooms/{roomID}/{myRole}", data);
 
-                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                if (response.StatusCode == HttpStatusCode.OK)
                 {
-                    btnReady.Enabled = false;
-                    btnRandom.Enabled = false; // Khóa nút Random tàu luôn
                     lblStatus.Text = "Đã sẵn sàng! Đang đợi đối thủ...";
                     lblStatus.ForeColor = Color.Yellow;
+
+                    _ = RefreshDataFromServer();
                 }
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Lỗi kết nối Firebase: " + ex.Message);
+                btnReady.Enabled = true;
+                MessageBox.Show("Lỗi Ready: " + ex.Message);
             }
         }
     }

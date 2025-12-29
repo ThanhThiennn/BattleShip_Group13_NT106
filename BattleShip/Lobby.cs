@@ -195,6 +195,13 @@ namespace BattleShip
 
         private void Lobby_Load(object sender, EventArgs e)
         {
+            // Lấy key từ biến môi trường
+            string dbSecret = Environment.GetEnvironmentVariable("FIREBASE_SECRET_KEY", EnvironmentVariableTarget.User);
+            if (!string.IsNullOrEmpty(dbSecret))
+            {
+                config.AuthSecret = dbSecret;
+            }
+
             client = new FireSharp.FirebaseClient(config);
         }
     }

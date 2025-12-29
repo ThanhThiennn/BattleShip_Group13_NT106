@@ -280,6 +280,9 @@
     <EmbeddedResource Include="Bot.resx">
       <DependentUpon>Bot.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Multiplayer.dje.resx">
+      <DependentUpon>Multiplayer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Multiplayer.resx">
       <DependentUpon>Multiplayer.cs</DependentUpon>
     </EmbeddedResource>
