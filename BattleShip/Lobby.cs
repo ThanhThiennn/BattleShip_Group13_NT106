@@ -24,7 +24,6 @@ namespace BattleShip
     {
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "l9115evyBBSX8xG7xxohZSYPQjA6mEg3QlK2JL3R",
             BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
         IFirebaseClient client;

@@ -40,6 +40,7 @@ namespace BattleShip
         private Dictionary<string, List<Point>> shipCoordinates = new Dictionary<string, List<Point>>();
         private HashSet<string> handledResponses = new HashSet<string>();
         private HashSet<string> handledShots = new HashSet<string>();
+        private List<ShotResponse> pendingResponses = new List<ShotResponse>();
 
         private bool isSetupComplete = false;
         private bool isReady = false;
@@ -48,7 +49,6 @@ namespace BattleShip
 
         IFirebaseConfig config = new FirebaseConfig
         {
-            AuthSecret = "l9115evyBBSX8xG7xxohZSYPQjA6mEg3QlK2JL3R",
             BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
         IFirebaseClient client;
@@ -140,42 +140,81 @@ namespace BattleShip
         {
             if (client == null) return;
 
-            // Lắng nghe sự thay đổi của cả phòng
             client.OnAsync($"Rooms/{roomID}", (sender, args, context) =>
             {
                 _ = RefreshDataFromServer();
             });
 
-            // --- PHẦN 3: LẮNG NGHE LƯỢT CHƠI (Turn) ---
             client.OnAsync($"Rooms/{roomID}/Turn", (sender, args, context) => {
                 if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
-
                 string currentTurn = args.Data.Replace("\"", "").Trim();
 
                 this.Invoke(new Action(() => {
+                    bool oldTurn = isMyTurn;
                     isMyTurn = (currentTurn == myRole);
-                    if (isBattleStarted) // Chỉ hiện thông báo lượt khi đã vào trận
+
+                    if (isBattleStarted)
                     {
                         if (isMyTurn)
                         {
                             lblStatus.Text = "Đến lượt bạn bắn!";
                             lblStatus.ForeColor = Color.Lime;
+                            pnlBotGrid.Enabled = true; 
                         }
                         else
                         {
                             lblStatus.Text = "Đối thủ đang suy nghĩ...";
-                            lblStatus.ForeColor = Color.White;
+                            lblStatus.ForeColor = Color.Black;
                         }
                     }
                 }));
             });
-
-            client.OnAsync($"Rooms/{roomID}/Shots", (sender, args, context) =>
+            System.Threading.Tasks.Task.Run(async () =>
             {
-                if (string.IsNullOrWhiteSpace(args.Data)) return;
-                if (!args.Data.Trim().StartsWith("{")) return;
+                while (true)
+                {
+                    try
+                    {
+                        if (isBattleStarted)
+                        {
+                            await CheckForNewShots();
+                        }
+                        await System.Threading.Tasks.Task.Delay(500);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Lỗi polling shots: {ex.Message}");
+                    }
+                }
+            });
 
-                var shots = JsonConvert.DeserializeObject<Dictionary<string, Shot>>(args.Data);
+            System.Threading.Tasks.Task.Run(async () =>
+            {
+                while (true)
+                {
+                    try
+                    {
+                        if (isBattleStarted)
+                        {
+                            await CheckForNewResponses();
+                        }
+                        await System.Threading.Tasks.Task.Delay(500);
+                    }
+                    catch (Exception ex)
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Lỗi polling responses: {ex.Message}");
+                    }
+                }
+            });
+        }
+        private async System.Threading.Tasks.Task CheckForNewShots()
+        {
+            try
+            {
+                var response = await client.GetAsync($"Rooms/{roomID}/Shots");
+                if (response == null || response.Body == "null") return;
+
+                var shots = JsonConvert.DeserializeObject<Dictionary<string, Shot>>(response.Body);
                 if (shots == null) return;
 
                 foreach (var kv in shots)
@@ -183,37 +222,48 @@ namespace BattleShip
                     string shotId = kv.Key;
                     Shot shot = kv.Value;
 
-                    if (handledShots.Contains(shotId)) continue;
-                    handledShots.Add(shotId);
-
-                    if (shot.Attacker == myRole) continue;
-
-                    int x = shot.X;
-                    int y = shot.Y;
-
-                    string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
-                    if (result == "Hit")
+                    if (shot.Attacker == myRole)
                     {
-                        playerGrid[x, y] = 2;
-                        CheckIfMyShipSunk(x, y);
+                        //System.Diagnostics.Debug.WriteLine($"Bỏ qua shot của mình: {shotId}");
+                        continue;
                     }
 
-                    SendResponse(shotId, x, y, result);
+                    if (handledShots.Contains(shotId))
+                    {
+                        //System.Diagnostics.Debug.WriteLine($"xử lý shot: {shotId}");
+                        continue;
+                    }
+
+                    handledShots.Add(shotId);
+
 
                     this.Invoke(new Action(() =>
                     {
+                        int x = shot.X;
+                        int y = shot.Y;
+
+                        string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
+                        if (result == "Hit") playerGrid[x, y] = 2;
+
                         ShowHitMarker(pnlGameGrid, x, y, result);
+
+                        _ = SendResponseAsync(shotId, x, y, result);
                     }));
                 }
-            });
-
-            // --- PHẦN 5: LẮNG NGHE PHẢN HỒI KẾT QUẢ CÚ BẮN CỦA MÌNH (LastResponse) ---
-            client.OnAsync($"Rooms/{roomID}/Responses", (sender, args, context) =>
+            }
+            catch (Exception ex)
             {
-                if (string.IsNullOrWhiteSpace(args.Data)) return;
-                if (!args.Data.Trim().StartsWith("{")) return;
+                System.Diagnostics.Debug.WriteLine($"❌ Lỗi CheckForNewShots: {ex.Message}");
+            }
+        }
+        private async System.Threading.Tasks.Task CheckForNewResponses()
+        {
+            try
+            {
+                var response = await client.GetAsync($"Rooms/{roomID}/Responses");
+                if (response == null || response.Body == "null") return;
 
-                var responses = JsonConvert.DeserializeObject<Dictionary<string, ShotResponse>>(args.Data);
+                var responses = JsonConvert.DeserializeObject<Dictionary<string, ShotResponse>>(response.Body);
                 if (responses == null) return;
 
                 foreach (var kv in responses)
@@ -221,39 +271,79 @@ namespace BattleShip
                     string responseId = kv.Key;
                     ShotResponse res = kv.Value;
 
-                    if (handledResponses.Contains(responseId)) continue;
-                    handledResponses.Add(responseId);
+                    if (res.Responder == myRole || handledResponses.Contains(responseId)) continue;
 
-                    if (res.Responder == myRole) continue;
+                    handledResponses.Add(responseId);
 
                     this.Invoke(new Action(() =>
                     {
                         ShowHitMarker(pnlBotGrid, res.X, res.Y, res.Result);
                         botGrid[res.X, res.Y] = (res.Result == "Hit") ? 2 : 3;
 
-                        lblStatus.Text = "Đối thủ đang suy nghĩ...";
-                        lblStatus.ForeColor = Color.White;
+                        if (res.Result == "Hit")
+                        {
+                            playerHits++;
+                            lblStatus.Text = "BẮN TRÚNG! Bắn tiếp đi!";
+                            lblStatus.ForeColor = Color.OrangeRed;
+
+                            isMyTurn = true;
+                        }
+                        else
+                        {
+                            lblStatus.Text = "Hụt rồi! Đợi đối thủ...";
+                            lblStatus.ForeColor = Color.Black;
+
+                            isMyTurn = false;
+                        }
                     }));
                 }
-            });
-        }
-
-        private async void SendResponse(string shotId, int x, int y, string result)
-        {
-            var responseData = new
+            }
+            catch (Exception ex)
             {
-                Responder = myRole,
-                X = x,
-                Y = y,
-                Result = result
-            };
-
-            await client.SetAsync($"Rooms/{roomID}/Responses/{shotId}", responseData);
-
-            string nextTurn = (myRole == "Player1") ? "Player2" : "Player1";
-            await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
+                System.Diagnostics.Debug.WriteLine($"Lỗi CheckForNewResponses: {ex.Message}");
+            }
         }
-        
+
+
+        private async System.Threading.Tasks.Task SendResponseAsync(string shotId, int x, int y, string result)
+        {
+            try
+            {
+                var responseData = new { Responder = myRole, X = x, Y = y, Result = result };
+                await client.SetAsync($"Rooms/{roomID}/Responses/{shotId}", responseData);
+
+                // Xác định ai là người vừa thực hiện cú bắn (người tấn công)
+                string attackerRole = (myRole == "Player1") ? "Player2" : "Player1";
+
+                // QUY TẮC: Nếu TRÚNG (Hit), lượt vẫn thuộc về người bắn (attackerRole). 
+                // Nếu TRẬT (Miss), lượt chuyển sang cho mình (myRole).
+                string nextTurn = (result == "Hit") ? attackerRole : myRole;
+
+                await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
+
+                // Cập nhật trạng thái cục bộ để UI phản ứng ngay lập tức
+                this.Invoke(new Action(() => {
+                    isMyTurn = (nextTurn == myRole);
+                    if (isMyTurn)
+                    {
+                        lblStatus.Text = "Đối thủ bắn hụt! Đến lượt bạn.";
+                        lblStatus.ForeColor = Color.Lime;
+                    }
+                    else if (result == "Hit")
+                    {
+                        lblStatus.Text = "Bạn bị bắn trúng! Đối thủ bắn tiếp.";
+                        lblStatus.ForeColor = Color.Red;
+                    }
+                }));
+
+                _ = System.Threading.Tasks.Task.Run(async () => {
+                    await System.Threading.Tasks.Task.Delay(2000);
+                    await client.DeleteAsync($"Rooms/{roomID}/Shots/{shotId}");
+                });
+            }
+            catch (Exception ex) { MessageBox.Show("Loi: "+ex); }
+        }
+
 
         private async Task RefreshDataFromServer()
         {
@@ -274,16 +364,13 @@ namespace BattleShip
 
         private void ProcessRoomUpdate(Room roomData)
         {
-            // 1. Cập nhật giao diện ListBox trước
             UpdatePlayerListUI(roomData);
 
-            // 2. Kiểm tra điều kiện bắt đầu trận
             if (roomData.Player1 != null && roomData.Player2 != null)
             {
                 bool p1Ready = roomData.Player1.IsReady;
                 bool p2Ready = roomData.Player2.IsReady;
 
-                // In ra cửa sổ Output để bạn kiểm tra thực tế
                 System.Diagnostics.Debug.WriteLine($"[DEBUG] P1 Ready: {p1Ready} | P2 Ready: {p2Ready}");
 
                 if (p1Ready && p2Ready && !isBattleStarted)
@@ -292,11 +379,8 @@ namespace BattleShip
 
                     if (myRole == "Player1")
                     {
-                        // Sử dụng Task.Run để tránh block UI thread
                         Task.Run(() => client.SetAsync($"Rooms/{roomID}/Status", "playing"));
                     }
-
-                    // Gọi StartBattle trên luồng UI
                     StartBattle(roomData.Turn ?? "Player1");
                 }
             }
@@ -311,7 +395,7 @@ namespace BattleShip
                 return;
             }
 
-            lstPlayer.Items.Clear(); // Xóa cũ hiện mới
+            lstPlayer.Items.Clear(); 
 
             if (room.Player1 != null)
             {
@@ -324,61 +408,71 @@ namespace BattleShip
                 lstPlayer.Items.Add(room.Player2.Name + status);
             }
         }
-        
+
 
         private async void pnlBotGrid_MouseClick(object sender, MouseEventArgs e)
         {
-            if (!isBattleStarted || !isMyTurn) return;
+
+            if (!isBattleStarted || !isMyTurn)
+            {
+                System.Diagnostics.Debug.WriteLine("❌ Không được phép bắn!");
+                return;
+            }
 
             int x = e.X / CELL_SIZE;
             int y = e.Y / CELL_SIZE;
 
-            if (x >= GRID_SIZE || y >= GRID_SIZE || botGrid[x, y] != 0) return;
+
+            if (x >= GRID_SIZE || y >= GRID_SIZE || botGrid[x, y] != 0)
+            {
+                System.Diagnostics.Debug.WriteLine("Ô này không hợp lệ hoặc đã bắn rồi!");
+                return;
+            }
 
             isMyTurn = false;
             lblStatus.Text = "Đang bắn...";
 
             string shotId = Guid.NewGuid().ToString();
 
-            var shotData = new
+            var shotData = new Shot
             {
                 Attacker = myRole,
                 X = x,
-                Y = y,
-                Time = shotId
+                Y = y
             };
 
-            await client.SetAsync($"Rooms/{roomID}/Shots/{shotId}", shotData);
+
+            try
+            {
+                var response = await client.SetAsync($"Rooms/{roomID}/Shots/{shotId}", shotData);
+
+            }
+            catch (Exception ex)
+            {
+                //System.Diagnostics.Debug.WriteLine($" LỖI gửi Shot: {ex.Message}");
+                isMyTurn = true; // Trả lại lượt nếu gửi thất bại
+            }
         }
 
 
         private void StartBattle(string Turn)
         {
             isBattleStarted = true; // Đánh dấu game đã bắt đầu
-
-            Array.Clear(botGrid, 0, botGrid.Length);
-
-            pnlDeployment.Visible = false;
-            pnlDeployment.Enabled = false;
-
-            pnlBotGrid.Visible = true;
-            pnlBotGrid.Enabled = true;
-            pnlBotGrid.BringToFront();
-
-
-            pnlBotGrid.Focus();
-
-            isMyTurn = (Turn == myRole);
-
-            if (isMyTurn)
-            {
-                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đến lượt bạn bắn.";
-                lblStatus.ForeColor = Color.Lime;
-            }
-            else
-            {
-                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đối thủ bắn trước.";
-                lblStatus.ForeColor = Color.White;
+            Array.Clear(botGrid, 0, botGrid.Length); 
+            pnlDeployment.Visible = false; 
+            pnlDeployment.Enabled = false; 
+            pnlBotGrid.Visible = true; 
+            pnlBotGrid.Enabled = true; pnlBotGrid.BringToFront(); 
+            pnlBotGrid.Focus(); 
+            isMyTurn = (Turn == myRole); 
+            if (isMyTurn) 
+            { 
+                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đến lượt bạn bắn."; 
+                lblStatus.ForeColor = Color.Lime; 
+            } 
+            else { 
+                lblStatus.Text = "TRẬN ĐẤU BẮT ĐẦU! Đối thủ bắn trước."; 
+                lblStatus.ForeColor = Color.Black; 
             }
         }
 
@@ -413,6 +507,10 @@ namespace BattleShip
 
         private void ShowHitMarker(Control parent, int x, int y, string type)
         {
+            // ===== THÊM DEBUG =====
+            System.Diagnostics.Debug.WriteLine($"[ShowHitMarker] Parent: {parent.Name}, X: {x}, Y: {y}, Type: {type}");
+            // ======================
+
             PictureBox marker = new PictureBox
             {
                 Size = new Size(30, 30),
@@ -424,6 +522,10 @@ namespace BattleShip
             };
             parent.Controls.Add(marker);
             marker.BringToFront();
+
+            parent.Invalidate();
+            parent.Update();
+
         }
 
         private async void CheckIfMyShipSunk(int x, int y)
@@ -664,8 +766,6 @@ namespace BattleShip
 
             try
             {
-                // Sử dụng UpdateAsync để Firebase hiểu là chỉ thay đổi 1 trường bên trong
-                // Lưu ý: path chỉ đến đúng node Player1 hoặc Player2
                 var data = new { IsReady = true };
                 var response = await client.UpdateAsync($"Rooms/{roomID}/{myRole}", data);
 
