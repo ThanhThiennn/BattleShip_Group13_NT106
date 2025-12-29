@@ -201,6 +201,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FirebaseService.cs" />
+    <Compile Include="FormChat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormChat.Designer.cs">
+      <DependentUpon>FormChat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FormCreateRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FormCreateRoom.Designer.cs">
+      <DependentUpon>FormCreateRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="FormForgetPassword.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -235,6 +247,12 @@
       <DependentUpon>UISettingMatch.cs</DependentUpon>
     </Compile>
     <Compile Include="UserProfile.cs" />
+    <EmbeddedResource Include="FormChat.resx">
+      <DependentUpon>FormChat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FormCreateRoom.resx">
+      <DependentUpon>FormCreateRoom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormForgetPassword.resx">
       <DependentUpon>FormForgetPassword.cs</DependentUpon>
     </EmbeddedResource>

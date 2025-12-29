@@ -72,5 +72,10 @@ namespace BattleShip
                 }
             }
         }
+
+        private void Chat_Click(object sender, EventArgs e)
+        {
+            
+        }
     }
 }
