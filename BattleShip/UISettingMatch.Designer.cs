@@ -28,28 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UISettingMatch));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UISettingMatch));
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
             this.btnLogOut = new Guna.UI2.WinForms.Guna2Button();
+            this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
+            this.btnNews = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnOpenCreateForm = new Guna.UI2.WinForms.Guna2Button();
+            this.dgvRooms = new Guna.UI2.WinForms.Guna2DataGridView();
             this.btnStart = new Guna.UI2.WinForms.Guna2Button();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.guna2HtmlLabel2 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.guna2HtmlLabel1 = new Guna.UI2.WinForms.Guna2HtmlLabel();
             this.btnLeaveMatch = new Guna.UI2.WinForms.Guna2Button();
-            this.dgvRooms = new Guna.UI2.WinForms.Guna2DataGridView();
-            this.btnOpenCreateForm = new Guna.UI2.WinForms.Guna2Button();
-            this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
-            this.btnNews = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
+            this.timerRefresh = new System.Windows.Forms.Timer(this.components);
             this.PanelLeft.SuspendLayout();
             this.PanelRight.SuspendLayout();
-            this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvRooms)).BeginInit();
+            this.guna2Panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // PanelLeft
@@ -86,6 +88,74 @@
             this.btnLogOut.UseTransparentBackground = true;
             this.btnLogOut.Click += new System.EventHandler(this.btnLogOut_Click);
             // 
+            // btnFriend
+            // 
+            this.btnFriend.BorderThickness = 1;
+            this.btnFriend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnFriend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnFriend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFriend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnFriend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnFriend.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnFriend.ForeColor = System.Drawing.Color.White;
+            this.btnFriend.Image = ((System.Drawing.Image)(resources.GetObject("btnFriend.Image")));
+            this.btnFriend.ImageSize = new System.Drawing.Size(30, 30);
+            this.btnFriend.Location = new System.Drawing.Point(176, 628);
+            this.btnFriend.Name = "btnFriend";
+            this.btnFriend.Size = new System.Drawing.Size(55, 45);
+            this.btnFriend.TabIndex = 0;
+            // 
+            // btnNews
+            // 
+            this.btnNews.BorderThickness = 1;
+            this.btnNews.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnNews.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnNews.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnNews.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnNews.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnNews.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnNews.ForeColor = System.Drawing.Color.White;
+            this.btnNews.Image = ((System.Drawing.Image)(resources.GetObject("btnNews.Image")));
+            this.btnNews.ImageSize = new System.Drawing.Size(35, 35);
+            this.btnNews.Location = new System.Drawing.Point(121, 628);
+            this.btnNews.Name = "btnNews";
+            this.btnNews.Size = new System.Drawing.Size(55, 45);
+            this.btnNews.TabIndex = 0;
+            // 
+            // btnSetting
+            // 
+            this.btnSetting.BorderThickness = 1;
+            this.btnSetting.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSetting.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSetting.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnSetting.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSetting.ForeColor = System.Drawing.Color.White;
+            this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
+            this.btnSetting.ImageSize = new System.Drawing.Size(40, 40);
+            this.btnSetting.Location = new System.Drawing.Point(231, 628);
+            this.btnSetting.Name = "btnSetting";
+            this.btnSetting.Size = new System.Drawing.Size(120, 45);
+            this.btnSetting.TabIndex = 0;
+            // 
+            // btnSpeaker
+            // 
+            this.btnSpeaker.BorderThickness = 1;
+            this.btnSpeaker.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSpeaker.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSpeaker.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSpeaker.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSpeaker.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnSpeaker.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSpeaker.ForeColor = System.Drawing.Color.White;
+            this.btnSpeaker.Image = ((System.Drawing.Image)(resources.GetObject("btnSpeaker.Image")));
+            this.btnSpeaker.ImageSize = new System.Drawing.Size(35, 35);
+            this.btnSpeaker.Location = new System.Drawing.Point(1, 628);
+            this.btnSpeaker.Name = "btnSpeaker";
+            this.btnSpeaker.Size = new System.Drawing.Size(120, 45);
+            this.btnSpeaker.TabIndex = 0;
+            // 
             // PanelRight
             // 
             this.PanelRight.BorderRadius = 15;
@@ -99,6 +169,77 @@
             this.PanelRight.Name = "PanelRight";
             this.PanelRight.Size = new System.Drawing.Size(853, 674);
             this.PanelRight.TabIndex = 2;
+            // 
+            // btnOpenCreateForm
+            // 
+            this.btnOpenCreateForm.BorderRadius = 10;
+            this.btnOpenCreateForm.CustomBorderThickness = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnOpenCreateForm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnOpenCreateForm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnOpenCreateForm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnOpenCreateForm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnOpenCreateForm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
+            this.btnOpenCreateForm.Font = new System.Drawing.Font("Showcard Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnOpenCreateForm.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnOpenCreateForm.ImageSize = new System.Drawing.Size(32, 32);
+            this.btnOpenCreateForm.Location = new System.Drawing.Point(585, 163);
+            this.btnOpenCreateForm.Name = "btnOpenCreateForm";
+            this.btnOpenCreateForm.Size = new System.Drawing.Size(245, 60);
+            this.btnOpenCreateForm.TabIndex = 13;
+            this.btnOpenCreateForm.Text = "Create Room";
+            this.btnOpenCreateForm.Click += new System.EventHandler(this.btnOpenCreateForm_Click);
+            // 
+            // dgvRooms
+            // 
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            this.dgvRooms.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvRooms.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            this.dgvRooms.ColumnHeadersHeight = 4;
+            this.dgvRooms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvRooms.DefaultCellStyle = dataGridViewCellStyle6;
+            this.dgvRooms.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRooms.Location = new System.Drawing.Point(17, 81);
+            this.dgvRooms.Name = "dgvRooms";
+            this.dgvRooms.RowHeadersVisible = false;
+            this.dgvRooms.RowHeadersWidth = 51;
+            this.dgvRooms.RowTemplate.Height = 24;
+            this.dgvRooms.Size = new System.Drawing.Size(546, 581);
+            this.dgvRooms.TabIndex = 12;
+            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.Font = null;
+            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
+            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
+            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
+            this.dgvRooms.ThemeStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRooms.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRooms.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.dgvRooms.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            this.dgvRooms.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRooms.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
+            this.dgvRooms.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
+            this.dgvRooms.ThemeStyle.HeaderStyle.Height = 4;
+            this.dgvRooms.ThemeStyle.ReadOnly = false;
+            this.dgvRooms.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
+            this.dgvRooms.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
+            this.dgvRooms.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.dgvRooms.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
+            this.dgvRooms.ThemeStyle.RowsStyle.Height = 24;
+            this.dgvRooms.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
+            this.dgvRooms.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
             // 
             // btnStart
             // 
@@ -173,144 +314,10 @@
             this.btnLeaveMatch.Text = "Leave Match";
             this.btnLeaveMatch.Click += new System.EventHandler(this.btnLeaveMatch_Click);
             // 
-            // dgvRooms
+            // timerRefresh
             // 
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            this.dgvRooms.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle4;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvRooms.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
-            this.dgvRooms.ColumnHeadersHeight = 4;
-            this.dgvRooms.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvRooms.DefaultCellStyle = dataGridViewCellStyle6;
-            this.dgvRooms.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRooms.Location = new System.Drawing.Point(17, 81);
-            this.dgvRooms.Name = "dgvRooms";
-            this.dgvRooms.RowHeadersVisible = false;
-            this.dgvRooms.RowHeadersWidth = 51;
-            this.dgvRooms.RowTemplate.Height = 24;
-            this.dgvRooms.Size = new System.Drawing.Size(546, 581);
-            this.dgvRooms.TabIndex = 12;
-            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.Font = null;
-            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.ForeColor = System.Drawing.Color.Empty;
-            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.SelectionBackColor = System.Drawing.Color.Empty;
-            this.dgvRooms.ThemeStyle.AlternatingRowsStyle.SelectionForeColor = System.Drawing.Color.Empty;
-            this.dgvRooms.ThemeStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRooms.ThemeStyle.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRooms.ThemeStyle.HeaderStyle.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dgvRooms.ThemeStyle.HeaderStyle.BorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            this.dgvRooms.ThemeStyle.HeaderStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvRooms.ThemeStyle.HeaderStyle.ForeColor = System.Drawing.Color.White;
-            this.dgvRooms.ThemeStyle.HeaderStyle.HeaightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.EnableResizing;
-            this.dgvRooms.ThemeStyle.HeaderStyle.Height = 4;
-            this.dgvRooms.ThemeStyle.ReadOnly = false;
-            this.dgvRooms.ThemeStyle.RowsStyle.BackColor = System.Drawing.Color.White;
-            this.dgvRooms.ThemeStyle.RowsStyle.BorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            this.dgvRooms.ThemeStyle.RowsStyle.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.dgvRooms.ThemeStyle.RowsStyle.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            this.dgvRooms.ThemeStyle.RowsStyle.Height = 24;
-            this.dgvRooms.ThemeStyle.RowsStyle.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(229)))), ((int)(((byte)(255)))));
-            this.dgvRooms.ThemeStyle.RowsStyle.SelectionForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(71)))), ((int)(((byte)(69)))), ((int)(((byte)(94)))));
-            // 
-            // btnOpenCreateForm
-            // 
-            this.btnOpenCreateForm.BorderRadius = 10;
-            this.btnOpenCreateForm.CustomBorderThickness = new System.Windows.Forms.Padding(15, 0, 0, 0);
-            this.btnOpenCreateForm.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnOpenCreateForm.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnOpenCreateForm.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnOpenCreateForm.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnOpenCreateForm.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
-            this.btnOpenCreateForm.Font = new System.Drawing.Font("Showcard Gothic", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnOpenCreateForm.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnOpenCreateForm.ImageSize = new System.Drawing.Size(32, 32);
-            this.btnOpenCreateForm.Location = new System.Drawing.Point(585, 163);
-            this.btnOpenCreateForm.Name = "btnOpenCreateForm";
-            this.btnOpenCreateForm.Size = new System.Drawing.Size(245, 60);
-            this.btnOpenCreateForm.TabIndex = 13;
-            this.btnOpenCreateForm.Text = "Create Room";
-            this.btnOpenCreateForm.Click += new System.EventHandler(this.btnOpenCreateForm_Click);
-            // 
-            // btnFriend
-            // 
-            this.btnFriend.BorderThickness = 1;
-            this.btnFriend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnFriend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnFriend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFriend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnFriend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnFriend.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnFriend.ForeColor = System.Drawing.Color.White;
-            this.btnFriend.Image = ((System.Drawing.Image)(resources.GetObject("btnFriend.Image")));
-            this.btnFriend.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnFriend.Location = new System.Drawing.Point(176, 628);
-            this.btnFriend.Name = "btnFriend";
-            this.btnFriend.Size = new System.Drawing.Size(55, 45);
-            this.btnFriend.TabIndex = 0;
-            // 
-            // btnNews
-            // 
-            this.btnNews.BorderThickness = 1;
-            this.btnNews.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnNews.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnNews.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnNews.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnNews.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnNews.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnNews.ForeColor = System.Drawing.Color.White;
-            this.btnNews.Image = ((System.Drawing.Image)(resources.GetObject("btnNews.Image")));
-            this.btnNews.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnNews.Location = new System.Drawing.Point(121, 628);
-            this.btnNews.Name = "btnNews";
-            this.btnNews.Size = new System.Drawing.Size(55, 45);
-            this.btnNews.TabIndex = 0;
-            // 
-            // btnSetting
-            // 
-            this.btnSetting.BorderThickness = 1;
-            this.btnSetting.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSetting.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSetting.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnSetting.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSetting.ForeColor = System.Drawing.Color.White;
-            this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
-            this.btnSetting.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnSetting.Location = new System.Drawing.Point(231, 628);
-            this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(120, 45);
-            this.btnSetting.TabIndex = 0;
-            // 
-            // btnSpeaker
-            // 
-            this.btnSpeaker.BorderThickness = 1;
-            this.btnSpeaker.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSpeaker.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSpeaker.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSpeaker.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSpeaker.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnSpeaker.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSpeaker.ForeColor = System.Drawing.Color.White;
-            this.btnSpeaker.Image = ((System.Drawing.Image)(resources.GetObject("btnSpeaker.Image")));
-            this.btnSpeaker.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnSpeaker.Location = new System.Drawing.Point(1, 628);
-            this.btnSpeaker.Name = "btnSpeaker";
-            this.btnSpeaker.Size = new System.Drawing.Size(120, 45);
-            this.btnSpeaker.TabIndex = 0;
+            this.timerRefresh.Interval = 5000;
+            this.timerRefresh.Tick += new System.EventHandler(this.timerRefresh_Tick_1);
             // 
             // UISettingMatch
             // 
@@ -321,10 +328,11 @@
             this.Controls.Add(this.PanelLeft);
             this.Name = "UISettingMatch";
             this.Text = "UISettingMatch";
+            this.Load += new System.EventHandler(this.UISettingMatch_Load);
             this.PanelLeft.ResumeLayout(false);
             this.PanelRight.ResumeLayout(false);
-            this.guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvRooms)).EndInit();
+            this.guna2Panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -345,5 +353,6 @@
         private Guna.UI2.WinForms.Guna2Button btnStart;
         private Guna.UI2.WinForms.Guna2DataGridView dgvRooms;
         private Guna.UI2.WinForms.Guna2Button btnOpenCreateForm;
+        private System.Windows.Forms.Timer timerRefresh;
     }
 }

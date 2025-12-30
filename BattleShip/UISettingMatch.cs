@@ -59,12 +59,9 @@ namespace BattleShip
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show(
-        "Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?",
-        "Xác Nhận Đăng Xuất",
-        MessageBoxButtons.YesNo,
-        MessageBoxIcon.Question
-    );
+            DialogResult result = MessageBox.Show("Bạn có chắc chắn muốn đăng xuất khỏi hệ thống?","Xác Nhận Đăng Xuất",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
 
             if (result == DialogResult.Yes)
             {
@@ -83,11 +80,6 @@ namespace BattleShip
                     MessageBox.Show("Không thể mở Form Đăng nhập: " + ex.Message, "Lỗi Hệ Thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
-        }
-
-        private void guna2HtmlLabel4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private async void btnStart_Click(object sender, EventArgs e)
@@ -168,26 +160,38 @@ namespace BattleShip
             {
                 RoomName = name,
                 PlayerCount = 1,
-                HostIP = GetLocalIPAddress() // Hàm lấy IP đã hướng dẫn ở trên
+                HostIP = GetLocalIPAddress()
             };
 
+            // 1. Đẩy dữ liệu lên Firebase
             await firebaseClient.Child("Rooms").Child(id).PutAsync(newRoom);
 
-            // Sau khi đẩy lên Firebase, máy này chuyển sang chế độ Server (Chờ kết nối)
             StartServer();
             MessageBox.Show($"Đã tạo phòng {name}. Đang đợi đối thủ vào...");
         }
+        bool isLoading = false;
         private async void LoadRoomList()
         {
-            // Lấy toàn bộ danh sách phòng từ Firebase
-            var rooms = await firebaseClient.Child("Rooms").OnceAsync<RoomModel>();
-
-            dgvRooms.Rows.Clear();
-            foreach (var r in rooms)
+            if (isLoading) return;
+            isLoading = true;
+            try
             {
-                // r.Key chính là Mã phòng (8 số)
-                dgvRooms.Rows.Add(r.Key, r.Object.RoomName, r.Object.PlayerCount + "/2");
+                var rooms = await firebaseClient.Child("Rooms").OnceAsync<RoomModel>();
+
+                // Lưu lại vị trí dòng đang chọn hiện tại để không bị nhảy chuột
+                int selectedIndex = dgvRooms.CurrentRow?.Index ?? -1;
+
+                dgvRooms.Rows.Clear();
+                foreach (var r in rooms)
+                {
+                    dgvRooms.Rows.Add(r.Key, r.Object.RoomName, r.Object.PlayerCount + "/2");
+                }
+
+                // Khôi phục lựa chọn
+                if (selectedIndex >= 0 && selectedIndex < dgvRooms.Rows.Count)
+                    dgvRooms.Rows[selectedIndex].Selected = true;
             }
+            catch { /* Tránh hiện thông báo lỗi liên tục nếu mất mạng tạm thời */ }
         }
         private bool IsValidRoomID(string id)
         {
@@ -198,19 +202,21 @@ namespace BattleShip
         {
             try
             {
+                isHost = true; // Đánh dấu mình là chủ phòng
                 IPEndPoint ip = new IPEndPoint(IPAddress.Any, 9999);
                 server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 server.Bind(ip);
 
                 Thread listenThread = new Thread(() => {
                     server.Listen(1);
-                    client = server.Accept(); // Khi có người vào, gán vào biến client để chat
-                    MessageBox.Show("Đối thủ đã kết nối!");
+                    client = server.Accept();
 
-                    // Bắt đầu luồng nhận tin nhắn chat
-                    Thread receive = new Thread(Receive);
-                    receive.IsBackground = true;
-                    receive.Start();
+                    // XÓA phần khởi chạy Thread Receive tại đây
+
+                    this.Invoke(new MethodInvoker(delegate {
+                        MessageBox.Show("Đối thủ đã kết nối! Bắt đầu trận đấu.");
+                        GoToGameForm(); // Hàm chuyển sang Form trận đấu
+                    }));
                 });
                 listenThread.IsBackground = true;
                 listenThread.Start();
@@ -224,35 +230,61 @@ namespace BattleShip
         {
             try
             {
+                isHost = false; // Mình là người tham gia
                 IPEndPoint ip = new IPEndPoint(IPAddress.Parse(hostIP), 9999);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.Connect(ip);
 
-                // Bắt đầu luồng nhận tin nhắn chat
-                Thread receive = new Thread(Receive);
-                receive.IsBackground = true;
-                receive.Start();
+                // XÓA phần khởi chạy Thread Receive tại đây
+
+                GoToGameForm(); // Hàm chuyển sang Form trận đấu
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Không thể kết nối đến chủ phòng: " + ex.Message);
             }
         }
-        void Receive()
+        void GoToGameForm()
         {
+            // Giả sử bạn của bạn đặt tên Form là FormGame
+            // Bạn cần đảm bảo Constructor của FormGame được sửa thành public FormGame(Socket s, bool host)
             try
             {
-                while (true)
-                {
-                    byte[] data = new byte[1024 * 5];
-                    int size = client.Receive(data);
-                    if (size == 0) break; // Đối thủ ngắt kết nối
+                //____FormGame matchForm = new Form(this.client, this.isHost);  //Nơi vào form game
 
-                    string message = Encoding.UTF8.GetString(data, 0, size);
-                    // Tạm thời để đây, sau này sẽ xử lý CHAT: hay ATTACK: tại FormGame
-                }
+                this.Hide();
+                //____matchForm.ShowDialog(); // Mở form trận đấu
+                this.Close(); // Đóng form sảnh sau khi chơi xong
             }
-            catch { /* Xử lý lỗi mất kết nối */ }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khi vào trận: " + ex.Message);
+            }
+        }
+
+        private void UISettingMatch_Load(object sender, EventArgs e)
+        {
+            // Cấu hình DataGridView trước khi nạp dữ liệu
+            dgvRooms.Columns.Clear();
+            dgvRooms.Columns.Add("RoomID", "Mã Phòng");
+            dgvRooms.Columns.Add("RoomName", "Tên Phòng");
+            dgvRooms.Columns.Add("PlayerCount", "Số Người");
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            // Tùy chỉnh giao diện
+            dgvRooms.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dgvRooms.ReadOnly = true;
+            
+            LoadRoomList(); // Gọi lần đầu để hiện danh sách
+
+            // Khởi động Timer để tự động làm mới (xem bước 2)
+            timerRefresh.Enabled = true;
+            timerRefresh.Start();
+        }
+        
+        private void timerRefresh_Tick_1(object sender, EventArgs e)
+        {
+            LoadRoomList();
         }
     }
 }
