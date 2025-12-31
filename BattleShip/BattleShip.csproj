@@ -245,6 +245,12 @@
     <Compile Include="Bot.Designer.cs">
       <DependentUpon>Bot.cs</DependentUpon>
     </Compile>
+    <Compile Include="MatchResult.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MatchResult.Designer.cs">
+      <DependentUpon>MatchResult.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model.cs" />
     <Compile Include="Multiplayer.cs">
       <SubType>Form</SubType>
@@ -279,6 +285,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Bot.resx">
       <DependentUpon>Bot.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="MatchResult.resx">
+      <DependentUpon>MatchResult.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Multiplayer.dje.resx">
       <DependentUpon>Multiplayer.cs</DependentUpon>

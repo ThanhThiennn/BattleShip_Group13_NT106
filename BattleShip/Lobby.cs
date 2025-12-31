@@ -86,7 +86,6 @@ namespace BattleShip
             }
             else
             {
-                // TẠO PHÒNG MỚI (Player 1)
                 string newId = "Room_" + new Random().Next(1000, 9999);
                 var p1 = new PlayerData { Name = txtPlayerName.Text, IsReady = false, ShipsLeft = 5 };
 
@@ -105,12 +104,29 @@ namespace BattleShip
         {
             this.Invoke(new Action(() => {
                 Multiplayer gameForm = new Multiplayer(id, role);
-
-                gameForm.Show();
-
                 this.Hide();
-
-                gameForm.FormClosed += (s, args) => this.Close();
+                gameForm.FormClosed += async (s, args) =>
+                {
+                    try
+                    {
+                        if (role == "Player1")
+                        {
+                            await client.DeleteAsync($"Rooms/{id}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi khi xóa phòng: " + ex.Message);
+                    }
+                    finally
+                    {
+                        if (!this.IsDisposed)
+                        {
+                            this.Show();
+                        }
+                    }
+                };
+                gameForm.Show();
             }));
         }
         private async Task CreateRoom()
@@ -157,12 +173,14 @@ namespace BattleShip
 
         private void OpenGameForm(string roomId, string role)
         {
-            this.Hide();
             Multiplayer gameForm = new Multiplayer(roomId, role);
-            gameForm.ShowDialog();
-            this.Close();
+
+            this.Hide(); 
+
+            gameForm.ShowDialog(); // Hiển thị trận đấu 
+            this.Show(); 
         }
- 
+
 
         private void btnLogOut_Click(object sender, EventArgs e)
         {

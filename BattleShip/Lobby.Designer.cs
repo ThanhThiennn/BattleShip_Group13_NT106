@@ -36,13 +36,13 @@
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtPlayerName = new System.Windows.Forms.TextBox();
             this.btnJoinByID = new Guna.UI2.WinForms.Guna2Button();
             this.btnBrowseMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnCreateMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnPlayRandom = new Guna.UI2.WinForms.Guna2Button();
             this.btnPlayBot = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.txtPlayerName = new System.Windows.Forms.TextBox();
             this.PanelLeft.SuspendLayout();
             this.PanelRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -167,6 +167,13 @@
             this.PanelRight.Size = new System.Drawing.Size(859, 673);
             this.PanelRight.TabIndex = 1;
             // 
+            // txtPlayerName
+            // 
+            this.txtPlayerName.Location = new System.Drawing.Point(27, 12);
+            this.txtPlayerName.Name = "txtPlayerName";
+            this.txtPlayerName.Size = new System.Drawing.Size(100, 22);
+            this.txtPlayerName.TabIndex = 3;
+            // 
             // btnJoinByID
             // 
             this.btnJoinByID.BackColor = System.Drawing.Color.Transparent;
@@ -271,13 +278,6 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // txtPlayerName
-            // 
-            this.txtPlayerName.Location = new System.Drawing.Point(27, 12);
-            this.txtPlayerName.Name = "txtPlayerName";
-            this.txtPlayerName.Size = new System.Drawing.Size(100, 22);
-            this.txtPlayerName.TabIndex = 3;
-            // 
             // Lobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -286,7 +286,7 @@
             this.Controls.Add(this.PanelRight);
             this.Controls.Add(this.PanelLeft);
             this.Name = "Lobby";
-            this.Text = "FormUI";
+            this.Text = "BattleShip";
             this.Load += new System.EventHandler(this.Lobby_Load);
             this.PanelLeft.ResumeLayout(false);
             this.PanelRight.ResumeLayout(false);

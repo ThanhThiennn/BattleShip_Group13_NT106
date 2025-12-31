@@ -32,6 +32,7 @@ namespace BattleShip
         private int playerHits = 0;
         private int botHits = 0;
         private const int TOTAL_SHIP_CELLS = 17;
+        int totalShots = 0;
 
         private List<Ship> playerShips = new List<Ship>();
         private List<Control> placedShips = new List<Control>();
@@ -41,6 +42,7 @@ namespace BattleShip
         private HashSet<string> handledResponses = new HashSet<string>();
         private HashSet<string> handledShots = new HashSet<string>();
         private List<ShotResponse> pendingResponses = new List<ShotResponse>();
+        private bool isShowingSpecialMessage = false;
 
         private bool isSetupComplete = false;
         private bool isReady = false;
@@ -135,6 +137,8 @@ namespace BattleShip
             {
                 MessageBox.Show("Kết nối thất bại: " + ex.Message);
             }
+            this.ClientSize = new Size(1334, 670); 
+            this.CenterToScreen();
         }
         private void ListenToRoom()
         {
@@ -206,6 +210,56 @@ namespace BattleShip
                     }
                 }
             });
+            string opponentRole = (myRole == "Player1") ? "Player2" : "Player1";
+
+            client.OnAsync($"Rooms/{roomID}/{opponentRole}/SunkShips", (sender, args, context) =>
+            {
+                if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
+
+                try
+                {
+                    string shipName = args.Path.Replace("/", "");
+
+                    if (string.IsNullOrEmpty(shipName))
+                    {
+                        var sunkShips = JsonConvert.DeserializeObject<Dictionary<string, bool>>(args.Data);
+                        foreach (var ship in sunkShips)
+                        {
+                            if (ship.Value) HandleShipSunkNotification(opponentRole, ship.Key);
+                        }
+                    }
+                    else
+                    {
+                        if (args.Data.ToLower().Contains("true"))
+                        {
+                            HandleShipSunkNotification(opponentRole, shipName);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Tránh hiện lỗi JSON lên màn hình
+                }
+            });
+        }
+        private void HandleShipSunkNotification(string role, string shipName)
+        {
+            string opponentRole = (myRole == "Player1") ? "Player2" : "Player1";
+
+            this.Invoke(new Action(() => {
+
+                SyncShipSunkUI(role, shipName);
+
+
+                if (role == opponentRole)
+                {
+                    UpdateStatusWithPriority($"TUYỆT VỜI! Bạn đã bắn hạ tàu {shipName}!", Color.Red, 3000);
+                }
+                else
+                {
+                    UpdateStatusWithPriority($"CẨN THẬN! Tàu {shipName} của bạn đã bị chìm!", Color.Red, 3000);
+                }
+            }));
         }
         private async System.Threading.Tasks.Task CheckForNewShots()
         {
@@ -243,17 +297,32 @@ namespace BattleShip
                         int y = shot.Y;
 
                         string result = (playerGrid[x, y] == 1) ? "Hit" : "Miss";
-                        if (result == "Hit") playerGrid[x, y] = 2;
+                        if (result == "Hit")
+                        {
+                            playerGrid[x, y] = 2; 
+
+                            CheckIfMyShipSunk(x, y);
+                        }
 
                         ShowHitMarker(pnlGameGrid, x, y, result);
 
                         _ = SendResponseAsync(shotId, x, y, result);
+
+                        int myRemainingCells = 0;
+                        for (int i = 0; i < 10; i++)
+                            for (int j = 0; j < 10; j++)
+                                if (playerGrid[i, j] == 1) myRemainingCells++; 
+
+                        if (myRemainingCells == 0)
+                        {
+                            ShowFinalResult("DEFEAT");
+                        }
                     }));
                 }
             }
             catch (Exception ex)
             {
-                System.Diagnostics.Debug.WriteLine($"❌ Lỗi CheckForNewShots: {ex.Message}");
+                System.Diagnostics.Debug.WriteLine($" Lỗi CheckForNewShots: {ex.Message}");
             }
         }
         private async System.Threading.Tasks.Task CheckForNewResponses()
@@ -283,13 +352,19 @@ namespace BattleShip
                         if (res.Result == "Hit")
                         {
                             playerHits++;
-                            lblStatus.Text = "BẮN TRÚNG! Bắn tiếp đi!";
+                            totalShots++;
+                            UpdateStatusWithPriority($"Bạn đã bắn trúng! ({playerHits}/{TOTAL_SHIP_CELLS})", Color.OrangeRed);
                             lblStatus.ForeColor = Color.OrangeRed;
 
                             isMyTurn = true;
+                            if (playerHits >= 17)
+                            {
+                                ShowFinalResult("VICTORY");
+                            }
                         }
                         else
                         {
+                            totalShots++;
                             lblStatus.Text = "Hụt rồi! Đợi đối thủ...";
                             lblStatus.ForeColor = Color.Black;
 
@@ -304,6 +379,21 @@ namespace BattleShip
             }
         }
 
+        private void ShowFinalResult(string status)
+        {
+            this.Invoke(new Action(() => {
+                isBattleStarted = false;
+                using (MatchResult resultForm = new MatchResult(status, totalShots, "Đối thủ"))
+                {
+                    if (resultForm.ShowDialog() == DialogResult.OK)
+                    {
+                        this.DialogResult = DialogResult.OK; 
+                        this.Close(); 
+                    }
+                }
+            }));
+        }
+
 
         private async System.Threading.Tasks.Task SendResponseAsync(string shotId, int x, int y, string result)
         {
@@ -312,16 +402,12 @@ namespace BattleShip
                 var responseData = new { Responder = myRole, X = x, Y = y, Result = result };
                 await client.SetAsync($"Rooms/{roomID}/Responses/{shotId}", responseData);
 
-                // Xác định ai là người vừa thực hiện cú bắn (người tấn công)
                 string attackerRole = (myRole == "Player1") ? "Player2" : "Player1";
 
-                // QUY TẮC: Nếu TRÚNG (Hit), lượt vẫn thuộc về người bắn (attackerRole). 
-                // Nếu TRẬT (Miss), lượt chuyển sang cho mình (myRole).
                 string nextTurn = (result == "Hit") ? attackerRole : myRole;
 
                 await client.SetAsync($"Rooms/{roomID}/Turn", nextTurn);
 
-                // Cập nhật trạng thái cục bộ để UI phản ứng ngay lập tức
                 this.Invoke(new Action(() => {
                     isMyTurn = (nextTurn == myRole);
                     if (isMyTurn)
@@ -447,10 +533,10 @@ namespace BattleShip
                 var response = await client.SetAsync($"Rooms/{roomID}/Shots/{shotId}", shotData);
 
             }
-            catch (Exception ex)
+            catch 
             {
                 //System.Diagnostics.Debug.WriteLine($" LỖI gửi Shot: {ex.Message}");
-                isMyTurn = true; // Trả lại lượt nếu gửi thất bại
+                isMyTurn = true; 
             }
         }
 
@@ -507,9 +593,7 @@ namespace BattleShip
 
         private void ShowHitMarker(Control parent, int x, int y, string type)
         {
-            // ===== THÊM DEBUG =====
-            System.Diagnostics.Debug.WriteLine($"[ShowHitMarker] Parent: {parent.Name}, X: {x}, Y: {y}, Type: {type}");
-            // ======================
+            //System.Diagnostics.Debug.WriteLine($"[ShowHitMarker] Parent: {parent.Name}, X: {x}, Y: {y}, Type: {type}");
 
             PictureBox marker = new PictureBox
             {
@@ -532,38 +616,52 @@ namespace BattleShip
         {
             foreach (var ship in shipCoordinates)
             {
-                // Kiểm tra xem tọa độ vừa bị bắn có thuộc con tàu này không
                 if (ship.Value.Contains(new Point(x, y)))
                 {
-                    // Kiểm tra xem tất cả các ô của tàu này đã bị đối thủ bắn trúng chưa
-                    // (Dựa trên playerGrid: nếu trúng rồi bạn có thể đánh dấu playerGrid[x,y] = 2)
                     bool allHit = ship.Value.All(p => playerGrid[p.X, p.Y] == 2);
-
                     if (allHit)
                     {
-                        // Gửi lệnh báo tàu này đã chìm lên Firebase
-                        await client.SetAsync($"Rooms/{roomID}/{myRole}/Sunk/{ship.Key}", true);
+                        string sunkShipName = ship.Key;
 
-                        // Tự làm xám tàu mình ở hàng dưới
-                        SyncShipSunkUI(myRole, ship.Key);
+                        // Gửi giá trị true đơn giản lên node của tàu đó
+                        await client.SetAsync($"Rooms/{roomID}/{myRole}/SunkShips/{sunkShipName}", true);
+
+                        SyncShipSunkUI(myRole, sunkShipName);
                     }
                     break;
                 }
             }
         }
+        private async void UpdateStatusWithPriority(string message, Color color, int delayMs = 0)
+        {
+            this.Invoke(new Action(async () => {
+                // Nếu đang hiện tin nhắn đặc biệt (như hạ tàu), không cho tin nhắn thường ghi đè
+                if (isShowingSpecialMessage && delayMs == 0) return;
+
+                lblStatus.Text = message;
+                lblStatus.ForeColor = color;
+
+                if (delayMs > 0)
+                {
+                    isShowingSpecialMessage = true;
+                    await System.Threading.Tasks.Task.Delay(delayMs);
+                    isShowingSpecialMessage = false;
+                }
+            }));
+        }
 
         private void SyncShipSunkUI(string role, string shipName)
         {
-            // Quy tắc đặt tên của bạn: pbPlayerCarrier hoặc pbBotCarrier
             string pbName = (role == myRole) ? "pbPlayer" + shipName : "pbBot" + shipName;
 
-            // Tìm PictureBox trong danh sách Control của Form
             Control[] controls = this.Controls.Find(pbName, true);
             if (controls.Length > 0 && controls[0] is PictureBox pb)
             {
-                this.Invoke(new Action(() => {
+                if (pb.Enabled) // Chỉ xử lý nếu tàu này vẫn đang "sống" (Enabled = true)
+                {
                     MakeGrayscaleAndSink(pb);
-                }));
+                    pb.Enabled = false; // Vô hiệu hóa để không hiện thông báo lần 2
+                }
             }
         }
 
@@ -632,7 +730,6 @@ namespace BattleShip
         {
             if (draggedShip == null) return;
 
-            // 1. Tính toán vị trí Snap vào Grid
             Point gridScreen = pnlGameGrid.PointToScreen(Point.Empty);
             Point shipScreen = draggedShip.PointToScreen(Point.Empty);
 
@@ -642,50 +739,78 @@ namespace BattleShip
             int snapX = (relativeX + CELL_SIZE / 2) / CELL_SIZE * CELL_SIZE;
             int snapY = (relativeY + CELL_SIZE / 2) / CELL_SIZE * CELL_SIZE;
 
-            // 2. Kiểm tra giới hạn (Bounds Check)
             if (snapX < 0 || snapY < 0 ||
                 snapX + draggedShip.Width > pnlGameGrid.Width ||
                 snapY + draggedShip.Height > pnlGameGrid.Height)
             {
-                MessageBox.Show("Tàu phải nằm hoàn toàn trong lưới!", "Lỗi");
-                draggedShip.Parent = pnlDeployment;
-                draggedShip.Location = initialShipLocations[draggedShip];
-                ResetDrag();
+                ReturnShipToStart();
                 return;
             }
 
-            // 3. Cập nhật vị trí UI
-            draggedShip.Parent = pnlGameGrid;
-            draggedShip.Location = new Point(snapX, snapY);
-
-            // 4. Lưu logic vào mảng và Dictionary tọa độ
             int gridX = snapX / CELL_SIZE;
             int gridY = snapY / CELL_SIZE;
             int length = int.Parse(draggedShip.Tag.ToString());
             bool isVert = isVertical[draggedShip];
-            string shipType = draggedShip.Name.Replace("pic", ""); // Lấy tên như "Carrier", "BattleShip"
+            string shipType = draggedShip.Name.Replace("pic", "");
 
-            // Xóa dữ liệu cũ của tàu này nếu nó đã được đặt trước đó
+            List<Point> oldCoords = new List<Point>();
             if (shipCoordinates.ContainsKey(shipType))
             {
-                foreach (Point p in shipCoordinates[shipType]) playerGrid[p.X, p.Y] = 0;
+                oldCoords = new List<Point>(shipCoordinates[shipType]); 
+                foreach (Point p in oldCoords) playerGrid[p.X, p.Y] = 0;
             }
 
+            if (IsOverlapping(gridX, gridY, length, !isVert)) 
+            {
+                MessageBox.Show("Không được đặt chồng tàu lên nhau!", "Cảnh báo");
+
+                foreach (Point p in oldCoords) playerGrid[p.X, p.Y] = 1;
+
+                ReturnShipToStart();
+                return;
+            }
+
+            draggedShip.Parent = pnlGameGrid;
+            draggedShip.Location = new Point(snapX, snapY);
+
+            // Lưu logic vào mảng và dictionary tọa độ
             List<Point> coords = new List<Point>();
             for (int i = 0; i < length; i++)
             {
                 int currX = isVert ? gridX : gridX + i;
                 int currY = isVert ? gridY + i : gridY;
 
-                playerGrid[currX, currY] = 1; // 1: Có tàu
+                playerGrid[currX, currY] = 1; // 1 nghĩa là có tàu
                 coords.Add(new Point(currX, currY));
             }
 
-            shipCoordinates[shipType] = coords; // Lưu danh sách ô để check Sunk
+            shipCoordinates[shipType] = coords;
 
             if (!placedShips.Contains(draggedShip)) placedShips.Add(draggedShip);
             lblStatus.Text = $"Đã đặt {placedShips.Count}/5 tàu.";
             ResetDrag();
+        }
+
+        private void ReturnShipToStart()
+        {
+            draggedShip.Parent = pnlDeployment;
+            draggedShip.Location = initialShipLocations[draggedShip];
+            ResetDrag();
+        }
+
+        private bool IsOverlapping(int startX, int startY, int length, bool isHorizontal)
+        {
+            for (int i = 0; i < length; i++)
+            {
+                int checkX = isHorizontal ? startX + i : startX;
+                int checkY = isHorizontal ? startY : startY + i;
+
+                if (playerGrid[checkX, checkY] == 1)
+                {
+                    return true; 
+                }
+            }
+            return false; 
         }
         private void ResetDrag()
         {
