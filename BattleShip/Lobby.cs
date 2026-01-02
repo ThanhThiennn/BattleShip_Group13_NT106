@@ -221,5 +221,12 @@ namespace BattleShip
 
             client = new FireSharp.FirebaseClient(config);
         }
+
+        private void btnCreateMatch_Click(object sender, EventArgs e)
+        {
+            CreateMatch frmCreate = new CreateMatch();
+            frmCreate.Show();
+            this.Close();
+        }
     }
 }

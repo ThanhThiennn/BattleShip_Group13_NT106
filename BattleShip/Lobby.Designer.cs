@@ -227,6 +227,7 @@
             this.btnCreateMatch.Size = new System.Drawing.Size(811, 60);
             this.btnCreateMatch.TabIndex = 0;
             this.btnCreateMatch.Text = "Create Match";
+            this.btnCreateMatch.Click += new System.EventHandler(this.btnCreateMatch_Click);
             // 
             // btnPlayRandom
             // 

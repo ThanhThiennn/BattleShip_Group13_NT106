@@ -220,6 +220,18 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CreateMatch.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateMatch.Designer.cs">
+      <DependentUpon>CreateMatch.cs</DependentUpon>
+    </Compile>
+    <Compile Include="CreateRoom.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CreateRoom.Designer.cs">
+      <DependentUpon>CreateRoom.cs</DependentUpon>
+    </Compile>
     <Compile Include="FirebaseService.cs" />
     <Compile Include="FormForgetPassword.cs">
       <SubType>Form</SubType>
@@ -274,6 +286,12 @@
     </Compile>
     <Compile Include="SessionManager.cs" />
     <Compile Include="UserProfile.cs" />
+    <EmbeddedResource Include="CreateMatch.resx">
+      <DependentUpon>CreateMatch.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="CreateRoom.resx">
+      <DependentUpon>CreateRoom.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormForgetPassword.resx">
       <DependentUpon>FormForgetPassword.cs</DependentUpon>
     </EmbeddedResource>

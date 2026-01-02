@@ -451,6 +451,20 @@ namespace BattleShip
         private void ProcessRoomUpdate(Room roomData)
         {
             UpdatePlayerListUI(roomData);
+            if (isBattleStarted)
+            {
+                // Nếu mình là Player1 mà Player2 biến mất, hoặc ngược lại
+                bool opponentLeft = (myRole == "Player1" && roomData.Player2 == null) ||
+                                    (myRole == "Player2" && roomData.Player1 == null);
+
+                if (opponentLeft)
+                {
+                    isBattleStarted = false; // Dừng trận đấu
+                    MessageBox.Show("Đối thủ đã rời trận đấu! Bạn sẽ được đưa về sảnh.", "Thông báo");
+                    this.Invoke(new Action(() => this.Close()));
+                    return;
+                }
+            }
 
             if (roomData.Player1 != null && roomData.Player2 != null)
             {
@@ -906,6 +920,39 @@ namespace BattleShip
             {
                 btnReady.Enabled = true;
                 MessageBox.Show("Lỗi Ready: " + ex.Message);
+            }
+        }
+
+        private async void Multiplayer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Xác nhận trước khi thoát (Tùy chọn)
+            var result = MessageBox.Show("Bạn có chắc chắn muốn rời trận đấu?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true; // Hủy việc đóng form
+                return;
+            }
+
+            try
+            {
+                if (myRole == "Player1")
+                {
+                    // Nếu là chủ phòng thoát, xóa luôn cả phòng
+                    await client.DeleteAsync($"Rooms/{roomID}");
+                }
+                else if (myRole == "Player2")
+                {
+                    // Nếu là khách thoát, chỉ xóa thông tin Player2 để người khác có thể vào
+                    await client.DeleteAsync($"Rooms/{roomID}/Player2");
+
+                    // Cập nhật lại trạng thái phòng về "waiting" nếu cần
+                    await client.SetAsync($"Rooms/{roomID}/Status", "readying");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Có thể bỏ qua lỗi khi đang đóng form
+                Console.WriteLine("Lỗi khi rời phòng: " + ex.Message);
             }
         }
     }

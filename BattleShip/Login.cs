@@ -14,6 +14,7 @@ namespace BattleShip
 {
     public partial class Login : Form
     {
+        public static string CurrentUserEmail = "";
         public Login()
         {
             InitializeComponent();
@@ -39,6 +40,7 @@ namespace BattleShip
             {
                 FirebaseAuthLink authLink = await FirebaseService.authProvider
                     .SignInWithEmailAndPasswordAsync(email, password);
+                CurrentUserEmail = email;
                 string userId = authLink.User.LocalId;
 
                 string idToken = authLink.FirebaseToken;

@@ -60,12 +60,12 @@
             this.label1 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
             this.lstPlayer = new System.Windows.Forms.ListBox();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
-            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerBattleShip)).BeginInit();
@@ -362,6 +362,19 @@
             this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
             this.PanelLeft.Name = "PanelLeft";
             // 
+            // btnOut
+            // 
+            this.btnOut.BackColor = System.Drawing.Color.Transparent;
+            this.btnOut.BorderRadius = 20;
+            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            resources.ApplyResources(this.btnOut, "btnOut");
+            this.btnOut.ForeColor = System.Drawing.Color.White;
+            this.btnOut.Name = "btnOut";
+            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
+            // 
             // lstPlayer
             // 
             this.lstPlayer.FormattingEnabled = true;
@@ -424,19 +437,6 @@
             this.btnSpeaker.ImageSize = new System.Drawing.Size(35, 35);
             this.btnSpeaker.Name = "btnSpeaker";
             // 
-            // btnOut
-            // 
-            this.btnOut.BackColor = System.Drawing.Color.Transparent;
-            this.btnOut.BorderRadius = 20;
-            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            resources.ApplyResources(this.btnOut, "btnOut");
-            this.btnOut.ForeColor = System.Drawing.Color.White;
-            this.btnOut.Name = "btnOut";
-            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
-            // 
             // Multiplayer
             // 
             resources.ApplyResources(this, "$this");
@@ -445,6 +445,7 @@
             this.Controls.Add(this.PanelRight);
             this.ForeColor = System.Drawing.SystemColors.Highlight;
             this.Name = "Multiplayer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Multiplayer_FormClosing);
             this.Load += new System.EventHandler(this.Multiplayer_Load);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
