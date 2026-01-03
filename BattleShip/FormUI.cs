@@ -16,6 +16,7 @@ namespace BattleShip
         public FormUI()
         {
             InitializeComponent();
+            UpdateButtonState();
         }
 
         private void guna2Panel2_Paint(object sender, PaintEventArgs e)
@@ -68,6 +69,34 @@ namespace BattleShip
                 {
                     MessageBox.Show("Không thể mở Form Đăng nhập: " + ex.Message, "Lỗi Hệ Thống", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void btnSpeaker_Click(object sender, EventArgs e)
+        {
+            AudioManager.ToggleMute();
+            UpdateButtonState();
+        }
+
+        private void UpdateButtonState()
+        {
+            if (AudioManager.IsMuted)
+            {
+                // TRẠNG THÁI: TẮT TIẾNG
+                btnSpeaker.Text = "OFF"; // Hoặc để trống nếu dùng icon
+                btnSpeaker.FillColor = Color.Gray;
+
+                // Nếu muốn đổi icon (nếu btnSpeaker là Guna2Button)
+                // btnSpeaker.Image = Properties.Resources.mute_icon; 
+            }
+            else
+            {
+                // TRẠNG THÁI: ĐANG BẬT
+                btnSpeaker.Text = "ON";
+                btnSpeaker.FillColor = Color.FromArgb(0, 118, 212);
+
+                // Nếu muốn đổi icon
+                // btnSpeaker.Image = Properties.Resources.speaker_icon;
             }
         }
     }
