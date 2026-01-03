@@ -36,7 +36,9 @@
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+
             this.txtPlayerName = new System.Windows.Forms.TextBox();
+
             this.btnJoinByID = new Guna.UI2.WinForms.Guna2Button();
             this.btnBrowseMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnCreateMatch = new Guna.UI2.WinForms.Guna2Button();
@@ -58,8 +60,10 @@
             this.PanelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
             this.PanelLeft.Location = new System.Drawing.Point(0, 0);
+
             this.PanelLeft.Name = "PanelLeft";
             this.PanelLeft.Size = new System.Drawing.Size(352, 673);
+
             this.PanelLeft.TabIndex = 0;
             // 
             // btnLogOut
@@ -111,6 +115,7 @@
             this.btnNews.ForeColor = System.Drawing.Color.White;
             this.btnNews.Image = ((System.Drawing.Image)(resources.GetObject("btnNews.Image")));
             this.btnNews.ImageSize = new System.Drawing.Size(35, 35);
+
             this.btnNews.Location = new System.Drawing.Point(121, 628);
             this.btnNews.Name = "btnNews";
             this.btnNews.Size = new System.Drawing.Size(55, 45);
@@ -128,9 +133,11 @@
             this.btnSetting.ForeColor = System.Drawing.Color.White;
             this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
             this.btnSetting.ImageSize = new System.Drawing.Size(40, 40);
+
             this.btnSetting.Location = new System.Drawing.Point(231, 628);
             this.btnSetting.Name = "btnSetting";
             this.btnSetting.Size = new System.Drawing.Size(120, 45);
+
             this.btnSetting.TabIndex = 0;
             // 
             // btnSpeaker
@@ -153,6 +160,7 @@
             // PanelRight
             // 
             this.PanelRight.BorderRadius = 15;
+
             this.PanelRight.Controls.Add(this.txtPlayerName);
             this.PanelRight.Controls.Add(this.btnJoinByID);
             this.PanelRight.Controls.Add(this.btnBrowseMatch);
@@ -162,6 +170,7 @@
             this.PanelRight.Controls.Add(this.pictureBox1);
             this.PanelRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PanelRight.FillColor = System.Drawing.Color.LavenderBlush;
+
             this.PanelRight.Location = new System.Drawing.Point(352, 0);
             this.PanelRight.Name = "PanelRight";
             this.PanelRight.Size = new System.Drawing.Size(859, 673);
@@ -204,11 +213,13 @@
             this.btnBrowseMatch.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.btnBrowseMatch.ForeColor = System.Drawing.Color.White;
             this.btnBrowseMatch.ImageSize = new System.Drawing.Size(32, 32);
+
             this.btnBrowseMatch.Location = new System.Drawing.Point(27, 373);
             this.btnBrowseMatch.Name = "btnBrowseMatch";
             this.btnBrowseMatch.Size = new System.Drawing.Size(811, 60);
             this.btnBrowseMatch.TabIndex = 0;
             this.btnBrowseMatch.Text = "Browse Match";
+
             // 
             // btnCreateMatch
             // 
@@ -227,6 +238,7 @@
             this.btnCreateMatch.Size = new System.Drawing.Size(811, 60);
             this.btnCreateMatch.TabIndex = 0;
             this.btnCreateMatch.Text = "Create Match";
+
             // 
             // btnPlayRandom
             // 
@@ -241,9 +253,11 @@
             this.btnPlayRandom.ForeColor = System.Drawing.Color.White;
             this.btnPlayRandom.Image = global::BattleShip.Properties.Resources.multiPlayer;
             this.btnPlayRandom.ImageSize = new System.Drawing.Size(32, 32);
+
             this.btnPlayRandom.Location = new System.Drawing.Point(27, 214);
             this.btnPlayRandom.Name = "btnPlayRandom";
             this.btnPlayRandom.Size = new System.Drawing.Size(397, 60);
+
             this.btnPlayRandom.TabIndex = 0;
             this.btnPlayRandom.Text = "Play Random Opponent";
             this.btnPlayRandom.Click += new System.EventHandler(this.btnPlayRandom_Click);
@@ -260,9 +274,11 @@
             this.btnPlayBot.ForeColor = System.Drawing.Color.White;
             this.btnPlayBot.Image = ((System.Drawing.Image)(resources.GetObject("btnPlayBot.Image")));
             this.btnPlayBot.ImageSize = new System.Drawing.Size(30, 30);
+
             this.btnPlayBot.Location = new System.Drawing.Point(427, 214);
             this.btnPlayBot.Name = "btnPlayBot";
             this.btnPlayBot.Size = new System.Drawing.Size(411, 60);
+
             this.btnPlayBot.TabIndex = 0;
             this.btnPlayBot.Text = " Play Against a Bot";
             this.btnPlayBot.Click += new System.EventHandler(this.btnPlayBot_Click);
@@ -271,9 +287,11 @@
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.LavenderBlush;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+
             this.pictureBox1.Location = new System.Drawing.Point(229, -46);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(386, 367);
+
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
@@ -291,6 +309,7 @@
             this.PanelLeft.ResumeLayout(false);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
+
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -312,5 +331,6 @@
         private Guna.UI2.WinForms.Guna2Button btnFriend;
         private Guna.UI2.WinForms.Guna2Button btnNews;
         private System.Windows.Forms.TextBox txtPlayerName;
+
     }
 }

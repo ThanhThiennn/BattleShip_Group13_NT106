@@ -1,3 +1,4 @@
+
 ﻿using BattleShip;
 using Firebase;
 using Firebase.Database;
@@ -18,10 +19,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
+
 namespace BattleShip
 {
     public partial class Lobby : Form
     {
+
         IFirebaseConfig config = new FirebaseConfig
         {
             BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
@@ -30,6 +33,7 @@ namespace BattleShip
         public Lobby()
         {
             InitializeComponent();
+            UpdateButtonState();
         }
 
         private void guna2Panel2_Paint(object sender, PaintEventArgs e)
@@ -182,6 +186,7 @@ namespace BattleShip
         }
 
 
+
         private void btnLogOut_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show(
@@ -210,6 +215,7 @@ namespace BattleShip
             }
         }
 
+
         private void Lobby_Load(object sender, EventArgs e)
         {
             // Lấy key từ biến môi trường
@@ -220,6 +226,33 @@ namespace BattleShip
             }
 
             client = new FireSharp.FirebaseClient(config);
+        }
+        private void btnSpeaker_Click(object sender, EventArgs e)
+        {
+            AudioManager.ToggleMute();
+            UpdateButtonState();
+        }
+
+        private void UpdateButtonState()
+        {
+            if (AudioManager.IsMuted)
+            {
+                // TRẠNG THÁI: TẮT TIẾNG
+                btnSpeaker.Text = "OFF"; // Hoặc để trống nếu dùng icon
+                btnSpeaker.FillColor = Color.Gray;
+
+                // Nếu muốn đổi icon (nếu btnSpeaker là Guna2Button)
+                // btnSpeaker.Image = Properties.Resources.mute_icon; 
+            }
+            else
+            {
+                // TRẠNG THÁI: ĐANG BẬT
+                btnSpeaker.Text = "ON";
+                btnSpeaker.FillColor = Color.FromArgb(0, 118, 212);
+
+                // Nếu muốn đổi icon
+                // btnSpeaker.Image = Properties.Resources.speaker_icon;
+            }
         }
     }
 }

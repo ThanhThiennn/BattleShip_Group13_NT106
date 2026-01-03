@@ -220,6 +220,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AudioManager.cs" />
     <Compile Include="FirebaseService.cs" />
     <Compile Include="FormForgetPassword.cs">
       <SubType>Form</SubType>
@@ -336,6 +337,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\hit_icon.png" />
+    <None Include="Resources\bg.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
