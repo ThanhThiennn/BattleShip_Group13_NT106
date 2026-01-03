@@ -5,7 +5,6 @@ using Firebase.Database;
 using Firebase.Database.Query;
 using FireSharp.Config;
 using FireSharp.Interfaces;
-using FireSharp.Interfaces;
 using FireSharp.Response;
 using Newtonsoft.Json;
 using System;
