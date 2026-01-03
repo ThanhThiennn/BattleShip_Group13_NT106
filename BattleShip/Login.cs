@@ -51,7 +51,7 @@ namespace BattleShip
                 this.Invoke((MethodInvoker)delegate
                 {
                     
-                    FormUI gameForm = new FormUI();
+                    Lobby gameForm = new Lobby();
                     gameForm.Show();
                     this.Hide(); 
                 });

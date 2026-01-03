@@ -11,9 +11,9 @@ using BattleShip;
 
 namespace BattleShip
 {
-    public partial class FormUI : Form
+    public partial class Lobby : Form
     {
-        public FormUI()
+        public Lobby()
         {
             InitializeComponent();
             UpdateButtonState();
