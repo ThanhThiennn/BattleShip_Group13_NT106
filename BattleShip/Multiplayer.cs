@@ -47,7 +47,17 @@ namespace BattleShip
         //private bool isSetupComplete = false;
         private bool isReady = false;
 
-        
+        private Timer _blinkTimer;
+        private int _dotCount = 0; // Biến đếm số dấu chấm (., .., ...)
+        private Room _currentRoomData;
+        // Danh sách Avatar (Copy từ UIMyAccount sang)
+        private List<Image> _avatars = new List<Image>()
+        {
+            Properties.Resources.avt1, Properties.Resources.avt2,
+            Properties.Resources.avt3, Properties.Resources.avt4,
+            Properties.Resources.avt5, Properties.Resources.avt6,
+            Properties.Resources.avt7, Properties.Resources.avt8
+        };
 
         IFirebaseConfig config = new FirebaseConfig
         {
@@ -65,9 +75,12 @@ namespace BattleShip
         public Multiplayer(string id, string role)
         {
             InitializeComponent();
+            _blinkTimer = new Timer();
+            _blinkTimer.Interval = 500; // Nháy mỗi 0.5 giây
+            _blinkTimer.Tick += BlinkTimer_Tick;
+            _blinkTimer.Start();
             this.roomID = id;
             this.myRole = role;
-
             this.UpdateStyles();
             pnlGameGrid.Paint += pnlGameGrid_Paint;
             pnlBotGrid.Paint += pnlGameGrid_Paint;
@@ -76,6 +89,20 @@ namespace BattleShip
             this.KeyUp += Multiplayer_KeyUp;
 
             InitShipData();
+        }
+
+        private void BlinkTimer_Tick(object sender, EventArgs e)
+        {
+            _dotCount = (_dotCount + 1) % 4; // Chạy vòng tròn: 0, 1, 2, 3
+            string dots = new string('.', _dotCount); // Tạo chuỗi ".", "..", "..."
+
+            // Cập nhật UI nếu chưa sẵn sàng (Logic sẽ được gọi trong listener nhưng ta cần biến flag, xem bước 3)
+            // Cách đơn giản nhất: Gọi lại hàm cập nhật UI status nếu dữ liệu phòng đang tồn tại
+            if (_currentRoomData != null)
+            {
+                UpdatePlayerStatusUI(_currentRoomData.Player1, lblUserNameP1, avtPlayer1);
+                UpdatePlayerStatusUI(_currentRoomData.Player2, lblUserNameP2, avtPlayer2);
+            }
         }
 
         private void InitShipData()
@@ -149,11 +176,25 @@ namespace BattleShip
                 _ = RefreshDataFromServer();
             });
 
-            client.OnAsync($"Rooms/{roomID}/Turn", (sender, args, context) => {
+            client.OnAsync($"Rooms/{roomID}/Turn", async (sender, args, context) => {
                 if (string.IsNullOrEmpty(args.Data) || args.Data == "null") return;
                 string currentTurn = args.Data.Replace("\"", "").Trim();
 
+                // --- SỬA LỖI TẠI ĐÂY ---
+                // 1. Lấy dữ liệu phòng mới nhất từ Server
+                var resp = await client.GetAsync($"Rooms/{roomID}");
+                var room = resp.ResultAs<Room>();
+                // -----------------------
+
+                _currentRoomData = room;
+
                 this.Invoke(new Action(() => {
+                    // Cập nhật Player 1
+                    UpdatePlayerStatusUI(room.Player1, lblUserNameP1, avtPlayer1);
+
+                    // Cập nhật Player 2
+                    UpdatePlayerStatusUI(room.Player2, lblUserNameP2, avtPlayer2);
+
                     bool oldTurn = isMyTurn;
                     isMyTurn = (currentTurn == myRole);
 
@@ -163,7 +204,7 @@ namespace BattleShip
                         {
                             lblStatus.Text = "Đến lượt bạn bắn!";
                             lblStatus.ForeColor = Color.Lime;
-                            pnlBotGrid.Enabled = true; 
+                            pnlBotGrid.Enabled = true;
                         }
                         else
                         {
@@ -906,6 +947,37 @@ namespace BattleShip
             {
                 btnReady.Enabled = true;
                 MessageBox.Show("Lỗi Ready: " + ex.Message);
+            }
+        }
+        private void UpdatePlayerStatusUI(PlayerData player, Label lblName, PictureBox picAvatar)
+        {
+            if (player == null)
+            {
+                lblName.Text = "Waiting...";
+                lblName.ForeColor = Color.Gray;
+                picAvatar.Image = null; // Hoặc ảnh mặc định
+                return;
+            }
+
+            // 1. Cập nhật Avatar
+            if (player.AvatarId >= 0 && player.AvatarId < _avatars.Count)
+            {
+                picAvatar.Image = _avatars[player.AvatarId];
+            }
+
+            // 2. Cập nhật Trạng thái và Màu sắc
+            if (player.IsReady)
+            {
+                // TRẠNG THÁI: SẴN SÀNG (Xanh lá, không nhấp nháy)
+                lblName.Text = player.Name; // Chỉ hiện tên
+                lblName.ForeColor = Color.LimeGreen; // Hoặc Color.LightGreen
+            }
+            else
+            {
+                // TRẠNG THÁI: CHƯA SẴN SÀNG (Trắng, nhấp nháy dấu ...)
+                string dots = new string('.', _dotCount); // Lấy từ biến của Timer
+                lblName.Text = player.Name + dots;
+                lblName.ForeColor = Color.White;
             }
         }
     }

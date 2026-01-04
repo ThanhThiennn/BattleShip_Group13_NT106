@@ -24,6 +24,7 @@ namespace BattleShip
     public partial class Lobby : Form
     {
         private string _currentPlayerName = "Unknown Player";
+        private int _currentAvatarId = 0;
         IFirebaseConfig config = new FirebaseConfig
         {
             BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
@@ -72,7 +73,7 @@ namespace BattleShip
             if (targetRoom != null)
             {
                 // VÀO PHÒNG CÓ SẴN (Player 2)
-                var p2 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5 };
+                var p2 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5, AvatarId = _currentAvatarId };
 
                 // Cập nhật Player2 và đổi Status thành readying
                 await client.UpdateAsync($"Rooms/{targetRoom}", new
@@ -85,7 +86,7 @@ namespace BattleShip
             else
             {
                 string newId = "Room_" + new Random().Next(1000, 9999);
-                var p1 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5 };
+                var p1 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5, AvatarId = _currentAvatarId };
 
                 var newRoom = new Room
                 {
@@ -235,6 +236,7 @@ namespace BattleShip
                 if (profile != null && !string.IsNullOrEmpty(profile.DisplayName))
                 {
                     _currentPlayerName = profile.DisplayName;
+                    _currentAvatarId = profile.AvatarId;
                 }
             }
             catch

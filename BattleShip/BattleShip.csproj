@@ -411,9 +411,6 @@
     <None Include="Resources\discord_icon.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\user_face_icon.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\gmail_icon.png" />
   </ItemGroup>
   <ItemGroup>
@@ -482,6 +479,8 @@
     <Content Include="obj\Debug\BattleShip.pdb" />
     <Content Include="obj\Debug\dje\BattleShip.resources.dll" />
     <Content Include="obj\Debug\TempPE\Properties.Resources.Designer.cs.dll" />
+    <None Include="Resources\user_face_icon.png" />
+    <None Include="Resources\user_face_icon.bmp" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />

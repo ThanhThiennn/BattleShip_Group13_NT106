@@ -61,11 +61,121 @@ namespace BattleShip.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt1 {
+            get {
+                object obj = ResourceManager.GetObject("avt1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt2 {
+            get {
+                object obj = ResourceManager.GetObject("avt2", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt3 {
+            get {
+                object obj = ResourceManager.GetObject("avt3", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt4 {
+            get {
+                object obj = ResourceManager.GetObject("avt4", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt5 {
+            get {
+                object obj = ResourceManager.GetObject("avt5", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt6 {
+            get {
+                object obj = ResourceManager.GetObject("avt6", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt7 {
+            get {
+                object obj = ResourceManager.GetObject("avt7", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap avt8 {
+            get {
+                object obj = ResourceManager.GetObject("avt8", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         public static System.IO.UnmanagedMemoryStream bg {
             get {
                 return ResourceManager.GetStream("bg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap discord_icon {
+            get {
+                object obj = ResourceManager.GetObject("discord_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap flag_icon {
+            get {
+                object obj = ResourceManager.GetObject("flag_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap gmail_icon {
+            get {
+                object obj = ResourceManager.GetObject("gmail_icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -82,116 +192,7 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap avt1 {
-            get {
-                object obj = ResourceManager.GetObject("avt1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt2 {
-            get {
-                object obj = ResourceManager.GetObject("avt2", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt3 {
-            get {
-                object obj = ResourceManager.GetObject("avt3", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt4 {
-            get {
-                object obj = ResourceManager.GetObject("avt4", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt5 {
-            get {
-                object obj = ResourceManager.GetObject("avt5", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt6 {
-            get {
-                object obj = ResourceManager.GetObject("avt6", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt7 {
-            get {
-                object obj = ResourceManager.GetObject("avt7", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap avt8 {
-            get {
-                object obj = ResourceManager.GetObject("avt8", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap discord_icon {
-            get {
-                object obj = ResourceManager.GetObject("discord_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap flag_icon {
-            get {
-                object obj = ResourceManager.GetObject("flag_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap gmail_icon {
-            get {
-                object obj = ResourceManager.GetObject("gmail_icon", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap link_chain_icon {
+        public static System.Drawing.Bitmap link_chain_icon {
             get {
                 object obj = ResourceManager.GetObject("link_chain_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -201,7 +202,7 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap LOGO_GAME {
+        public static System.Drawing.Bitmap LOGO_GAME {
             get {
                 object obj = ResourceManager.GetObject("LOGO GAME", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -214,6 +215,16 @@ namespace BattleShip.Properties {
         public static System.Drawing.Bitmap LOGO_GAME_Photoroom {
             get {
                 object obj = ResourceManager.GetObject("LOGO GAME-Photoroom", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap LOGO_GAME_Photoroom1 {
+            get {
+                object obj = ResourceManager.GetObject("LOGO GAME-Photoroom1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -241,17 +252,7 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap LOGO_GAME_Photoroom1 {
-            get {
-                object obj = ResourceManager.GetObject("LOGO GAME-Photoroom1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap multiPlayer {
+        public static System.Drawing.Bitmap multiPlayer {
             get {
                 object obj = ResourceManager.GetObject("multiPlayer", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -261,7 +262,7 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap user_face_icon {
+        public static System.Drawing.Bitmap user_face_icon {
             get {
                 object obj = ResourceManager.GetObject("user_face_icon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));

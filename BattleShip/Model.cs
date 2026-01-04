@@ -12,6 +12,7 @@ namespace BattleShip
         public string Name { get; set; }
         public bool IsReady { get; set; }
         public int ShipsLeft { get; set; }
+        public int AvatarId { get; set; }
     }
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class Room
