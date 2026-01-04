@@ -17,6 +17,8 @@ namespace BattleShip
         public Login()
         {
             InitializeComponent();
+
+            AudioManager.PlayBackgroundMusic();
         }     
      
         private void llbForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -49,7 +51,7 @@ namespace BattleShip
                 this.Invoke((MethodInvoker)delegate
                 {
                     
-                    FormUI gameForm = new FormUI();
+                    Lobby gameForm = new Lobby();
                     gameForm.Show();
                     this.Hide(); 
                 });
