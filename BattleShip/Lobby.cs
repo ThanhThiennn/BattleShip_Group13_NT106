@@ -23,7 +23,7 @@ namespace BattleShip
 {
     public partial class Lobby : Form
     {
-
+        private string _currentPlayerName = "Unknown Player";
         IFirebaseConfig config = new FirebaseConfig
         {
             BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
@@ -58,12 +58,7 @@ namespace BattleShip
 
         private async void btnPlayRandom_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(txtPlayerName.Text))
-            {
-                MessageBox.Show("Vui lòng nhập tên!");
-                return;
-            }
-
+            
             var resp = await client.GetAsync("Rooms");
             var allRooms = resp.ResultAs<Dictionary<string, Room>>();
 
@@ -77,7 +72,7 @@ namespace BattleShip
             if (targetRoom != null)
             {
                 // VÀO PHÒNG CÓ SẴN (Player 2)
-                var p2 = new PlayerData { Name = txtPlayerName.Text, IsReady = false, ShipsLeft = 5 };
+                var p2 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5 };
 
                 // Cập nhật Player2 và đổi Status thành readying
                 await client.UpdateAsync($"Rooms/{targetRoom}", new
@@ -90,7 +85,7 @@ namespace BattleShip
             else
             {
                 string newId = "Room_" + new Random().Next(1000, 9999);
-                var p1 = new PlayerData { Name = txtPlayerName.Text, IsReady = false, ShipsLeft = 5 };
+                var p1 = new PlayerData { Name = _currentPlayerName, IsReady = false, ShipsLeft = 5 };
 
                 var newRoom = new Room
                 {
@@ -142,7 +137,7 @@ namespace BattleShip
                 Turn = "Player1", // Player1 đi trước mặc định
                 Player1 = new
                 {
-                    Name = txtPlayerName.Text, // Lấy tên từ TextBox ở Lobby
+                    Name = _currentPlayerName, // Lấy tên từ TextBox ở Lobby
                     IsReady = false,
                     ShipsLeft = 5
                 }
@@ -159,7 +154,7 @@ namespace BattleShip
         {
             var p2Data = new
             {
-                Name = txtPlayerName.Text,
+                Name = _currentPlayerName,
                 IsReady = false,
                 ShipsLeft = 5
             };
@@ -215,7 +210,7 @@ namespace BattleShip
         }
 
 
-        private void Lobby_Load(object sender, EventArgs e)
+        private async void Lobby_Load(object sender, EventArgs e)
         {
             // Lấy key từ biến môi trường
             string dbSecret = Environment.GetEnvironmentVariable("FIREBASE_SECRET_KEY", EnvironmentVariableTarget.User);
@@ -225,6 +220,27 @@ namespace BattleShip
             }
 
             client = new FireSharp.FirebaseClient(config);
+            // get username
+            if (!string.IsNullOrEmpty(SessionManager.CurrentEmail))
+            {
+                _currentPlayerName = SessionManager.CurrentEmail;
+            }
+
+            try
+            {
+                // Tải thông tin chi tiết từ Firebase (để lấy DisplayName nếu user đã đổi tên)
+                var response = await client.GetAsync($"Users/{SessionManager.CurrentUserID}");
+                var profile = response.ResultAs<UserProfile>();
+
+                if (profile != null && !string.IsNullOrEmpty(profile.DisplayName))
+                {
+                    _currentPlayerName = profile.DisplayName;
+                }
+            }
+            catch
+            {
+                
+            }
         }
         private void btnSpeaker_Click(object sender, EventArgs e)
         {

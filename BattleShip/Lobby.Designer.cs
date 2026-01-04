@@ -30,20 +30,19 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Lobby));
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnSetting_Lobby = new Guna.UI2.WinForms.Guna2Button();
             this.btnLogOut = new Guna.UI2.WinForms.Guna2Button();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
-            this.txtPlayerName = new System.Windows.Forms.TextBox();
             this.btnJoinByID = new Guna.UI2.WinForms.Guna2Button();
             this.btnBrowseMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnCreateMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnPlayRandom = new Guna.UI2.WinForms.Guna2Button();
             this.btnPlayBot = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnSetting_Lobby = new Guna.UI2.WinForms.Guna2Button();
             this.PanelLeft.SuspendLayout();
             this.PanelRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -64,6 +63,24 @@
             this.PanelLeft.Name = "PanelLeft";
             this.PanelLeft.Size = new System.Drawing.Size(396, 841);
             this.PanelLeft.TabIndex = 0;
+            // 
+            // btnSetting_Lobby
+            // 
+            this.btnSetting_Lobby.BorderThickness = 1;
+            this.btnSetting_Lobby.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting_Lobby.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting_Lobby.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSetting_Lobby.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSetting_Lobby.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnSetting_Lobby.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSetting_Lobby.ForeColor = System.Drawing.Color.White;
+            this.btnSetting_Lobby.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting_Lobby.Image")));
+            this.btnSetting_Lobby.ImageSize = new System.Drawing.Size(40, 40);
+            this.btnSetting_Lobby.Location = new System.Drawing.Point(257, 785);
+            this.btnSetting_Lobby.Name = "btnSetting_Lobby";
+            this.btnSetting_Lobby.Size = new System.Drawing.Size(136, 56);
+            this.btnSetting_Lobby.TabIndex = 2;
+            this.btnSetting_Lobby.Click += new System.EventHandler(this.btnSetting_Lobby_Click);
             // 
             // btnLogOut
             // 
@@ -162,7 +179,6 @@
             // PanelRight
             // 
             this.PanelRight.BorderRadius = 15;
-            this.PanelRight.Controls.Add(this.txtPlayerName);
             this.PanelRight.Controls.Add(this.btnJoinByID);
             this.PanelRight.Controls.Add(this.btnBrowseMatch);
             this.PanelRight.Controls.Add(this.btnCreateMatch);
@@ -176,14 +192,6 @@
             this.PanelRight.Name = "PanelRight";
             this.PanelRight.Size = new System.Drawing.Size(966, 841);
             this.PanelRight.TabIndex = 1;
-            // 
-            // txtPlayerName
-            // 
-            this.txtPlayerName.Location = new System.Drawing.Point(30, 15);
-            this.txtPlayerName.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.txtPlayerName.Name = "txtPlayerName";
-            this.txtPlayerName.Size = new System.Drawing.Size(112, 26);
-            this.txtPlayerName.TabIndex = 3;
             // 
             // btnJoinByID
             // 
@@ -295,24 +303,6 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // btnSetting_Lobby
-            // 
-            this.btnSetting_Lobby.BorderThickness = 1;
-            this.btnSetting_Lobby.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting_Lobby.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting_Lobby.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSetting_Lobby.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSetting_Lobby.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnSetting_Lobby.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSetting_Lobby.ForeColor = System.Drawing.Color.White;
-            this.btnSetting_Lobby.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting_Lobby.Image")));
-            this.btnSetting_Lobby.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnSetting_Lobby.Location = new System.Drawing.Point(257, 785);
-            this.btnSetting_Lobby.Name = "btnSetting_Lobby";
-            this.btnSetting_Lobby.Size = new System.Drawing.Size(136, 56);
-            this.btnSetting_Lobby.TabIndex = 2;
-            this.btnSetting_Lobby.Click += new System.EventHandler(this.btnSetting_Lobby_Click);
-            // 
             // Lobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -326,7 +316,6 @@
             this.Load += new System.EventHandler(this.Lobby_Load);
             this.PanelLeft.ResumeLayout(false);
             this.PanelRight.ResumeLayout(false);
-            this.PanelRight.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -347,7 +336,6 @@
         private Guna.UI2.WinForms.Guna2Button btnSpeaker;
         private Guna.UI2.WinForms.Guna2Button btnFriend;
         private Guna.UI2.WinForms.Guna2Button btnNews;
-        private System.Windows.Forms.TextBox txtPlayerName;
         private Guna.UI2.WinForms.Guna2Button btnSetting_Lobby;
     }
 }
