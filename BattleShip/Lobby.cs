@@ -254,6 +254,7 @@ namespace BattleShip
                 // Nếu muốn đổi icon
                 // btnSpeaker.Image = Properties.Resources.speaker_icon;
             }
+        }
         private void Chat_Click(object sender, EventArgs e)
         {
             

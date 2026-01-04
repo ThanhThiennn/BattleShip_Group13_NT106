@@ -221,6 +221,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AudioManager.cs" />
+    <Compile Include="Chat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Chat.Designer.cs">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </Compile>
     <Compile Include="FirebaseService.cs" />
     <Compile Include="FormChat.cs">
       <SubType>Form</SubType>
@@ -292,6 +298,9 @@
       <DependentUpon>UISettingMatch.cs</DependentUpon>
     </Compile>
     <Compile Include="UserProfile.cs" />
+    <EmbeddedResource Include="Chat.resx">
+      <DependentUpon>Chat.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FormChat.resx">
       <DependentUpon>FormChat.cs</DependentUpon>
     </EmbeddedResource>

@@ -61,6 +61,16 @@ namespace BattleShip.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap _1049236_200 {
+            get {
+                object obj = ResourceManager.GetObject("1049236-200", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         public static System.IO.UnmanagedMemoryStream bg {
@@ -75,9 +85,6 @@ namespace BattleShip.Properties {
         public static System.Drawing.Bitmap hit_icon {
             get {
                 object obj = ResourceManager.GetObject("hit_icon", resourceCulture);
-        internal static System.Drawing.Bitmap _1049236_200 {
-            get {
-                object obj = ResourceManager.GetObject("1049236-200", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
