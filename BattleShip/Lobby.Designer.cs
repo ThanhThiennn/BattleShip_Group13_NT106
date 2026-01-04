@@ -157,6 +157,7 @@
             this.btnSpeaker.Name = "btnSpeaker";
             this.btnSpeaker.Size = new System.Drawing.Size(135, 56);
             this.btnSpeaker.TabIndex = 0;
+            this.btnSpeaker.Click += new System.EventHandler(this.btnSpeaker_Click);
             // 
             // PanelRight
             // 
