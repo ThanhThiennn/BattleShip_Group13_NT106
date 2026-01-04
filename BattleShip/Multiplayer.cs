@@ -852,5 +852,12 @@ namespace BattleShip
                 MessageBox.Show("Lỗi Ready: " + ex.Message);
             }
         }
+
+        private void Chat_Click(object sender, EventArgs e)
+        {
+            
+            Chat chatForm = new Chat(this.roomID, this.myRole, this.client);
+            chatForm.Show();
+        }
     }
 }

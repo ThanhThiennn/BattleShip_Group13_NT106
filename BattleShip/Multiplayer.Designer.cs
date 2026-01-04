@@ -31,15 +31,11 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Multiplayer));
             this.lblStatus = new System.Windows.Forms.Label();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
-            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
-            this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlGameGrid = new Guna.UI2.WinForms.Guna2Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.guna2Panel1 = new Guna.UI2.WinForms.Guna2Panel();
             this.pbPlayerBattleShip = new System.Windows.Forms.PictureBox();
             this.pbPlayerCruiser1 = new System.Windows.Forms.PictureBox();
@@ -62,16 +58,19 @@
             this.picCruiser1 = new System.Windows.Forms.PictureBox();
             this.picBattleShip = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.lblUserNameP2 = new System.Windows.Forms.Label();
+            this.lblUserNameP1 = new System.Windows.Forms.Label();
+            this.avtPlayer2 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.avtPlayer1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
+            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
-            this.avtPlayer1 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
-            this.avtPlayer2 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
-            this.lblUserNameP1 = new System.Windows.Forms.Label();
-            this.lblUserNameP2 = new System.Windows.Forms.Label();
+            this.Chat = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight.SuspendLayout();
-            this.PanelLeft.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerBattleShip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerCruiser1)).BeginInit();
@@ -91,8 +90,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.picCruiser2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCruiser1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBattleShip)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.avtPlayer1)).BeginInit();
+            this.PanelLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avtPlayer2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.avtPlayer1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // lblStatus
@@ -119,6 +120,11 @@
             this.PanelRight.Name = "PanelRight";
             this.PanelRight.ShadowDecoration.Shadow = new System.Windows.Forms.Padding(50);
             // 
+            // pnlBotGrid
+            // 
+            resources.ApplyResources(this.pnlBotGrid, "pnlBotGrid");
+            this.pnlBotGrid.Name = "pnlBotGrid";
+            // 
             // label4
             // 
             resources.ApplyResources(this.label4, "label4");
@@ -131,72 +137,16 @@
             this.label3.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.label3.Name = "label3";
             // 
+            // pnlGameGrid
+            // 
+            resources.ApplyResources(this.pnlGameGrid, "pnlGameGrid");
+            this.pnlGameGrid.Name = "pnlGameGrid";
+            // 
             // label2
             // 
             resources.ApplyResources(this.label2, "label2");
             this.label2.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.label2.Name = "label2";
-            // 
-            // PanelLeft
-            // 
-            this.PanelLeft.Controls.Add(this.lblUserNameP2);
-            this.PanelLeft.Controls.Add(this.lblUserNameP1);
-            this.PanelLeft.Controls.Add(this.avtPlayer2);
-            this.PanelLeft.Controls.Add(this.avtPlayer1);
-            this.PanelLeft.Controls.Add(this.btnOut);
-            this.PanelLeft.Controls.Add(this.pictureBox1);
-            this.PanelLeft.Controls.Add(this.btnFriend);
-            this.PanelLeft.Controls.Add(this.btnNews);
-            this.PanelLeft.Controls.Add(this.btnSetting);
-            this.PanelLeft.Controls.Add(this.btnSpeaker);
-            resources.ApplyResources(this.PanelLeft, "PanelLeft");
-            this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            this.PanelLeft.Name = "PanelLeft";
-            // 
-            // btnOut
-            // 
-            this.btnOut.BackColor = System.Drawing.Color.Transparent;
-            this.btnOut.BorderRadius = 20;
-            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            resources.ApplyResources(this.btnOut, "btnOut");
-            this.btnOut.ForeColor = System.Drawing.Color.White;
-            this.btnOut.Name = "btnOut";
-            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
-            this.pictureBox1.Image = global::BattleShip.Properties.Resources.LOGO_GAME1;
-            resources.ApplyResources(this.pictureBox1, "pictureBox1");
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.TabStop = false;
-            // 
-            // btnFriend
-            // 
-            this.btnFriend.BorderThickness = 1;
-            this.btnFriend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnFriend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnFriend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnFriend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnFriend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            resources.ApplyResources(this.btnFriend, "btnFriend");
-            this.btnFriend.ForeColor = System.Drawing.Color.White;
-            this.btnFriend.Image = ((System.Drawing.Image)(resources.GetObject("btnFriend.Image")));
-            this.btnFriend.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnFriend.Name = "btnFriend";
-            // 
-            // pnlBotGrid
-            // 
-            resources.ApplyResources(this.pnlBotGrid, "pnlBotGrid");
-            this.pnlBotGrid.Name = "pnlBotGrid";
-            // 
-            // pnlGameGrid
-            // 
-            resources.ApplyResources(this.pnlGameGrid, "pnlGameGrid");
-            this.pnlGameGrid.Name = "pnlGameGrid";
             // 
             // guna2Panel1
             // 
@@ -397,6 +347,90 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Name = "label1";
             // 
+            // PanelLeft
+            // 
+            this.PanelLeft.Controls.Add(this.Chat);
+            this.PanelLeft.Controls.Add(this.lblUserNameP2);
+            this.PanelLeft.Controls.Add(this.lblUserNameP1);
+            this.PanelLeft.Controls.Add(this.avtPlayer2);
+            this.PanelLeft.Controls.Add(this.avtPlayer1);
+            this.PanelLeft.Controls.Add(this.btnOut);
+            this.PanelLeft.Controls.Add(this.pictureBox1);
+            this.PanelLeft.Controls.Add(this.btnFriend);
+            this.PanelLeft.Controls.Add(this.btnNews);
+            this.PanelLeft.Controls.Add(this.btnSetting);
+            this.PanelLeft.Controls.Add(this.btnSpeaker);
+            resources.ApplyResources(this.PanelLeft, "PanelLeft");
+            this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            this.PanelLeft.Name = "PanelLeft";
+            // 
+            // lblUserNameP2
+            // 
+            resources.ApplyResources(this.lblUserNameP2, "lblUserNameP2");
+            this.lblUserNameP2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            this.lblUserNameP2.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblUserNameP2.Name = "lblUserNameP2";
+            // 
+            // lblUserNameP1
+            // 
+            resources.ApplyResources(this.lblUserNameP1, "lblUserNameP1");
+            this.lblUserNameP1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            this.lblUserNameP1.ForeColor = System.Drawing.SystemColors.Control;
+            this.lblUserNameP1.Name = "lblUserNameP1";
+            // 
+            // avtPlayer2
+            // 
+            this.avtPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            resources.ApplyResources(this.avtPlayer2, "avtPlayer2");
+            this.avtPlayer2.ImageRotate = 0F;
+            this.avtPlayer2.Name = "avtPlayer2";
+            this.avtPlayer2.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.avtPlayer2.TabStop = false;
+            // 
+            // avtPlayer1
+            // 
+            this.avtPlayer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
+            resources.ApplyResources(this.avtPlayer1, "avtPlayer1");
+            this.avtPlayer1.ImageRotate = 0F;
+            this.avtPlayer1.Name = "avtPlayer1";
+            this.avtPlayer1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
+            this.avtPlayer1.TabStop = false;
+            // 
+            // btnOut
+            // 
+            this.btnOut.BackColor = System.Drawing.Color.Transparent;
+            this.btnOut.BorderRadius = 20;
+            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            resources.ApplyResources(this.btnOut, "btnOut");
+            this.btnOut.ForeColor = System.Drawing.Color.White;
+            this.btnOut.Name = "btnOut";
+            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
+            this.pictureBox1.Image = global::BattleShip.Properties.Resources.LOGO_GAME1;
+            resources.ApplyResources(this.pictureBox1, "pictureBox1");
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.TabStop = false;
+            // 
+            // btnFriend
+            // 
+            this.btnFriend.BorderThickness = 1;
+            this.btnFriend.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnFriend.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnFriend.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnFriend.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnFriend.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            resources.ApplyResources(this.btnFriend, "btnFriend");
+            this.btnFriend.ForeColor = System.Drawing.Color.White;
+            this.btnFriend.Image = ((System.Drawing.Image)(resources.GetObject("btnFriend.Image")));
+            this.btnFriend.ImageSize = new System.Drawing.Size(30, 30);
+            this.btnFriend.Name = "btnFriend";
+            // 
             // btnNews
             // 
             this.btnNews.BorderThickness = 1;
@@ -439,37 +473,20 @@
             this.btnSpeaker.ImageSize = new System.Drawing.Size(35, 35);
             this.btnSpeaker.Name = "btnSpeaker";
             // 
-            // avtPlayer1
+            // Chat
             // 
-            this.avtPlayer1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            resources.ApplyResources(this.avtPlayer1, "avtPlayer1");
-            this.avtPlayer1.ImageRotate = 0F;
-            this.avtPlayer1.Name = "avtPlayer1";
-            this.avtPlayer1.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.avtPlayer1.TabStop = false;
-            // 
-            // avtPlayer2
-            // 
-            this.avtPlayer2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            resources.ApplyResources(this.avtPlayer2, "avtPlayer2");
-            this.avtPlayer2.ImageRotate = 0F;
-            this.avtPlayer2.Name = "avtPlayer2";
-            this.avtPlayer2.ShadowDecoration.Mode = Guna.UI2.WinForms.Enums.ShadowMode.Circle;
-            this.avtPlayer2.TabStop = false;
-            // 
-            // lblUserNameP1
-            // 
-            resources.ApplyResources(this.lblUserNameP1, "lblUserNameP1");
-            this.lblUserNameP1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            this.lblUserNameP1.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblUserNameP1.Name = "lblUserNameP1";
-            // 
-            // lblUserNameP2
-            // 
-            resources.ApplyResources(this.lblUserNameP2, "lblUserNameP2");
-            this.lblUserNameP2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
-            this.lblUserNameP2.ForeColor = System.Drawing.SystemColors.Control;
-            this.lblUserNameP2.Name = "lblUserNameP2";
+            this.Chat.BackColor = System.Drawing.Color.Transparent;
+            this.Chat.BorderRadius = 20;
+            this.Chat.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Chat.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.Chat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.Chat.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.Chat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            resources.ApplyResources(this.Chat, "Chat");
+            this.Chat.ForeColor = System.Drawing.Color.White;
+            this.Chat.Name = "Chat";
+            this.Chat.UseTransparentBackground = true;
+            this.Chat.Click += new System.EventHandler(this.Chat_Click);
             // 
             // Multiplayer
             // 
@@ -482,9 +499,6 @@
             this.Load += new System.EventHandler(this.Multiplayer_Load);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
-            this.PanelLeft.ResumeLayout(false);
-            this.PanelLeft.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.guna2Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerBattleShip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerCruiser1)).EndInit();
@@ -505,8 +519,11 @@
             ((System.ComponentModel.ISupportInitialize)(this.picCruiser2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picCruiser1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.picBattleShip)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.avtPlayer1)).EndInit();
+            this.PanelLeft.ResumeLayout(false);
+            this.PanelLeft.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.avtPlayer2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.avtPlayer1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -552,5 +569,6 @@
         private Guna.UI2.WinForms.Guna2CirclePictureBox avtPlayer1;
         private System.Windows.Forms.Label lblUserNameP2;
         private System.Windows.Forms.Label lblUserNameP1;
+        private Guna.UI2.WinForms.Guna2Button Chat;
     }
 }
