@@ -82,14 +82,12 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap LOGO_GAME {
         internal static System.Drawing.Bitmap avt1 {
             get {
                 object obj = ResourceManager.GetObject("avt1", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
-        
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
@@ -243,7 +241,6 @@ namespace BattleShip.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap multiPlayer {
         internal static System.Drawing.Bitmap LOGO_GAME_Photoroom1 {
             get {
                 object obj = ResourceManager.GetObject("LOGO GAME-Photoroom1", resourceCulture);

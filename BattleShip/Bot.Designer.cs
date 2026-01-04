@@ -30,10 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Bot));
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
-            this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
+            this.btnSetting_Bot = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
             this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
@@ -63,7 +64,6 @@
             this.picCruiser2 = new System.Windows.Forms.PictureBox();
             this.picCruiser1 = new System.Windows.Forms.PictureBox();
             this.picBattleShip = new System.Windows.Forms.PictureBox();
-            this.btnOut = new Guna.UI2.WinForms.Guna2Button();
             this.PanelLeft.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.PanelRight.SuspendLayout();
@@ -94,7 +94,7 @@
             this.PanelLeft.Controls.Add(this.pictureBox1);
             this.PanelLeft.Controls.Add(this.btnFriend);
             this.PanelLeft.Controls.Add(this.btnNews);
-            this.PanelLeft.Controls.Add(this.btnSetting);
+            this.PanelLeft.Controls.Add(this.btnSetting_Bot);
             this.PanelLeft.Controls.Add(this.btnSpeaker);
             this.PanelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
@@ -102,6 +102,23 @@
             this.PanelLeft.Name = "PanelLeft";
             this.PanelLeft.Size = new System.Drawing.Size(352, 673);
             this.PanelLeft.TabIndex = 2;
+            // 
+            // btnOut
+            // 
+            this.btnOut.BackColor = System.Drawing.Color.Transparent;
+            this.btnOut.BorderRadius = 20;
+            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnOut.Font = new System.Drawing.Font("Showcard Gothic", 16.2F);
+            this.btnOut.ForeColor = System.Drawing.Color.White;
+            this.btnOut.Location = new System.Drawing.Point(78, 577);
+            this.btnOut.Name = "btnOut";
+            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
+            this.btnOut.Size = new System.Drawing.Size(180, 45);
+            this.btnOut.TabIndex = 6;
+            this.btnOut.Text = "OUT";
             // 
             // pictureBox1
             // 
@@ -148,23 +165,23 @@
             this.btnNews.Size = new System.Drawing.Size(55, 45);
             this.btnNews.TabIndex = 0;
             // 
-            // btnSetting
+            // btnSetting_Bot
             // 
-            this.btnSetting.BorderThickness = 1;
-            this.btnSetting.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnSetting.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnSetting.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnSetting.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
-            this.btnSetting.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSetting.ForeColor = System.Drawing.Color.White;
-            this.btnSetting.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting.Image")));
-            this.btnSetting.ImageSize = new System.Drawing.Size(40, 40);
-            this.btnSetting.Location = new System.Drawing.Point(231, 628);
-            this.btnSetting.Name = "btnSetting";
-            this.btnSetting.Size = new System.Drawing.Size(120, 45);
-            this.btnSetting.TabIndex = 0;
-            this.btnSetting.Click += new System.EventHandler(this.btnSetting_Click);
+            this.btnSetting_Bot.BorderThickness = 1;
+            this.btnSetting_Bot.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting_Bot.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSetting_Bot.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSetting_Bot.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSetting_Bot.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(63)))), ((int)(((byte)(71)))));
+            this.btnSetting_Bot.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnSetting_Bot.ForeColor = System.Drawing.Color.White;
+            this.btnSetting_Bot.Image = ((System.Drawing.Image)(resources.GetObject("btnSetting_Bot.Image")));
+            this.btnSetting_Bot.ImageSize = new System.Drawing.Size(40, 40);
+            this.btnSetting_Bot.Location = new System.Drawing.Point(231, 628);
+            this.btnSetting_Bot.Name = "btnSetting_Bot";
+            this.btnSetting_Bot.Size = new System.Drawing.Size(120, 45);
+            this.btnSetting_Bot.TabIndex = 0;
+            this.btnSetting_Bot.Click += new System.EventHandler(this.btnSetting_Bot_Click);
             // 
             // btnSpeaker
             // 
@@ -229,7 +246,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label3.Location = new System.Drawing.Point(514, 538);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(189, 20);
+            this.label3.Size = new System.Drawing.Size(231, 25);
             this.label3.TabIndex = 13;
             this.label3.Text = "SỐ TÀU CÒN LẠI ĐỘI TÍM";
             // 
@@ -240,7 +257,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label2.Location = new System.Drawing.Point(954, 538);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(205, 20);
+            this.label2.Size = new System.Drawing.Size(250, 25);
             this.label2.TabIndex = 13;
             this.label2.Text = "SỐ TÀU CÒN LẠI ĐỘI XANH";
             // 
@@ -252,7 +269,7 @@
             this.lblStatus.ForeColor = System.Drawing.Color.Black;
             this.lblStatus.Location = new System.Drawing.Point(637, 26);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(387, 31);
+            this.lblStatus.Size = new System.Drawing.Size(477, 38);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "HÃY ĐẶT TÀU CỦA BẠN VÀO VỊ TRÍ!";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -467,7 +484,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Location = new System.Drawing.Point(114, 86);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(202, 31);
+            this.label1.Size = new System.Drawing.Size(246, 38);
             this.label1.TabIndex = 1;
             this.label1.Text = "Deploy your fleet!";
             // 
@@ -544,23 +561,6 @@
             this.picBattleShip.TabStop = false;
             this.picBattleShip.Tag = "2";
             // 
-            // btnOut
-            // 
-            this.btnOut.BackColor = System.Drawing.Color.Transparent;
-            this.btnOut.BorderRadius = 20;
-            this.btnOut.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnOut.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnOut.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            this.btnOut.Font = new System.Drawing.Font("Showcard Gothic", 16.2F);
-            this.btnOut.ForeColor = System.Drawing.Color.White;
-            this.btnOut.Location = new System.Drawing.Point(78, 577);
-            this.btnOut.Name = "btnOut";
-            this.btnOut.PressedColor = System.Drawing.Color.Transparent;
-            this.btnOut.Size = new System.Drawing.Size(180, 45);
-            this.btnOut.TabIndex = 6;
-            this.btnOut.Text = "OUT";
-            // 
             // Bot
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -604,7 +604,7 @@
         private Guna.UI2.WinForms.Guna2Panel PanelLeft;
         private Guna.UI2.WinForms.Guna2Button btnFriend;
         private Guna.UI2.WinForms.Guna2Button btnNews;
-        private Guna.UI2.WinForms.Guna2Button btnSetting;
+        private Guna.UI2.WinForms.Guna2Button btnSetting_Bot;
         private Guna.UI2.WinForms.Guna2Button btnSpeaker;
         private Guna.UI2.WinForms.Guna2Panel PanelRight;
         private Guna.UI2.WinForms.Guna2Panel pnlDeployment;

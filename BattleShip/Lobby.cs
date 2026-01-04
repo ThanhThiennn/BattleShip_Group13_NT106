@@ -253,5 +253,11 @@ namespace BattleShip
                 // btnSpeaker.Image = Properties.Resources.speaker_icon;
             }
         }
+
+        private void btnSetting_Lobby_Click(object sender, EventArgs e)
+        {
+            FormSetting setting = new FormSetting();
+            setting.Show();
+        }
     }
 }

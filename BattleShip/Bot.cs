@@ -660,9 +660,10 @@ namespace BattleShip
 
         }
 
-        private void btnSetting_Click(object sender, EventArgs e)
+        private void btnSetting_Bot_Click(object sender, EventArgs e)
         {
-
+            FormSetting setting = new FormSetting();
+            setting.Show();
         }
     }
     public class Ship
