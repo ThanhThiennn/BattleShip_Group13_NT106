@@ -75,6 +75,9 @@ namespace BattleShip.Properties {
         public static System.Drawing.Bitmap hit_icon {
             get {
                 object obj = ResourceManager.GetObject("hit_icon", resourceCulture);
+        internal static System.Drawing.Bitmap _1049236_200 {
+            get {
+                object obj = ResourceManager.GetObject("1049236-200", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
