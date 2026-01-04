@@ -36,7 +36,6 @@
             this.label2 = new System.Windows.Forms.Label();
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
             this.btnOut = new Guna.UI2.WinForms.Guna2Button();
-            this.lstPlayer = new System.Windows.Forms.ListBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnFriend = new Guna.UI2.WinForms.Guna2Button();
             this.pnlBotGrid = new Guna.UI2.WinForms.Guna2Panel();
@@ -140,7 +139,6 @@
             // 
             // PanelLeft
             // 
-            this.PanelLeft.Controls.Add(this.lstPlayer);
             this.PanelLeft.Controls.Add(this.lblUserNameP2);
             this.PanelLeft.Controls.Add(this.lblUserNameP1);
             this.PanelLeft.Controls.Add(this.avtPlayer2);
@@ -167,12 +165,6 @@
             this.btnOut.ForeColor = System.Drawing.Color.White;
             this.btnOut.Name = "btnOut";
             this.btnOut.PressedColor = System.Drawing.Color.Transparent;
-            // 
-            // lstPlayer
-            // 
-            this.lstPlayer.FormattingEnabled = true;
-            resources.ApplyResources(this.lstPlayer, "lstPlayer");
-            this.lstPlayer.Name = "lstPlayer";
             // 
             // pictureBox1
             // 
@@ -555,7 +547,6 @@
         private System.Windows.Forms.PictureBox picBattleShip;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label4;
-        public System.Windows.Forms.ListBox lstPlayer;
         private Guna.UI2.WinForms.Guna2Button btnOut;
         private Guna.UI2.WinForms.Guna2CirclePictureBox avtPlayer2;
         private Guna.UI2.WinForms.Guna2CirclePictureBox avtPlayer1;
