@@ -1,5 +1,4 @@
 ﻿using Firebase.Auth;
-using Firebase.Auth;
 using Firebase.Database;
 using System;
 using System.Collections.Generic;

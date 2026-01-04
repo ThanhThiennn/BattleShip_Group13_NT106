@@ -36,6 +36,7 @@
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight = new Guna.UI2.WinForms.Guna2Panel();
+            this.txtPlayerName = new System.Windows.Forms.TextBox();
             this.btnJoinByID = new Guna.UI2.WinForms.Guna2Button();
             this.btnBrowseMatch = new Guna.UI2.WinForms.Guna2Button();
             this.btnCreateMatch = new Guna.UI2.WinForms.Guna2Button();
@@ -152,6 +153,7 @@
             // PanelRight
             // 
             this.PanelRight.BorderRadius = 15;
+            this.PanelRight.Controls.Add(this.txtPlayerName);
             this.PanelRight.Controls.Add(this.btnJoinByID);
             this.PanelRight.Controls.Add(this.btnBrowseMatch);
             this.PanelRight.Controls.Add(this.btnCreateMatch);
@@ -164,6 +166,13 @@
             this.PanelRight.Name = "PanelRight";
             this.PanelRight.Size = new System.Drawing.Size(859, 673);
             this.PanelRight.TabIndex = 1;
+            // 
+            // txtPlayerName
+            // 
+            this.txtPlayerName.Location = new System.Drawing.Point(27, 12);
+            this.txtPlayerName.Name = "txtPlayerName";
+            this.txtPlayerName.Size = new System.Drawing.Size(100, 22);
+            this.txtPlayerName.TabIndex = 3;
             this.PanelRight.Paint += new System.Windows.Forms.PaintEventHandler(this.guna2Panel2_Paint);
             // 
             // btnJoinByID
@@ -272,17 +281,19 @@
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // FormUI
+            // Lobby
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1211, 673);
             this.Controls.Add(this.PanelRight);
             this.Controls.Add(this.PanelLeft);
-            this.Name = "FormUI";
-            this.Text = "FormUI";
+            this.Name = "Lobby";
+            this.Text = "BattleShip";
+            this.Load += new System.EventHandler(this.Lobby_Load);
             this.PanelLeft.ResumeLayout(false);
             this.PanelRight.ResumeLayout(false);
+            this.PanelRight.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
 
@@ -303,5 +314,7 @@
         private Guna.UI2.WinForms.Guna2Button btnSpeaker;
         private Guna.UI2.WinForms.Guna2Button btnFriend;
         private Guna.UI2.WinForms.Guna2Button btnNews;
+        private System.Windows.Forms.TextBox txtPlayerName;
+
     }
 }
