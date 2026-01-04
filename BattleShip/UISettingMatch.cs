@@ -52,7 +52,7 @@ namespace BattleShip
 
         private void btnLeaveMatch_Click(object sender, EventArgs e)
         {
-            FormUI nextForm = new FormUI();
+            Lobby nextForm = new Lobby();
             nextForm.Show();
             this.Close();
         }
