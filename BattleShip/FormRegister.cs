@@ -18,9 +18,7 @@ namespace BattleShip
         {
             InitializeComponent();
         }
-              
-        
-
+                      
         private void llbGoToLogin_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             new Login().Show();
@@ -53,16 +51,17 @@ namespace BattleShip
                 // 2. Lưu thông tin người dùng vào Realtime Database
                 string userId = authLink.User.LocalId;
 
-                // --- ĐÂY LÀ PHẦN CODE MỚI ---
                 var userProfile = new UserProfile
                 {
                     Email = email,
                     TotalWins = 0,
                     TotalLosses = 0,
-                    AvatarId = 0,                     
-                    DisplayName = email.Split('@')[0] 
+                    AvatarId = 0,
+                    DisplayName = email,
+                    DateOfBirth = "01/01/2000",
+                    Gender = "Khác"
+
                 };
-                // -----------------------------
 
                 await FirebaseService.firebaseClient
                     .Child("Users")

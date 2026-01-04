@@ -55,8 +55,9 @@ namespace BattleShip
                     // Sử dụng Refresh Token để lấy phiên mới
                     FirebaseAuthLink authLink = await authProvider
                         .SignInWithCustomTokenAsync(refreshToken);
+                    string savedEmail = Properties.Settings.Default.UserEmail;
 
-                    SessionManager.SetSession(authLink.User.LocalId, authLink.FirebaseToken);
+                    SessionManager.SetSession(authLink.User.LocalId, authLink.FirebaseToken, savedEmail);
 
                     Properties.Settings.Default.FirebaseRefreshToken = authLink.RefreshToken;
                     Properties.Settings.Default.Save();

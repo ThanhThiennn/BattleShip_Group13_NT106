@@ -45,8 +45,9 @@ namespace BattleShip
 
                 string idToken = authLink.FirebaseToken;
 
-                SessionManager.SetSession(userId, idToken);
-                Properties.Settings.Default.FirebaseRefreshToken = authLink.RefreshToken; 
+                SessionManager.SetSession(userId, idToken, email);
+                Properties.Settings.Default.FirebaseRefreshToken = authLink.RefreshToken;
+                Properties.Settings.Default.UserEmail = email; // Lưu email
                 Properties.Settings.Default.Save();
                 this.Invoke((MethodInvoker)delegate
                 {

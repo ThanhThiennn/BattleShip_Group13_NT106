@@ -30,6 +30,13 @@ namespace BattleShip
             InitializeComponent();
             LoadUserData(); // Tải dữ liệu cũ lên trước
             LoadAvatarList(); // Tạo danh sách ảnh để chọn
+            dtpDoB.Format = DateTimePickerFormat.Custom;
+            dtpDoB.CustomFormat = "dd/MM/yyyy";
+            cboGender.Items.Clear();
+            cboGender.Items.Add("Nam");
+            cboGender.Items.Add("Nữ");
+            cboGender.Items.Add("Khác");
+            cboGender.SelectedIndex = 0;
         }
 
         // Tải thông tin người dùng từ Firebase
@@ -46,12 +53,26 @@ namespace BattleShip
                 {
                     // Hiển thị tên
                     txtName.Text = string.IsNullOrEmpty(userProfile.DisplayName)
-                        ? userProfile.Email.Split('@')[0]
-                        : userProfile.DisplayName;
+                        ? userProfile.Email // Nếu rỗng thì lấy email
+                        : userProfile.DisplayName; // Nếu đã đổi thì lấy tên đã đổi
 
                     // Lấy ID avatar hiện tại và highlight nó lên
                     _selectedAvatarId = userProfile.AvatarId;
                     HighlightSelectedAvatar();
+
+                    if (!string.IsNullOrEmpty(userProfile.DateOfBirth))
+                    {
+                        try
+                        {
+                            dtpDoB.Value = DateTime.ParseExact(userProfile.DateOfBirth, "dd/MM/yyyy", null);
+                        }
+                        catch { }
+                    }
+
+                    if (!string.IsNullOrEmpty(userProfile.Gender))
+                    {
+                        cboGender.SelectedItem = userProfile.Gender;
+                    }
                 }
             }
             catch (Exception ex)
@@ -132,7 +153,9 @@ namespace BattleShip
         // Nút Lưu thay đổi
         private async void btnSave_Click(object sender, EventArgs e)
         {
-            string newName = txtName.Text.Trim();
+            string newName = txtName.Text.Trim(); //get name
+            string newDob = dtpDoB.Value.ToString("dd/MM/yyyy"); //game date of birth
+            string newGender = cboGender.SelectedItem != null ? cboGender.SelectedItem.ToString() : "Khác"; //get gender
             if (string.IsNullOrEmpty(newName))
             {
                 MessageBox.Show("Tên không được để trống!");
@@ -154,6 +177,20 @@ namespace BattleShip
                     .Child(SessionManager.CurrentUserID)
                     .Child("AvatarId")
                     .PutAsync(_selectedAvatarId);
+
+                // Cập nhật date of birth
+                await FirebaseService.firebaseClient
+                    .Child("Users")
+                    .Child(SessionManager.CurrentUserID)
+                    .Child("DateOfBirth")
+                    .PutAsync($"\"{newDob}\"");
+
+                // Cập nhật gender
+                await FirebaseService.firebaseClient
+                    .Child("Users")
+                    .Child(SessionManager.CurrentUserID)
+                    .Child("Gender")
+                    .PutAsync($"\"{newGender}\"");
 
                 MessageBox.Show("Cập nhật thành công!");
                 this.DialogResult = DialogResult.OK;

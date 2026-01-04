@@ -1,5 +1,4 @@
-﻿// File: BattleShip/UIMyAccount.cs
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
@@ -9,7 +8,6 @@ namespace BattleShip
 {
     public partial class UIMyAccount : UserControl
     {
-        // Danh sách ảnh (Phải khớp thứ tự với FormCustomize)
         private List<Image> _avatars = new List<Image>()
         {
             Properties.Resources.avt1,
@@ -31,7 +29,7 @@ namespace BattleShip
         public async void LoadUserData()
         {
             if (!SessionManager.IsLoggedIn) return;
-
+            lblYourGmail.Text = SessionManager.CurrentEmail;
             try
             {
                 var profile = await FirebaseService.firebaseClient
@@ -42,21 +40,46 @@ namespace BattleShip
                 if (profile != null)
                 {
                     // Hiển thị tên (ưu tiên DisplayName, nếu không có thì dùng Email)
-                    label2.Text = string.IsNullOrEmpty(profile.DisplayName)
-                                  ? "Player"
-                                  : profile.DisplayName;
-
-                    label7.Text = profile.Email; // Gmail hiển thị ở dưới
-                    label3.Text = $"Winner : {profile.TotalWins}";
-
+                    lblUserName.Text = string.IsNullOrEmpty(profile.DisplayName) ? profile.Email : profile.DisplayName;
+                    
+                    lblWin.Text = $"Win : {profile.TotalWins}";
+                    lblLoss.Text = $"Loss : {profile.TotalLosses}";
+                    
                     // Hiển thị Avatar dựa trên ID
                     if (profile.AvatarId >= 0 && profile.AvatarId < _avatars.Count)
                     {
                         guna2CirclePictureBoxUser.Image = _avatars[profile.AvatarId];
                     }
+
+                    // Chọn gender
+                    if (!string.IsNullOrEmpty(profile.Gender))
+                    {
+                        lblGender.Text = profile.Gender;
+                    }
+                    else
+                    {
+                        lblGender.Text = "Chưa cập nhật";
+                    }
+                        
+                    // date of birth
+                    if (!string.IsNullOrEmpty(profile.DateOfBirth))
+                    {
+                        try
+                        {
+                            DateTime dob = DateTime.ParseExact(profile.DateOfBirth, "dd/MM/yyyy", null);
+                            dtpDoB.Value = dob;
+                        }
+                        catch
+                        {                           
+                            dtpDoB.Value = DateTime.Now;
+                        }
+                    }
                 }
             }
-            catch { }
+            catch 
+            {
+                MessageBox.Show("Lỗi tải dữ liệu: ");
+            }
         }
 
         // Gán sự kiện này cho nút Customize trong phần Design
