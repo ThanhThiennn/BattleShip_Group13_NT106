@@ -25,7 +25,7 @@ namespace BattleShip
             InitializeComponent();
             this.roomID = id;
             this.myRole = role;
-            this.client = sharedClient; // Dùng chung client từ form Multiplayer để tối ưu
+            this.client = sharedClient;
 
             this.Load += Chat_Load;
         }
@@ -33,7 +33,6 @@ namespace BattleShip
         {
             //Nghe tin nhắn
             ListenForMessages();
-            // Xử lý phím Enter cho txtMessage
             txtMessage.KeyDown += (s, ev) => {
                 if (ev.KeyCode == Keys.Enter)
                 {
@@ -59,8 +58,6 @@ namespace BattleShip
                         }
                         else
                         {
-                            // Nếu nhận được dữ liệu lẻ, ta tạm thời bỏ qua 
-                            // hoặc có thể dùng lệnh khác để lấy lại toàn bộ danh sách
                             RefreshChatLog();
                         }
                     }
@@ -72,7 +69,6 @@ namespace BattleShip
             });
         }
 
-        // Hàm bổ trợ để chủ động lấy lại toàn bộ tin nhắn khi dữ liệu lẻ bị lỗi
         private async void RefreshChatLog()
         {
             FirebaseResponse response = await client.GetAsync($"Rooms/{roomID}/Messages");
@@ -81,7 +77,6 @@ namespace BattleShip
                 AppendToChatLog(response.Body);
             }
         }
-
 
         private void AppendToChatLog(string jsonData)
         {
@@ -117,11 +112,9 @@ namespace BattleShip
             }
         }
 
-        // Hàm phụ để vẽ tin nhắn lên UI nhằm tránh lặp code
         private void RenderSingleMessage(ChatMessage msg)
         {
             if (msg == null || string.IsNullOrEmpty(msg.content)) return;
-            // So sánh sender với myRole để phân biệt Bạn/Đối thủ
             bool isMe = (msg.sender == myRole);
 
             rtbChatLog.SelectionStart = rtbChatLog.TextLength;
