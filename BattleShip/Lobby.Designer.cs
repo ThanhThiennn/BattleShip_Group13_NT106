@@ -240,7 +240,7 @@
             this.btnPlayRandom.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(76)))), ((int)(((byte)(175)))), ((int)(((byte)(80)))));
             this.btnPlayRandom.Font = new System.Drawing.Font("Segoe UI Semibold", 10.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.btnPlayRandom.ForeColor = System.Drawing.Color.White;
-            this.btnPlayRandom.Image = global::BattleShip.Properties.Resources.multiPlayer;
+            this.btnPlayRandom.Image = ((System.Drawing.Image)(resources.GetObject("btnPlayRandom.Image")));
             this.btnPlayRandom.ImageSize = new System.Drawing.Size(32, 32);
             this.btnPlayRandom.Location = new System.Drawing.Point(27, 214);
             this.btnPlayRandom.Name = "btnPlayRandom";
@@ -313,5 +313,6 @@
         private Guna.UI2.WinForms.Guna2Button btnFriend;
         private Guna.UI2.WinForms.Guna2Button btnNews;
         private System.Windows.Forms.TextBox txtPlayerName;
+
     }
 }

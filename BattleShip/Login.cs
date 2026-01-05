@@ -18,6 +18,8 @@ namespace BattleShip
         public Login()
         {
             InitializeComponent();
+
+            AudioManager.PlayBackgroundMusic();
         }     
      
         private void llbForgotPassword_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

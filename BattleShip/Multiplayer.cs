@@ -44,7 +44,7 @@ namespace BattleShip
         private List<ShotResponse> pendingResponses = new List<ShotResponse>();
         private bool isShowingSpecialMessage = false;
 
-        private bool isSetupComplete = false;
+        //private bool isSetupComplete = false;
         private bool isReady = false;
 
         
