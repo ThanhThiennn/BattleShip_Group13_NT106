@@ -277,5 +277,12 @@ namespace BattleShip
             FormSetting setting = new FormSetting();
             setting.Show();
         }
+
+        private void btnCreateMatch_Click(object sender, EventArgs e)
+        {
+            CreateMatch frmCreate = new CreateMatch();
+            frmCreate.Show();
+            this.Close();
+        }
     }
 }

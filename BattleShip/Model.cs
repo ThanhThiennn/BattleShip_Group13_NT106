@@ -17,6 +17,7 @@ namespace BattleShip
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class Room
     {
+        public string RoomName { get; set; }
         public string Status { get; set; }
         public string Turn { get; set; }
         public PlayerData Player1 { get; set; }

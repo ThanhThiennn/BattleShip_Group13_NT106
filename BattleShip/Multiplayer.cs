@@ -171,7 +171,6 @@ namespace BattleShip
         {
             if (client == null) return;
 
-            // Lắng nghe thay đổi chung của phòng
             client.OnAsync($"Rooms/{roomID}", (sender, args, context) =>
             {
                 _ = RefreshDataFromServer();
@@ -267,7 +266,18 @@ namespace BattleShip
                 catch { }
             });
         }
+        private void HandleOpponentQuit()
+        {
+            // Ngăn chặn việc FormClosing chạy lại logic xóa phòng một lần nữa (vì phòng đã bị xóa rồi)
+            roomID = null;
 
+            MessageBox.Show("Đối thủ đã thoát trận. Phòng đã bị đóng!", "Thông báo");
+
+            // Mở lại form CreateMatch và đóng form hiện tại
+            CreateMatch createMatchForm = new CreateMatch();
+            createMatchForm.Show();
+            this.Close();
+        }
         private void HandleShipSunkNotification(string role, string shipName)
         {
             string opponentRole = (myRole == "Player1") ? "Player2" : "Player1";
@@ -443,9 +453,6 @@ namespace BattleShip
             // Cập nhật giao diện Avatar và Tên (MỚI)
             UpdatePlayerStatusUI(roomData.Player1, lblUserNameP1, avtPlayer1);
             UpdatePlayerStatusUI(roomData.Player2, lblUserNameP2, avtPlayer2);
-
-            // Cập nhật ListBox cũ (nếu bạn vẫn muốn giữ để debug, nếu không có thể xóa)
-
 
             if (roomData.Player1 != null && roomData.Player2 != null)
             {
@@ -858,6 +865,37 @@ namespace BattleShip
             
             Chat chatForm = new Chat(this.roomID, this.myRole, this.client);
             chatForm.Show();
+        }
+
+        private async void Multiplayer_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // Xác nhận trước khi thoát (Tùy chọn)
+            if (string.IsNullOrEmpty(roomID)) return;
+            var result = MessageBox.Show("Bạn có chắc chắn muốn rời trận đấu?", "Xác nhận", MessageBoxButtons.YesNo);
+            if (result == DialogResult.No)
+            {
+                e.Cancel = true; // Hủy việc đóng form
+                return;
+            }
+
+            try
+            {
+                if (client != null)
+                {
+                    // Bất kể là Player1 hay Player2 thoát, xóa sạch cả node Rooms/{roomID}
+                    string currentRoom = roomID;
+                    roomID = null; // Đánh dấu để tránh lặp logic
+                    await client.DeleteAsync($"Rooms/{currentRoom}");
+                    await client.DeleteAsync($"Chats/{currentRoom}");
+
+                    CreateMatch formMatch = new CreateMatch();
+                    formMatch.Show();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Lỗi khi đóng phòng: " + ex.Message);
+            }
         }
     }
 }

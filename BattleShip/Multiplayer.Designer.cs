@@ -59,6 +59,7 @@
             this.picBattleShip = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
             this.PanelLeft = new Guna.UI2.WinForms.Guna2Panel();
+            this.Chat = new Guna.UI2.WinForms.Guna2Button();
             this.lblUserNameP2 = new System.Windows.Forms.Label();
             this.lblUserNameP1 = new System.Windows.Forms.Label();
             this.avtPlayer2 = new Guna.UI2.WinForms.Guna2CirclePictureBox();
@@ -69,7 +70,6 @@
             this.btnNews = new Guna.UI2.WinForms.Guna2Button();
             this.btnSetting = new Guna.UI2.WinForms.Guna2Button();
             this.btnSpeaker = new Guna.UI2.WinForms.Guna2Button();
-            this.Chat = new Guna.UI2.WinForms.Guna2Button();
             this.PanelRight.SuspendLayout();
             this.guna2Panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbPlayerBattleShip)).BeginInit();
@@ -364,6 +364,21 @@
             this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
             this.PanelLeft.Name = "PanelLeft";
             // 
+            // Chat
+            // 
+            this.Chat.BackColor = System.Drawing.Color.Transparent;
+            this.Chat.BorderRadius = 20;
+            this.Chat.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.Chat.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.Chat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.Chat.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.Chat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            resources.ApplyResources(this.Chat, "Chat");
+            this.Chat.ForeColor = System.Drawing.Color.White;
+            this.Chat.Name = "Chat";
+            this.Chat.UseTransparentBackground = true;
+            this.Chat.Click += new System.EventHandler(this.Chat_Click);
+            // 
             // lblUserNameP2
             // 
             resources.ApplyResources(this.lblUserNameP2, "lblUserNameP2");
@@ -473,21 +488,6 @@
             this.btnSpeaker.ImageSize = new System.Drawing.Size(35, 35);
             this.btnSpeaker.Name = "btnSpeaker";
             // 
-            // Chat
-            // 
-            this.Chat.BackColor = System.Drawing.Color.Transparent;
-            this.Chat.BorderRadius = 20;
-            this.Chat.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.Chat.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
-            this.Chat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.Chat.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.Chat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
-            resources.ApplyResources(this.Chat, "Chat");
-            this.Chat.ForeColor = System.Drawing.Color.White;
-            this.Chat.Name = "Chat";
-            this.Chat.UseTransparentBackground = true;
-            this.Chat.Click += new System.EventHandler(this.Chat_Click);
-            // 
             // Multiplayer
             // 
             resources.ApplyResources(this, "$this");
@@ -496,6 +496,7 @@
             this.Controls.Add(this.PanelRight);
             this.ForeColor = System.Drawing.SystemColors.Highlight;
             this.Name = "Multiplayer";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Multiplayer_FormClosing);
             this.Load += new System.EventHandler(this.Multiplayer_Load);
             this.PanelRight.ResumeLayout(false);
             this.PanelRight.PerformLayout();
