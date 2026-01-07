@@ -423,6 +423,7 @@
             this.btnOut.ForeColor = System.Drawing.Color.White;
             this.btnOut.Name = "btnOut";
             this.btnOut.PressedColor = System.Drawing.Color.Transparent;
+            this.btnOut.Click += new System.EventHandler(this.btnOut_Click);
             // 
             // pictureBox1
             // 
