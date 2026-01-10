@@ -50,9 +50,8 @@ namespace BattleShip
             this.PanelLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.PanelLeft.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(61)))));
             this.PanelLeft.Location = new System.Drawing.Point(0, 0);
-            this.PanelLeft.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.PanelLeft.Name = "PanelLeft";
-            this.PanelLeft.Size = new System.Drawing.Size(251, 719);
+            this.PanelLeft.Size = new System.Drawing.Size(223, 575);
             this.PanelLeft.TabIndex = 1;
             // 
             // btnBack
@@ -67,10 +66,9 @@ namespace BattleShip
             this.btnBack.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnBack.ForeColor = System.Drawing.Color.White;
             this.btnBack.ImageSize = new System.Drawing.Size(30, 30);
-            this.btnBack.Location = new System.Drawing.Point(14, 634);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnBack.Location = new System.Drawing.Point(12, 507);
             this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(230, 52);
+            this.btnBack.Size = new System.Drawing.Size(204, 42);
             this.btnBack.TabIndex = 2;
             this.btnBack.Text = "Back to game";
             this.btnBack.UseTransparentBackground = true;
@@ -88,10 +86,9 @@ namespace BattleShip
             this.btnAbout.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnAbout.ForeColor = System.Drawing.Color.White;
             this.btnAbout.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnAbout.Location = new System.Drawing.Point(0, 235);
-            this.btnAbout.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnAbout.Location = new System.Drawing.Point(0, 188);
             this.btnAbout.Name = "btnAbout";
-            this.btnAbout.Size = new System.Drawing.Size(251, 56);
+            this.btnAbout.Size = new System.Drawing.Size(223, 45);
             this.btnAbout.TabIndex = 3;
             this.btnAbout.Text = "About";
             this.btnAbout.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -109,10 +106,9 @@ namespace BattleShip
             this.btnMyAccount.Font = new System.Drawing.Font("Segoe UI", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnMyAccount.ForeColor = System.Drawing.Color.White;
             this.btnMyAccount.ImageSize = new System.Drawing.Size(35, 35);
-            this.btnMyAccount.Location = new System.Drawing.Point(0, 182);
-            this.btnMyAccount.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnMyAccount.Location = new System.Drawing.Point(0, 146);
             this.btnMyAccount.Name = "btnMyAccount";
-            this.btnMyAccount.Size = new System.Drawing.Size(251, 56);
+            this.btnMyAccount.Size = new System.Drawing.Size(223, 45);
             this.btnMyAccount.TabIndex = 1;
             this.btnMyAccount.Text = "My Account";
             this.btnMyAccount.TextAlign = System.Windows.Forms.HorizontalAlignment.Left;
@@ -122,10 +118,9 @@ namespace BattleShip
             // 
             this.pictureBox1.BackColor = System.Drawing.Color.Transparent;
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(-66, -55);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.pictureBox1.Location = new System.Drawing.Point(-59, -44);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(385, 279);
+            this.pictureBox1.Size = new System.Drawing.Size(342, 223);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -135,20 +130,23 @@ namespace BattleShip
             this.PanelRight.AutoScroll = true;
             this.PanelRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.PanelRight.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(47)))), ((int)(((byte)(54)))), ((int)(((byte)(70)))));
-            this.PanelRight.Location = new System.Drawing.Point(250, 0);
+            this.PanelRight.Location = new System.Drawing.Point(223, 0);
+            this.PanelRight.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.PanelRight.Name = "PanelRight";
-            this.PanelRight.Size = new System.Drawing.Size(788, 719);
+            this.PanelRight.Size = new System.Drawing.Size(700, 575);
             this.PanelRight.TabIndex = 2;
             // 
             // FormSetting
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1038, 719);
+            this.ClientSize = new System.Drawing.Size(923, 575);
             this.Controls.Add(this.PanelRight);
             this.Controls.Add(this.PanelLeft);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormSetting";
-            this.Text = "Form1";
+            this.Text = "Setting";
             this.PanelLeft.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);

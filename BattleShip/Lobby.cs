@@ -25,10 +25,7 @@ namespace BattleShip
     {
         private string _currentPlayerName = "Unknown Player";
         private int _currentAvatarId = 0;
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
-        };
+        IFirebaseConfig config = new FirebaseConfig();
         IFirebaseClient client;
         public Lobby()
         {
@@ -214,9 +211,13 @@ namespace BattleShip
         private async void Lobby_Load(object sender, EventArgs e)
         {
             // Lấy key từ biến môi trường
+            string fbUrl = Environment.GetEnvironmentVariable("FIREBASE_URL", EnvironmentVariableTarget.User);
             string dbSecret = Environment.GetEnvironmentVariable("FIREBASE_SECRET_KEY", EnvironmentVariableTarget.User);
+            
+            
             if (!string.IsNullOrEmpty(dbSecret))
             {
+                config.BasePath = fbUrl;
                 config.AuthSecret = dbSecret;
             }
 

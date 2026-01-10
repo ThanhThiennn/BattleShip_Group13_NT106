@@ -300,6 +300,7 @@
             this.ClientSize = new System.Drawing.Size(1211, 673);
             this.Controls.Add(this.PanelRight);
             this.Controls.Add(this.PanelLeft);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Lobby";
             this.Text = "BattleShip";
             this.Load += new System.EventHandler(this.Lobby_Load);

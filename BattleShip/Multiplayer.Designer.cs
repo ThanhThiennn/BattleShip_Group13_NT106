@@ -46,7 +46,7 @@
             this.pbBotBattleShip = new System.Windows.Forms.PictureBox();
             this.pbBotCruiser2 = new System.Windows.Forms.PictureBox();
             this.pbBotCruiser1 = new System.Windows.Forms.PictureBox();
-            this.pbDestroyer = new System.Windows.Forms.PictureBox();
+            this.pbBotDestroyer = new System.Windows.Forms.PictureBox();
             this.pbBotCarrier = new System.Windows.Forms.PictureBox();
             this.pnlDeployment = new Guna.UI2.WinForms.Guna2Panel();
             this.btnRandom = new Guna.UI2.WinForms.Guna2Button();
@@ -81,7 +81,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbBotBattleShip)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCruiser2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCruiser1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDestroyer)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBotDestroyer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCarrier)).BeginInit();
             this.pnlDeployment.SuspendLayout();
             this.pnlShipList.SuspendLayout();
@@ -203,7 +203,7 @@
             this.guna2Panel2.Controls.Add(this.pbBotBattleShip);
             this.guna2Panel2.Controls.Add(this.pbBotCruiser2);
             this.guna2Panel2.Controls.Add(this.pbBotCruiser1);
-            this.guna2Panel2.Controls.Add(this.pbDestroyer);
+            this.guna2Panel2.Controls.Add(this.pbBotDestroyer);
             this.guna2Panel2.Controls.Add(this.pbBotCarrier);
             this.guna2Panel2.Name = "guna2Panel2";
             // 
@@ -228,12 +228,12 @@
             this.pbBotCruiser1.Name = "pbBotCruiser1";
             this.pbBotCruiser1.TabStop = false;
             // 
-            // pbDestroyer
+            // pbBotDestroyer
             // 
-            this.pbDestroyer.BackColor = System.Drawing.Color.Transparent;
-            resources.ApplyResources(this.pbDestroyer, "pbDestroyer");
-            this.pbDestroyer.Name = "pbDestroyer";
-            this.pbDestroyer.TabStop = false;
+            this.pbBotDestroyer.BackColor = System.Drawing.Color.Transparent;
+            resources.ApplyResources(this.pbBotDestroyer, "pbBotDestroyer");
+            this.pbBotDestroyer.Name = "pbBotDestroyer";
+            this.pbBotDestroyer.TabStop = false;
             // 
             // pbBotCarrier
             // 
@@ -496,6 +496,8 @@
             this.Controls.Add(this.PanelLeft);
             this.Controls.Add(this.PanelRight);
             this.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Multiplayer";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Multiplayer_FormClosing);
             this.Load += new System.EventHandler(this.Multiplayer_Load);
@@ -511,7 +513,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pbBotBattleShip)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCruiser2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCruiser1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbDestroyer)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbBotDestroyer)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbBotCarrier)).EndInit();
             this.pnlDeployment.ResumeLayout(false);
             this.pnlDeployment.PerformLayout();
@@ -548,7 +550,7 @@
         private System.Windows.Forms.PictureBox pbBotBattleShip;
         private System.Windows.Forms.PictureBox pbBotCruiser2;
         private System.Windows.Forms.PictureBox pbBotCruiser1;
-        private System.Windows.Forms.PictureBox pbDestroyer;
+        private System.Windows.Forms.PictureBox pbBotDestroyer;
         private System.Windows.Forms.PictureBox pbBotCarrier;
         private System.Windows.Forms.PictureBox pictureBox1;
         private Guna.UI2.WinForms.Guna2Panel PanelLeft;
