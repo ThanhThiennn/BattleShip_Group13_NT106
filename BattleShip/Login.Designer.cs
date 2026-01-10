@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Login));
             this.tbUsername = new System.Windows.Forms.TextBox();
             this.llbForgotPassword = new System.Windows.Forms.LinkLabel();
             this.tbPassword = new System.Windows.Forms.TextBox();
@@ -162,6 +163,9 @@
             this.Controls.Add(this.llbForgotPassword);
             this.Controls.Add(this.tbPassword);
             this.Controls.Add(this.tbUsername);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "Login";
             this.Text = "BattleShip";
             ((System.ComponentModel.ISupportInitialize)(this.guna2CirclePictureBox1)).EndInit();

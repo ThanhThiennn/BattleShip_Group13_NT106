@@ -679,7 +679,7 @@ namespace BattleShip
 
         private void ship_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button != MouseButtons.Left) return;
+            if (isReady || e.Button != MouseButtons.Left) return;
             draggedShip = (Control)sender;
             mouseOffset = e.Location;
             isDragging = true;
@@ -692,6 +692,7 @@ namespace BattleShip
 
         private void ship_MouseMove(object sender, MouseEventArgs e)
         {
+            if (isReady) return;
             if (isDragging && draggedShip != null)
             {
                 int newX = draggedShip.Left + e.X - mouseOffset.X;
@@ -702,6 +703,7 @@ namespace BattleShip
 
         private void ship_MouseUp(object sender, MouseEventArgs e)
         {
+            if (isReady || draggedShip == null) return;
             if (draggedShip == null) return;
             Point gridScreen = pnlGameGrid.PointToScreen(Point.Empty);
             Point shipScreen = draggedShip.PointToScreen(Point.Empty);
@@ -741,6 +743,9 @@ namespace BattleShip
 
             draggedShip.Parent = pnlGameGrid;
             draggedShip.Location = new Point(snapX, snapY);
+
+            initialShipLocations[draggedShip] = new Point(snapX, snapY);
+
             List<Point> coords = new List<Point>();
             for (int i = 0; i < length; i++)
             {
@@ -757,8 +762,19 @@ namespace BattleShip
 
         private void ReturnShipToStart()
         {
-            draggedShip.Parent = pnlDeployment;
-            draggedShip.Location = initialShipLocations[draggedShip];
+            if (draggedShip == null) return;
+
+            if (placedShips.Contains(draggedShip))
+            {
+                draggedShip.Parent = pnlGameGrid;
+                draggedShip.Location = initialShipLocations[draggedShip];
+            }
+            else
+            {
+                draggedShip.Parent = pnlDeployment;
+                draggedShip.Location = initialShipLocations[draggedShip];
+            }
+
             ResetDrag();
         }
 
@@ -848,6 +864,7 @@ namespace BattleShip
 
                 if (response.StatusCode == HttpStatusCode.OK)
                 {
+                    this.isReady = true;
                     lblStatus.Text = "Đã sẵn sàng! Đang đợi đối thủ...";
                     lblStatus.ForeColor = Color.Yellow;
                     _ = RefreshDataFromServer();

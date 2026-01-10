@@ -246,7 +246,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label3.Location = new System.Drawing.Point(514, 538);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(231, 25);
+            this.label3.Size = new System.Drawing.Size(189, 20);
             this.label3.TabIndex = 13;
             this.label3.Text = "SỐ TÀU CÒN LẠI ĐỘI TÍM";
             // 
@@ -257,7 +257,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(163)));
             this.label2.Location = new System.Drawing.Point(954, 538);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(250, 25);
+            this.label2.Size = new System.Drawing.Size(205, 20);
             this.label2.TabIndex = 13;
             this.label2.Text = "SỐ TÀU CÒN LẠI ĐỘI XANH";
             // 
@@ -269,7 +269,7 @@
             this.lblStatus.ForeColor = System.Drawing.Color.Black;
             this.lblStatus.Location = new System.Drawing.Point(637, 26);
             this.lblStatus.Name = "lblStatus";
-            this.lblStatus.Size = new System.Drawing.Size(477, 38);
+            this.lblStatus.Size = new System.Drawing.Size(387, 31);
             this.lblStatus.TabIndex = 4;
             this.lblStatus.Text = "HÃY ĐẶT TÀU CỦA BẠN VÀO VỊ TRÍ!";
             this.lblStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -484,7 +484,7 @@
             this.label1.ForeColor = System.Drawing.SystemColors.ButtonFace;
             this.label1.Location = new System.Drawing.Point(114, 86);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(246, 38);
+            this.label1.Size = new System.Drawing.Size(202, 31);
             this.label1.TabIndex = 1;
             this.label1.Text = "Deploy your fleet!";
             // 
@@ -568,9 +568,10 @@
             this.ClientSize = new System.Drawing.Size(1316, 673);
             this.Controls.Add(this.PanelLeft);
             this.Controls.Add(this.PanelRight);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.Name = "Bot";
-            this.Text = "gameplayMap1";
+            this.Text = "Trận đấu Battleship";
             this.Load += new System.EventHandler(this.gameplayMap1_Load);
             this.PanelLeft.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
