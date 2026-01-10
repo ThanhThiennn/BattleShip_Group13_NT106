@@ -57,12 +57,8 @@ namespace BattleShip
             Properties.Resources.avt5, Properties.Resources.avt6,
             Properties.Resources.avt7, Properties.Resources.avt8
         };
-        // ------------------------------------------
 
-        IFirebaseConfig config = new FirebaseConfig
-        {
-            BasePath = "https://battleshiponline-35ac2-default-rtdb.asia-southeast1.firebasedatabase.app/"
-        };
+        IFirebaseConfig config = new FirebaseConfig();
         IFirebaseClient client;
 
         string roomID = "Room_001";
@@ -128,6 +124,7 @@ namespace BattleShip
         private async void Multiplayer_Load(object sender, EventArgs e)
         {
             string testKey = Environment.GetEnvironmentVariable("FIREBASE_SECRET_KEY", EnvironmentVariableTarget.User);
+            string fbUrl = Environment.GetEnvironmentVariable("FIREBASE_URL", EnvironmentVariableTarget.User);
 
             if (string.IsNullOrEmpty(testKey))
             {
@@ -135,6 +132,7 @@ namespace BattleShip
             }
             else
             {
+                config.BasePath = fbUrl;
                 config.AuthSecret = testKey;
             }
 
